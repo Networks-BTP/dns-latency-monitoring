@@ -16,7 +16,7 @@ BPFTOOL      ?= bpftool
 
 IFACE        ?= eno1
 
-BPF_CFLAGS   := -O2 -g -target bpf -I/usr/include/x86_64-linux-gnu -Wno-pass-failed -fno-merge-constants
+BPF_CFLAGS   := -O2 -g -target bpf -I/usr/include/x86_64-linux-gnu -Wno-pass-failed
 USER_CFLAGS  := -O2 -g -Wall -Wextra
 
 USER_LIBS    := -lbpf -lelf -lz

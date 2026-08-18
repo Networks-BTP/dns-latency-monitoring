@@ -103,6 +103,20 @@ int tc_dns_egress(struct __sk_buff *skb)
 SEC("classifier")
 int tc_dns_ingress(struct __sk_buff *skb)
 {
+    /*
+     * Make Ethernet + minimum IPv4 + UDP headers accessible
+     * in the linear portion of the skb.
+     */
+    if (bpf_skb_pull_data(skb, sizeof(struct ethhdr) +
+                               sizeof(struct iphdr) +
+                               sizeof(struct udphdr) +
+                               sizeof(struct DNSHeader)) < 0)
+        return TC_ACT_OK;
+
+    /*
+     * IMPORTANT:
+     * Reload data/data_end after bpf_skb_pull_data().
+     */
     void *data = (void *)(long)skb->data;
     void *data_end = (void *)(long)skb->data_end;
 
@@ -125,8 +139,10 @@ int tc_dns_ingress(struct __sk_buff *skb)
         return TC_ACT_OK;
 
     struct udphdr *udp = (void *)ip + ip_hdr_len;
-    if ((void *)(udp + 1) > data_end)
+    if ((void *)(udp + 1) > data_end){
+        bpf_printk("UDP BOUNDS FAIL skb_len=%u\n", skb->len);
         return TC_ACT_OK;
+    }
 
     if (bpf_ntohs(udp->source) != 53)
         return TC_ACT_OK;
