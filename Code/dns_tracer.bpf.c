@@ -79,22 +79,13 @@ int tc_dns_egress(struct __sk_buff *skb)
     struct query_info info = {};
     info.start_ts = bpf_ktime_get_ns();
 
-    // Parse the question name + type so tc_dns_ingress has real data to
-    // report instead of a zeroed/uninitialized name field.
-    void *question = (void *)(dns + 1);
-    int name_len = parse_dns_name_from_packet(
-        data, data_end, question, info.name, MAX_DNS_NAME_LEN
-    );
+    // Copy up to 512 bytes of the raw DNS packet payload starting from the DNS header
+    __u32 payload_len = (unsigned long)data_end - (unsigned long)dns;
+    if (payload_len > sizeof(info.raw_payload))
+        payload_len = sizeof(info.raw_payload);
 
-    if (name_len < 0) {
-        inc_stat(STAT_PARSE_ERRORS);
-        info.name[0] = '\0';
-    } else if (name_len > 0) {
-        void *qtype_ptr = question + name_len;
-        if ((void *)(qtype_ptr + 2) <= data_end) {
-            __be16 *qtype = (__be16 *)qtype_ptr;
-            info.query_type = bpf_ntohs(*qtype);
-        }
+    if ((void *)dns + payload_len <= data_end) {
+        __builtin_memcpy(info.raw_payload, dns, payload_len);
     }
 
     bpf_map_update_elem(&pending_queries, &key, &info, BPF_ANY);
@@ -180,7 +171,7 @@ int tc_dns_ingress(struct __sk_buff *skb)
         event->is_timeout = 0;
         event->answer_count = bpf_ntohs(dns->ancount);
 
-        __builtin_memcpy(event->name, info->name, MAX_DNS_NAME_LEN);
+        __builtin_memcpy(event->raw_payload, info->raw_payload, sizeof(event->raw_payload));
 
         bpf_ringbuf_submit(event, 0);
         bpf_printk("dns_tracer: tc_dns_ingress: id=%u latency_ns=%llu\n",
@@ -275,24 +266,13 @@ int xdp_dns_parser(struct xdp_md *ctx)
     event->truncated = tc;
     event->authoritative = aa;
 
-    void *question = (void *)(dns + 1);
-    int name_len = parse_dns_name_from_packet(
-        data, data_end, question, event->name, MAX_DNS_NAME_LEN
-    );
+    // Copy raw DNS packet payload starting at dns header
+    __u32 payload_len = (unsigned long)data_end - (unsigned long)dns;
+    if (payload_len > sizeof(event->raw_payload))
+        payload_len = sizeof(event->raw_payload);
 
-    if (name_len < 0) {
-        inc_stat(STAT_PARSE_ERRORS);
-        event->name[0] = '\0';
-    }
-
-    if (name_len > 0) {
-        void *qtype_ptr = question + name_len;
-        if ((void *)(qtype_ptr + 4) <= data_end) {
-            __be16 *qtype = (__be16 *)qtype_ptr;
-            __be16 *qclass = (__be16 *)(qtype_ptr + 2);
-            event->query_type = bpf_ntohs(*qtype);
-            event->query_class = bpf_ntohs(*qclass);
-        }
+    if ((void *)dns + payload_len <= data_end) {
+        __builtin_memcpy(event->raw_payload, dns, payload_len);
     }
 
     bpf_printk("dns_tracer: xdp_dns_parser: id=%u qr=%u rcode=%u submitted\n",

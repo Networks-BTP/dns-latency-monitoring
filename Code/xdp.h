@@ -24,7 +24,7 @@ struct DNSQueryEvent {
     __u16 answer_count;        // Number of answers in response
     __u8  truncated;            // TC flag - message truncated
     __u8  authoritative;        // AA flag - authoritative answer
-    char  name[MAX_DNS_NAME_LEN];  // Domain name
+    __u8  raw_payload[512];   // Raw DNS payload, parsed on egress
 };
 
 // Ring buffer carrying DNSQueryEvent records to userspace.

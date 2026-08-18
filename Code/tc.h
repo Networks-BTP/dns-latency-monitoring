@@ -25,7 +25,7 @@ struct query_key {
 struct query_info {
     __u64 start_ts;                 // Timestamp when query was sent
     __u16 query_type;               // DNS query type, parsed on egress
-    char  name[MAX_DNS_NAME_LEN];   // Domain name, parsed on egress
+    __u8 raw_payload[512];   // Raw DNS payload, parsed on egress
 };
 
 // Latency event sent to userspace once a response matches a pending query.
@@ -39,7 +39,7 @@ struct latency_event {
     __u8  rcode;                // Response code
     __u8  is_timeout;           // 1 if this is a timeout event
     __u16 answer_count;        // Number of answers
-    char  name[MAX_DNS_NAME_LEN];
+    __u8 raw_payload[512];   // Raw DNS payload, parsed on ingress
 };
 
 // Hash map tracking in-flight DNS queries between egress and ingress.

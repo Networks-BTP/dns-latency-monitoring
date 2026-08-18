@@ -181,7 +181,7 @@ int trace_getaddrinfo_return(struct pt_regs *ctx) {
             struct wire_state_t *w = wire_map.lookup(&s->src_port);
             event->wire_latency_ns = (w && w->wire_end > w->wire_start) ? (w->wire_end - w->wire_start) : 0;
             
-            events.perf_submit(ctx, event, sizeof(*event));
+            domevents.perf_submit(ctx, event, sizeof(*event));
             
             if (s->src_port > 0) wire_map.delete(&s->src_port);
         }

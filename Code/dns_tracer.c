@@ -30,7 +30,7 @@ struct DNSQueryEvent {
     uint16_t answer_count;
     uint8_t  truncated;
     uint8_t  authoritative;
-    char     name[MAX_DNS_NAME_LEN];
+    uint8_t  raw_payload[512];   // Raw DNS payload, parsed on egress
 };
 
 /* Must match tc.h exactly. */
@@ -44,7 +44,7 @@ struct latency_event {
     uint8_t  rcode;
     uint8_t  is_timeout;
     uint16_t answer_count;
-    char     name[MAX_DNS_NAME_LEN];
+    uint8_t  raw_payload[512];   // Raw DNS payload, parsed on ingress
 };
 
 static volatile sig_atomic_t exiting = 0;
@@ -92,34 +92,122 @@ static const char *rcode_to_string(uint8_t rcode)
     }
 }
 
+
+/**
+ * Parses a DNS name from a raw DNS payload.
+ *
+ * @param packet       Pointer to the start of the raw DNS header.
+ * @param packet_len   Total length of the captured DNS payload.
+ * @param offset       Pointer to the current byte offset (updated as bytes are consumed).
+ * @param out_name     Buffer to store the null-terminated dotted domain string.
+ * @param max_out      Maximum size of the out_name buffer.
+ * @return             0 on success, -1 on a malformed packet or buffer overflow.
+ */
+int parse_dns_name(const uint8_t *packet, size_t packet_len, size_t *offset, char *out_name, size_t max_out) {
+    size_t current_offset = *offset;
+    size_t out_pos = 0;
+    int jumped = 0;
+    size_t jump_offset = 0;
+    int jumps_taken = 0;
+
+    if (max_out > 0) {
+        out_name[0] = '\0';
+    }
+
+    while (current_offset < packet_len) {
+        uint8_t len = packet[current_offset];
+
+        // A length of 0 indicates the end of the domain name
+        if (len == 0) {
+            if (!jumped) {
+                *offset = current_offset + 1;
+            } else {
+                *offset = jump_offset;
+            }
+            
+            // Remove the trailing dot if we added one
+            if (out_pos > 0) {
+                out_name[out_pos - 1] = '\0';
+            }
+            return 0; // Success
+        }
+
+        // Check for a DNS compression pointer (top two bits set to 11, i.e., 0xC0)
+        if ((len & 0xC0) == 0xC0) {
+            if (current_offset + 1 >= packet_len) {
+                return -1; // Malformed packet: pointer truncated
+            }
+            
+            // If this is the first jump, record where we need to return to update the offset
+            if (!jumped) {
+                jump_offset = current_offset + 2;
+                jumped = 1;
+            }
+
+            // Calculate the pointer offset (mask out the top 2 bits, combine with next byte)
+            uint16_t pointer = ((len & 0x3F) << 8) | packet[current_offset + 1];
+            current_offset = pointer;
+            
+            // Defend against malicious/malformed packets causing infinite pointer loops
+            jumps_taken++;
+            if (jumps_taken > 256) {
+                return -1; 
+            }
+            continue;
+        }
+
+        // Standard label processing
+        current_offset++;
+        if (current_offset + len > packet_len) {
+            return -1; // Malformed packet: label exceeds packet boundary
+        }
+
+        // Copy the label text into the output buffer and append a dot
+        if (out_pos + len + 1 < max_out) {
+            memcpy(out_name + out_pos, packet + current_offset, len);
+            out_pos += len;
+            out_name[out_pos++] = '.';
+            out_name[out_pos] = '\0';
+        } else {
+            return -1; // Output buffer is too small
+        }
+
+        current_offset += len;
+    }
+
+    return -1; // Malformed packet: hit the end without finding a null terminator
+}
+
 static int handle_dns_event(void *ctx, void *data, size_t data_sz)
 {
     (void)ctx;
-
-    if (data_sz < sizeof(struct DNSQueryEvent)) {
-        fprintf(stderr, "[XDP] Invalid event size: %zu\n", data_sz);
-        return 0;
-    }
+    if (data_sz < sizeof(struct DNSQueryEvent)) return 0;
 
     const struct DNSQueryEvent *event = data;
-    char src[INET_ADDRSTRLEN];
-    char dst[INET_ADDRSTRLEN];
+    char src[INET_ADDRSTRLEN], dst[INET_ADDRSTRLEN];
 
-    if (!inet_ntop(AF_INET, &event->src_ip, src, sizeof(src)))
-        snprintf(src, sizeof(src), "?");
+    if (!inet_ntop(AF_INET, &event->src_ip, src, sizeof(src))) snprintf(src, sizeof(src), "?");
+    if (!inet_ntop(AF_INET, &event->dst_ip, dst, sizeof(dst))) snprintf(dst, sizeof(dst), "?");
 
-    if (!inet_ntop(AF_INET, &event->dst_ip, dst, sizeof(dst)))
-        snprintf(dst, sizeof(dst), "?");
+    // Parse domain name from raw payload (offset 12 skips 12-byte DNS header)
+    char domain_name[MAX_DNS_NAME_LEN] = "<unknown>";
+    size_t offset = 12;
+    parse_dns_name(event->raw_payload, sizeof(event->raw_payload), &offset, domain_name, sizeof(domain_name));
+
+    // Read QTYPE directly from raw_payload following the domain name
+    uint16_t qtype = event->query_type;
+    if (qtype == 0 && offset + 2 <= sizeof(event->raw_payload)) {
+        qtype = (event->raw_payload[offset] << 8) | event->raw_payload[offset + 1];
+    }
 
     printf(
         "[XDP] %-8s %s:%u -> %s:%u "
         "id=%u type=%s name=%s rcode=%u(%s) answers=%u%s%s\n",
         event->is_response ? "RESPONSE" : "QUERY",
-        src, event->src_port,
-        dst, event->dst_port,
+        src, event->src_port, dst, event->dst_port,
         event->query_id,
-        dns_type_to_string(event->query_type),
-        event->name[0] ? event->name : "<unknown>",
+        dns_type_to_string(qtype),
+        domain_name,
         event->rcode,
         rcode_to_string(event->rcode),
         event->answer_count,
@@ -134,31 +222,27 @@ static int handle_dns_event(void *ctx, void *data, size_t data_sz)
 static int handle_latency_event(void *ctx, void *data, size_t data_sz)
 {
     (void)ctx;
-
-    if (data_sz < sizeof(struct latency_event)) {
-        fprintf(stderr, "[TC ] Invalid event size: %zu\n", data_sz);
-        return 0;
-    }
+    if (data_sz < sizeof(struct latency_event)) return 0;
 
     const struct latency_event *event = data;
-    char client[INET_ADDRSTRLEN];
-    char server[INET_ADDRSTRLEN];
+    char client[INET_ADDRSTRLEN], server[INET_ADDRSTRLEN];
 
-    if (!inet_ntop(AF_INET, &event->client_ip, client, sizeof(client)))
-        snprintf(client, sizeof(client), "?");
+    if (!inet_ntop(AF_INET, &event->client_ip, client, sizeof(client))) snprintf(client, sizeof(client), "?");
+    if (!inet_ntop(AF_INET, &event->server_ip, server, sizeof(server))) snprintf(server, sizeof(server), "?");
 
-    if (!inet_ntop(AF_INET, &event->server_ip, server, sizeof(server)))
-        snprintf(server, sizeof(server), "?");
+    // Parse domain name from raw payload
+    char domain_name[MAX_DNS_NAME_LEN] = "<unknown>";
+    size_t offset = 12;
+    parse_dns_name(event->raw_payload, sizeof(event->raw_payload), &offset, domain_name, sizeof(domain_name));
 
     printf(
         "[TC ] %s -> %s "
         "id=%u type=%s name=%s latency=%.3f ms "
         "rcode=%u(%s) answers=%u\n",
-        client,
-        server,
+        client, server,
         event->query_id,
         dns_type_to_string(event->query_type),
-        event->name[0] ? event->name : "<unknown>",
+        domain_name,
         (double)event->latency_ns / 1000000.0,
         event->rcode,
         rcode_to_string(event->rcode),
