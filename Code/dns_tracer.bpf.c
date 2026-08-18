@@ -1,0 +1,305 @@
+// dns_tracer.bpf.c
+//
+// Two-hook DNS monitor:
+//   XDP -> xdp_dns_parser   reads every DNS packet (query or response)
+//                            seen on the wire and emits a DNSQueryEvent.
+//   TC  -> tc_dns_egress /   track a query's send time on the way out,
+//          tc_dns_ingress    match it against the response on the way
+//                            in, and emit a latency_event.
+//
+// Per instructions.txt #9, uprobe/kprobe hooks are intentionally excluded
+// from this build.
+//
+// Logging: bpf_printk() writes to the shared kernel trace pipe --
+//     sudo cat /sys/kernel/debug/tracing/trace_pipe | grep dns_tracer
+
+#include <linux/bpf.h>
+#include <linux/if_ether.h>
+#include <linux/ip.h>
+#include <linux/udp.h>
+#include <linux/pkt_cls.h>
+#include <bpf/bpf_helpers.h>
+#include <bpf/bpf_endian.h>
+#include "common.h"
+#include "xdp.h"
+#include "tc.h"
+
+// ---------------------------------------------------------------------------
+// TC egress: outgoing DNS query. Stamps send time + parses name/qtype into
+// pending_queries, keyed by transaction ID + client 4-tuple.
+// ---------------------------------------------------------------------------
+
+SEC("classifier")
+int tc_dns_egress(struct __sk_buff *skb)
+{
+    void *data = (void *)(long)skb->data;
+    void *data_end = (void *)(long)skb->data_end;
+
+    struct ethhdr *eth = data;
+    if ((void *)(eth + 1) > data_end)
+        return TC_ACT_OK;
+
+    if (eth->h_proto != bpf_htons(ETH_P_IP))
+        return TC_ACT_OK;
+
+    struct iphdr *ip = (void *)(eth + 1);
+    if ((void *)(ip + 1) > data_end)
+        return TC_ACT_OK;
+
+    if (ip->protocol != IPPROTO_UDP)
+        return TC_ACT_OK;
+
+    int ip_hdr_len = ip->ihl * 4;
+    if (ip_hdr_len < sizeof(struct iphdr))
+        return TC_ACT_OK;
+
+    struct udphdr *udp = (void *)ip + ip_hdr_len;
+    if ((void *)(udp + 1) > data_end)
+        return TC_ACT_OK;
+
+    if (bpf_ntohs(udp->dest) != 53)
+        return TC_ACT_OK;
+
+    bpf_printk("dns_tracer: tc_dns_egress: udp/53 candidate\n");
+
+    struct DNSHeader *dns = (void *)(udp + 1);
+    if ((void *)(dns + 1) > data_end)
+        return TC_ACT_OK;
+
+    __u16 flags = bpf_ntohs(dns->flags);
+    if (flags & 0x8000)  // QR bit set = response, not a query
+        return TC_ACT_OK;
+
+    struct query_key key = {
+        .query_id = bpf_ntohs(dns->id),
+        .client_ip = ip->saddr,
+        .client_port = bpf_ntohs(udp->source),
+    };
+
+    struct query_info info = {};
+    info.start_ts = bpf_ktime_get_ns();
+
+    // Parse the question name + type so tc_dns_ingress has real data to
+    // report instead of a zeroed/uninitialized name field.
+    void *question = (void *)(dns + 1);
+    int name_len = parse_dns_name_from_packet(
+        data, data_end, question, info.name, MAX_DNS_NAME_LEN
+    );
+
+    if (name_len < 0) {
+        inc_stat(STAT_PARSE_ERRORS);
+        info.name[0] = '\0';
+    } else if (name_len > 0) {
+        void *qtype_ptr = question + name_len;
+        if ((void *)(qtype_ptr + 2) <= data_end) {
+            __be16 *qtype = (__be16 *)qtype_ptr;
+            info.query_type = bpf_ntohs(*qtype);
+        }
+    }
+
+    bpf_map_update_elem(&pending_queries, &key, &info, BPF_ANY);
+    bpf_printk("dns_tracer: tc_dns_egress: query id=%u stored, type=%u\n",
+               key.query_id, info.query_type);
+
+    return TC_ACT_OK;
+}
+
+// ---------------------------------------------------------------------------
+// TC ingress: incoming DNS response. Matches against pending_queries,
+// computes latency, updates the histogram, and emits a latency_event.
+// ---------------------------------------------------------------------------
+
+SEC("classifier")
+int tc_dns_ingress(struct __sk_buff *skb)
+{
+    void *data = (void *)(long)skb->data;
+    void *data_end = (void *)(long)skb->data_end;
+
+    struct ethhdr *eth = data;
+    if ((void *)(eth + 1) > data_end)
+        return TC_ACT_OK;
+
+    if (eth->h_proto != bpf_htons(ETH_P_IP))
+        return TC_ACT_OK;
+
+    struct iphdr *ip = (void *)(eth + 1);
+    if ((void *)(ip + 1) > data_end)
+        return TC_ACT_OK;
+
+    if (ip->protocol != IPPROTO_UDP)
+        return TC_ACT_OK;
+
+    int ip_hdr_len = ip->ihl * 4;
+    if (ip_hdr_len < sizeof(struct iphdr))
+        return TC_ACT_OK;
+
+    struct udphdr *udp = (void *)ip + ip_hdr_len;
+    if ((void *)(udp + 1) > data_end)
+        return TC_ACT_OK;
+
+    if (bpf_ntohs(udp->source) != 53)
+        return TC_ACT_OK;
+
+    struct DNSHeader *dns = (void *)(udp + 1);
+    if ((void *)(dns + 1) > data_end)
+        return TC_ACT_OK;
+
+    __u16 flags = bpf_ntohs(dns->flags);
+    if (!(flags & 0x8000))  // QR bit not set = query, not a response
+        return TC_ACT_OK;
+
+    bpf_printk("dns_tracer: tc_dns_ingress: udp/53 response id=%u\n",
+               bpf_ntohs(dns->id));
+
+    struct query_key key = {
+        .query_id = bpf_ntohs(dns->id),
+        .client_ip = ip->daddr,      // response dest = original query source
+        .client_port = bpf_ntohs(udp->dest),
+    };
+
+    struct query_info *info = bpf_map_lookup_elem(&pending_queries, &key);
+    if (!info) {
+        bpf_printk("dns_tracer: tc_dns_ingress: no pending query for id=%u\n",
+                   key.query_id);
+        return TC_ACT_OK;
+    }
+
+    __u64 now = bpf_ktime_get_ns();
+    __u64 latency_ns = now - info->start_ts;
+
+    struct latency_event *event;
+    event = bpf_ringbuf_reserve(&latency_events, sizeof(*event), 0);
+    if (event) {
+        event->timestamp = now;
+        event->latency_ns = latency_ns;
+        event->client_ip = ip->daddr;
+        event->server_ip = ip->saddr;
+        event->query_id = key.query_id;
+        event->query_type = info->query_type;
+        event->rcode = flags & 0x0F;
+        event->is_timeout = 0;
+        event->answer_count = bpf_ntohs(dns->ancount);
+
+        __builtin_memcpy(event->name, info->name, MAX_DNS_NAME_LEN);
+
+        bpf_ringbuf_submit(event, 0);
+        bpf_printk("dns_tracer: tc_dns_ingress: id=%u latency_ns=%llu\n",
+                   key.query_id, latency_ns);
+    }
+
+    bpf_map_delete_elem(&pending_queries, &key);
+
+    return TC_ACT_OK;
+}
+
+// ---------------------------------------------------------------------------
+// XDP: reads every DNS packet on the wire (query or response) and emits
+// a DNSQueryEvent. Independent of the TC latency path above.
+// ---------------------------------------------------------------------------
+
+SEC("xdp")
+int xdp_dns_parser(struct xdp_md *ctx)
+{
+    void *data = (void *)(long)ctx->data;
+    void *data_end = (void *)(long)ctx->data_end;
+
+    inc_stat(STAT_TOTAL_PACKETS);
+
+    struct ethhdr *eth = data;
+    if ((void *)(eth + 1) > data_end)
+        return XDP_PASS;
+
+    if (eth->h_proto != bpf_htons(ETH_P_IP))
+        return XDP_PASS;
+
+    struct iphdr *ip = (void *)(eth + 1);
+    if ((void *)(ip + 1) > data_end)
+        return XDP_PASS;
+
+    if (ip->protocol != IPPROTO_UDP)
+        return XDP_PASS;
+
+    int ip_hdr_len = ip->ihl * 4;
+    if (ip_hdr_len < sizeof(struct iphdr))
+        return XDP_PASS;
+
+    struct udphdr *udp = (void *)ip + ip_hdr_len;
+    if ((void *)(udp + 1) > data_end)
+        return XDP_PASS;
+
+    __u16 sport = bpf_ntohs(udp->source);
+    __u16 dport = bpf_ntohs(udp->dest);
+
+    if (sport != 53 && dport != 53)
+        return XDP_PASS;
+
+    bpf_printk("dns_tracer: xdp_dns_parser: udp/53 candidate\n");
+
+    struct DNSHeader *dns = (void *)(udp + 1);
+    if ((void *)(dns + 1) > data_end)
+        return XDP_PASS;
+
+    __u16 flags = bpf_ntohs(dns->flags);
+    __u8 qr = (flags >> 15) & 0x1;      // Query (0) or Response (1)
+    __u8 aa = (flags >> 10) & 0x1;      // Authoritative Answer
+    __u8 tc = (flags >> 9) & 0x1;       // Truncated
+    __u8 rcode = flags & 0xF;           // Response Code
+
+    if (qr == 0)
+        inc_stat(STAT_DNS_QUERIES);
+    else
+        inc_stat(STAT_DNS_RESPONSES);
+
+    if (tc)
+        inc_stat(STAT_TRUNCATED);
+
+    if (rcode == DNS_RCODE_NXDOMAIN)
+        inc_stat(STAT_NXDOMAIN);
+
+    struct DNSQueryEvent *event;
+    event = bpf_ringbuf_reserve(&dns_events, sizeof(*event), 0);
+    if (!event)
+        return XDP_PASS;
+
+    __builtin_memset(event, 0, sizeof(*event));
+
+    event->timestamp = bpf_ktime_get_ns();
+    event->src_ip = ip->saddr;
+    event->dst_ip = ip->daddr;
+    event->src_port = sport;
+    event->dst_port = dport;
+    event->query_id = bpf_ntohs(dns->id);
+    event->is_response = qr;
+    event->rcode = rcode;
+    event->answer_count = bpf_ntohs(dns->ancount);
+    event->truncated = tc;
+    event->authoritative = aa;
+
+    void *question = (void *)(dns + 1);
+    int name_len = parse_dns_name_from_packet(
+        data, data_end, question, event->name, MAX_DNS_NAME_LEN
+    );
+
+    if (name_len < 0) {
+        inc_stat(STAT_PARSE_ERRORS);
+        event->name[0] = '\0';
+    }
+
+    if (name_len > 0) {
+        void *qtype_ptr = question + name_len;
+        if ((void *)(qtype_ptr + 4) <= data_end) {
+            __be16 *qtype = (__be16 *)qtype_ptr;
+            __be16 *qclass = (__be16 *)(qtype_ptr + 2);
+            event->query_type = bpf_ntohs(*qtype);
+            event->query_class = bpf_ntohs(*qclass);
+        }
+    }
+
+    bpf_printk("dns_tracer: xdp_dns_parser: id=%u qr=%u rcode=%u submitted\n",
+               event->query_id, qr, rcode);
+    bpf_ringbuf_submit(event, 0);
+
+    return XDP_PASS;
+}
+
+char LICENSE[] SEC("license") = "GPL";
