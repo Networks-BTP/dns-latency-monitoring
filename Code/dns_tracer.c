@@ -230,21 +230,40 @@ static int attach_tc_program(struct bpf_program *prog,
     return 0;
 }
 
-static void detach_tc_program(struct bpf_tc_hook *hook,
-                              struct bpf_tc_opts *opts)
+static int detach_tc_program(struct bpf_tc_hook *hook,
+                             struct bpf_tc_opts *opts)
 {
-    int err;
+    struct bpf_tc_opts detach_opts = {};
 
-    if (hook->ifindex == 0)
-        return;
+    detach_opts.sz = sizeof(detach_opts);
 
-    err = bpf_tc_detach(hook, opts);
-    if (err && err != -ENOENT) {
+    /*
+     * bpf_tc_detach() requires ONLY:
+     *   - handle
+     *   - priority
+     *
+     * prog_fd, prog_id and flags must be zero.
+     */
+    detach_opts.handle = opts->handle;
+    detach_opts.priority = opts->priority;
+
+    int err = bpf_tc_detach(hook, &detach_opts);
+
+    if (err) {
+        /*
+         * The filter may already have been removed.
+         * Treat that as harmless during cleanup.
+         */
+        if (err == -ENOENT)
+            return 0;
+
         fprintf(stderr,
                 "Warning: bpf_tc_detach failed: %d (%s)\n",
                 err,
                 strerror(-err));
     }
+
+    return err;
 }
 
 int main(int argc, char **argv)
@@ -469,12 +488,11 @@ cleanup:
      * TC attachments are not BPF links with this older API, so
      * explicitly detach them.
      */
-    // UNCOMMENT THIS LATER
-    // if (tc_egress_attached)
-    //     detach_tc_program(&tc_egress_hook, &tc_egress_opts);
+    if (tc_egress_attached)
+        detach_tc_program(&tc_egress_hook, &tc_egress_opts);
 
-    // if (tc_ingress_attached)
-    //     detach_tc_program(&tc_ingress_hook, &tc_ingress_opts);
+    if (tc_ingress_attached)
+        detach_tc_program(&tc_ingress_hook, &tc_ingress_opts);
 
     /*
      * Destroying the XDP BPF link detaches XDP.
@@ -487,24 +505,23 @@ cleanup:
      * If another user/program is using the hook, failure here is
      * harmless and only results in a warning.
      */
-    // UNCOMMENT LATER
-    // if (tc_egress_attached) {
-    //     int tc_err = bpf_tc_hook_destroy(&tc_egress_hook);
-    //     if (tc_err && tc_err != -ENOENT) {
-    //         fprintf(stderr,
-    //                 "Warning: failed to destroy TC egress hook: %d\n",
-    //                 tc_err);
-    //     }
-    // }
+    if (tc_egress_attached) {
+        int tc_err = bpf_tc_hook_destroy(&tc_egress_hook);
+        if (tc_err && tc_err != -ENOENT) {
+            fprintf(stderr,
+                    "Warning: failed to destroy TC egress hook: %d\n",
+                    tc_err);
+        }
+    }
 
-    // if (tc_ingress_attached) {
-    //     int tc_err = bpf_tc_hook_destroy(&tc_ingress_hook);
-    //     if (tc_err && tc_err != -ENOENT) {
-    //         fprintf(stderr,
-    //                 "Warning: failed to destroy TC ingress hook: %d\n",
-    //                 tc_err);
-    //     }
-    // }
+    if (tc_ingress_attached) {
+        int tc_err = bpf_tc_hook_destroy(&tc_ingress_hook);
+        if (tc_err && tc_err != -ENOENT) {
+            fprintf(stderr,
+                    "Warning: failed to destroy TC ingress hook: %d\n",
+                    tc_err);
+        }
+    }
 
     if (obj)
         dns_tracer_bpf__destroy(obj);
