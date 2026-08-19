@@ -28,6 +28,14 @@ struct query_info {
     __u16 query_type;               // DNS query type, parsed on egress
 };
 
+// Scratch map to prevent overflowing stack in TC
+struct {
+    __uint(type, BPF_MAP_TYPE_PERCPU_ARRAY);
+    __type(key, __u32);
+    __type(value, struct query_info);
+    __uint(max_entries, 1);
+} scratch_info SEC(".maps");
+
 // Latency event sent to userspace once a response matches a pending query.
 struct latency_event {
     __u64 timestamp;           // Event timestamp

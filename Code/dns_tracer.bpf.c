@@ -24,13 +24,6 @@
 #include "xdp.h"
 #include "tc.h"
 
-struct {
-    __uint(type, BPF_MAP_TYPE_PERCPU_ARRAY);
-    __type(key, __u32);
-    __type(value, struct query_info);
-    __uint(max_entries, 1);
-} scratch_info SEC(".maps");
-
 // ---------------------------------------------------------------------------
 // TC egress: outgoing DNS query. Stamps send time + parses name/qtype into
 // pending_queries, keyed by transaction ID + client 4-tuple.
@@ -91,6 +84,53 @@ int tc_dns_egress(struct __sk_buff *skb)
 
     __builtin_memset(info, 0, sizeof(*info));
     info->start_ts = bpf_ktime_get_ns();
+
+    /*
+    * Save the complete DNS message into query_info.
+    * At the same time, find QTYPE from the DNS question.
+    *
+    * DNS format:
+    *   DNS header (12 bytes)
+    *   QNAME (variable length)
+    *   QTYPE (2 bytes)
+    *   QCLASS (2 bytes)
+    */
+    __u8 *dns_ptr = (__u8 *)dns;
+
+    __u16 qtype = 0;
+
+    #pragma clang loop unroll(disable)
+    for (int i = 0; i < sizeof(info->raw_payload); i++) {
+        if ((void *)(dns_ptr + i + 1) > data_end)
+            break;
+
+        info->raw_payload[i] = dns_ptr[i];
+
+        /*
+        * QNAME starts at byte 12.
+        * Find its terminating zero.
+        */
+        if (i >= sizeof(struct DNSHeader)) {
+            __u8 byte = dns_ptr[i];
+
+            if (byte == 0) {
+                /*
+                * i points to the terminating zero of QNAME.
+                * QTYPE is immediately after it.
+                */
+                if ((void *)(dns_ptr + i + 3) <= data_end) {
+                    __be16 *qtype_ptr =
+                        (__be16 *)(dns_ptr + i + 1);
+
+                    qtype = bpf_ntohs(*qtype_ptr);
+                }
+
+                break;
+            }
+        }
+    }
+
+    info->query_type = qtype;
 
     bpf_map_update_elem(&pending_queries, &key, info, BPF_ANY);
     return TC_ACT_OK;
