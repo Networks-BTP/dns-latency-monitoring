@@ -194,7 +194,6 @@ static int handle_dns_event(void *ctx, void *data, size_t data_sz)
     size_t offset = 12;
     parse_dns_name(event->raw_payload, sizeof(event->raw_payload), &offset, domain_name, sizeof(domain_name));
 
-    // Read QTYPE directly from raw_payload following the domain name
     uint16_t qtype = event->query_type;
     if (qtype == 0 && offset + 2 <= sizeof(event->raw_payload)) {
         qtype = (event->raw_payload[offset] << 8) | event->raw_payload[offset + 1];

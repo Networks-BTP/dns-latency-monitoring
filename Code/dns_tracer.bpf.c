@@ -24,6 +24,13 @@
 #include "xdp.h"
 #include "tc.h"
 
+struct {
+    __uint(type, BPF_MAP_TYPE_PERCPU_ARRAY);
+    __type(key, __u32);
+    __type(value, struct query_info);
+    __uint(max_entries, 1);
+} scratch_info SEC(".maps");
+
 // ---------------------------------------------------------------------------
 // TC egress: outgoing DNS query. Stamps send time + parses name/qtype into
 // pending_queries, keyed by transaction ID + client 4-tuple.
@@ -70,28 +77,22 @@ int tc_dns_egress(struct __sk_buff *skb)
     if (flags & 0x8000)  // QR bit set = response, not a query
         return TC_ACT_OK;
 
-    struct query_key key = {
-        .query_id = bpf_ntohs(dns->id),
-        .client_ip = ip->saddr,
-        .client_port = bpf_ntohs(udp->source),
-    };
+    struct query_key key = {};
 
-    struct query_info info = {};
-    info.start_ts = bpf_ktime_get_ns();
+    key.query_id = bpf_ntohs(dns->id);
+    key.client_ip = ip->saddr;
+    key.client_port = bpf_ntohs(udp->source);
+    key.padding = 0;
 
-    // Copy up to 512 bytes of the raw DNS packet payload starting from the DNS header
-    __u32 payload_len = (unsigned long)data_end - (unsigned long)dns;
-    if (payload_len > sizeof(info.raw_payload))
-        payload_len = sizeof(info.raw_payload);
+    __u32 zero = 0;
+    struct query_info *info = bpf_map_lookup_elem(&scratch_info, &zero);
+    if (!info)
+        return TC_ACT_OK;
 
-    if ((void *)dns + payload_len <= data_end) {
-        __builtin_memcpy(info.raw_payload, dns, payload_len);
-    }
+    __builtin_memset(info, 0, sizeof(*info));
+    info->start_ts = bpf_ktime_get_ns();
 
-    bpf_map_update_elem(&pending_queries, &key, &info, BPF_ANY);
-    bpf_printk("dns_tracer: tc_dns_egress: query id=%u stored, type=%u\n",
-               key.query_id, info.query_type);
-
+    bpf_map_update_elem(&pending_queries, &key, info, BPF_ANY);
     return TC_ACT_OK;
 }
 
@@ -158,11 +159,12 @@ int tc_dns_ingress(struct __sk_buff *skb)
     bpf_printk("dns_tracer: tc_dns_ingress: udp/53 response id=%u\n",
                bpf_ntohs(dns->id));
 
-    struct query_key key = {
-        .query_id = bpf_ntohs(dns->id),
-        .client_ip = ip->daddr,      // response dest = original query source
-        .client_port = bpf_ntohs(udp->dest),
-    };
+    struct query_key key = {};
+
+    key.query_id = bpf_ntohs(dns->id);
+    key.client_ip = ip->daddr;
+    key.client_port = bpf_ntohs(udp->dest);
+    key.padding = 0;
 
     struct query_info *info = bpf_map_lookup_elem(&pending_queries, &key);
     if (!info) {
@@ -282,13 +284,12 @@ int xdp_dns_parser(struct xdp_md *ctx)
     event->truncated = tc;
     event->authoritative = aa;
 
-    // Copy raw DNS packet payload starting at dns header
-    __u32 payload_len = (unsigned long)data_end - (unsigned long)dns;
-    if (payload_len > sizeof(event->raw_payload))
-        payload_len = sizeof(event->raw_payload);
-
-    if ((void *)dns + payload_len <= data_end) {
-        __builtin_memcpy(event->raw_payload, dns, payload_len);
+    __u8 *dns_ptr = (__u8 *)dns;
+    #pragma unroll
+    for (int i = 0; i < sizeof(event->raw_payload); i++) {
+        if ((void *)(dns_ptr + i + 1) > data_end)
+            break;
+        event->raw_payload[i] = dns_ptr[i];
     }
 
     bpf_printk("dns_tracer: xdp_dns_parser: id=%u qr=%u rcode=%u submitted\n",

@@ -23,9 +23,9 @@ struct query_key {
 // Value structure storing query metadata, captured on egress and read
 // back on the matching ingress response.
 struct query_info {
+    __u8 raw_payload[512];   // Raw DNS payload, parsed on egress
     __u64 start_ts;                 // Timestamp when query was sent
     __u16 query_type;               // DNS query type, parsed on egress
-    __u8 raw_payload[512];   // Raw DNS payload, parsed on egress
 };
 
 // Latency event sent to userspace once a response matches a pending query.
