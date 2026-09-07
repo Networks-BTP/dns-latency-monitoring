@@ -96,7 +96,6 @@ int tc_dns_egress(struct __sk_buff *skb)
     *   QCLASS (2 bytes)
     */
     __u8 *dns_ptr = (__u8 *)dns;
-
     __u16 qtype = 0;
 
     #pragma clang loop unroll(disable)
@@ -104,29 +103,34 @@ int tc_dns_egress(struct __sk_buff *skb)
         if ((void *)(dns_ptr + i + 1) > data_end)
             break;
 
-        info->raw_payload[i] = dns_ptr[i];
+        __u8 byte = dns_ptr[i];
+
+        info->raw_payload[i] = byte;
 
         /*
-        * QNAME starts at byte 12.
-        * Find its terminating zero.
+        * DNS header is 12 bytes.
+        * After that, look for the terminating zero of QNAME.
         */
-        if (i >= sizeof(struct DNSHeader)) {
-            __u8 byte = dns_ptr[i];
-
-            if (byte == 0) {
-                /*
-                * i points to the terminating zero of QNAME.
-                * QTYPE is immediately after it.
-                */
-                if ((void *)(dns_ptr + i + 3) <= data_end) {
-                    __be16 *qtype_ptr =
-                        (__be16 *)(dns_ptr + i + 1);
-
-                    qtype = bpf_ntohs(*qtype_ptr);
-                }
-
+        if (i >= sizeof(struct DNSHeader) && byte == 0) {
+            /*
+            * QTYPE is the two bytes immediately following
+            * the QNAME terminator.
+            */
+            if ((void *)(dns_ptr + i + 3) > data_end)
                 break;
-            }
+
+            __u16 qtype_raw;
+
+            /*
+            * Read the two bytes individually rather than
+            * dereferencing a __be16 pointer at a variable
+            * packet offset.
+            */
+            qtype_raw = ((__u16)dns_ptr[i + 1] << 8) |
+                        (__u16)dns_ptr[i + 2];
+
+            qtype = qtype_raw;
+            break;
         }
     }
 

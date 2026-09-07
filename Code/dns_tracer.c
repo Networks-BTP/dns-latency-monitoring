@@ -9,7 +9,9 @@
 #include <string.h>
 #include <unistd.h>
 
+#include <linux/if_link.h>
 #include <bpf/libbpf.h>
+#include <bpf/bpf.h>
 
 #include "dns_tracer.skel.h"
 
@@ -355,8 +357,8 @@ int main(int argc, char **argv)
     unsigned int ifindex;
 
     struct dns_tracer_bpf *obj = NULL;
-    struct bpf_link *xdp_link = NULL;
     struct ring_buffer *rb = NULL;
+    bool xdp_attached = false;
 
     struct bpf_tc_hook tc_ingress_hook;
     struct bpf_tc_opts tc_ingress_opts;
@@ -439,26 +441,40 @@ int main(int argc, char **argv)
     /*
      * XDP attachment.
      *
-     * Use the generic XDP mode on this older 5.15 CloudLab setup.
-     * If native driver mode is desired later, this can be changed.
+     * Use explicit generic/SKB mode on this CloudLab setup.
+     * Native/driver XDP was attached successfully but did not
+     * see the packets on this interface.
      */
-    printf("Attaching XDP...\n");
+    printf("Attaching XDP in generic/SKB mode...\n");
 
-    xdp_link = bpf_program__attach_xdp(
-        obj->progs.xdp_dns_parser,
-        ifindex
+    int prog_fd = bpf_program__fd(obj->progs.xdp_dns_parser);
+
+    if (prog_fd < 0) {
+        err = prog_fd;
+        fprintf(stderr,
+                "Failed to get XDP program FD: %d\n",
+                err);
+        goto cleanup;
+    }
+
+    err = bpf_xdp_attach(
+        ifindex,
+        prog_fd,
+        XDP_FLAGS_SKB_MODE,
+        NULL
     );
 
-    if (!xdp_link) {
-        err = -errno;
+    if (err) {
         fprintf(stderr,
-                "Failed to attach XDP: %d (%s)\n",
+                "Failed to attach XDP in generic mode: %d (%s)\n",
                 err,
                 strerror(-err));
         goto cleanup;
     }
 
-    printf("  XDP attached.\n");
+    xdp_attached = true;
+
+    printf("  XDP attached in generic/SKB mode.\n");
 
     /*
      * Legacy TC ingress.
@@ -578,10 +594,23 @@ cleanup:
         detach_tc_program(&tc_ingress_hook, &tc_ingress_opts);
 
     /*
-     * Destroying the XDP BPF link detaches XDP.
+     * XDP was attached explicitly in generic/SKB mode, so detach
+     * it explicitly during cleanup.
      */
-    if (xdp_link)
-        bpf_link__destroy(xdp_link);
+    if (xdp_attached) {
+        int xdp_err = bpf_xdp_detach(
+            ifindex,
+            XDP_FLAGS_SKB_MODE,
+            NULL
+        );
+
+        if (xdp_err && xdp_err != -ENOENT) {
+            fprintf(stderr,
+                    "Warning: failed to detach XDP: %d (%s)\n",
+                    xdp_err,
+                    strerror(-xdp_err));
+        }
+    }
 
     /*
      * Destroy the TC qdisc hooks only after detaching our programs.
