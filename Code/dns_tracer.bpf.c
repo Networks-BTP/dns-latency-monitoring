@@ -98,43 +98,48 @@ int tc_dns_egress(struct __sk_buff *skb)
     __u8 *dns_ptr = (__u8 *)dns;
     __u16 qtype = 0;
 
+    /*
+    * First find QTYPE.
+    *
+    * We only need to walk until the end of QNAME.
+    * Once QTYPE is found, stop this small parsing loop.
+    */
+    #pragma clang loop unroll(disable)
+    for (int i = sizeof(struct DNSHeader);
+        i < sizeof(info->raw_payload);
+        i++) {
+
+        if ((void *)(dns_ptr + i + 1) > data_end)
+            break;
+
+        if (dns_ptr[i] == 0) {
+            if ((void *)(dns_ptr + i + 3) > data_end)
+                break;
+
+            qtype = ((__u16)dns_ptr[i + 1] << 8) |
+                    (__u16)dns_ptr[i + 2];
+
+            break;
+        }
+    }
+
+    /*
+    * Now copy the COMPLETE DNS payload.
+    *
+    * Do not stop at QNAME. Continue until:
+    *   - packet ends, or
+    *   - raw_payload reaches 512 bytes.
+    */
     #pragma clang loop unroll(disable)
     for (int i = 0; i < sizeof(info->raw_payload); i++) {
         if ((void *)(dns_ptr + i + 1) > data_end)
             break;
 
-        __u8 byte = dns_ptr[i];
-
-        info->raw_payload[i] = byte;
-
-        /*
-        * DNS header is 12 bytes.
-        * After that, look for the terminating zero of QNAME.
-        */
-        if (i >= sizeof(struct DNSHeader) && byte == 0) {
-            /*
-            * QTYPE is the two bytes immediately following
-            * the QNAME terminator.
-            */
-            if ((void *)(dns_ptr + i + 3) > data_end)
-                break;
-
-            __u16 qtype_raw;
-
-            /*
-            * Read the two bytes individually rather than
-            * dereferencing a __be16 pointer at a variable
-            * packet offset.
-            */
-            qtype_raw = ((__u16)dns_ptr[i + 1] << 8) |
-                        (__u16)dns_ptr[i + 2];
-
-            qtype = qtype_raw;
-            break;
-        }
+        info->raw_payload[i] = dns_ptr[i];
     }
 
     info->query_type = qtype;
+
 
     bpf_map_update_elem(&pending_queries, &key, info, BPF_ANY);
     return TC_ACT_OK;
@@ -232,6 +237,7 @@ int tc_dns_ingress(struct __sk_buff *skb)
         event->rcode = flags & 0x0F;
         event->is_timeout = 0;
         event->answer_count = bpf_ntohs(dns->ancount);
+        event->client_port = key.client_port;
 
         __builtin_memcpy(event->raw_payload, info->raw_payload, sizeof(event->raw_payload));
 

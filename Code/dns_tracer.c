@@ -3,6 +3,7 @@
 #include <net/if.h>
 #include <signal.h>
 #include <stdarg.h>
+#include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -14,42 +15,38 @@
 #include <bpf/bpf.h>
 
 #include "dns_tracer.skel.h"
+#include "dns_parser.h"
+#include "json_logger.h"
 
+#define DNS_PAYLOAD_MAX 512
 #define MAX_DNS_NAME_LEN 256
 
-/* Must match xdp.h exactly. */
-struct DNSQueryEvent {
-    uint64_t timestamp;
-    uint32_t src_ip;
-    uint32_t dst_ip;
-    uint16_t src_port;
-    uint16_t dst_port;
-    uint16_t query_id;
-    uint16_t query_type;
-    uint16_t query_class;
-    uint8_t  is_response;
-    uint8_t  rcode;
-    uint16_t answer_count;
-    uint8_t  truncated;
-    uint8_t  authoritative;
-    uint8_t  raw_payload[512];   // Raw DNS payload, parsed on egress
-};
+/* ============================================================================
+ * Event structures
+ * ============================================================================
+ *
+ * These MUST match xdp.h and tc.h exactly.
+ *
+ * We do NOT include xdp.h/tc.h here because they contain BPF helper
+ * definitions which conflict with the userspace libbpf headers.
+ */
 
-/* Must match tc.h exactly. */
-struct latency_event {
-    uint64_t timestamp;
-    uint64_t latency_ns;
-    uint32_t client_ip;
-    uint32_t server_ip;
-    uint16_t query_id;
-    uint16_t query_type;
-    uint8_t  rcode;
-    uint8_t  is_timeout;
-    uint16_t answer_count;
-    uint8_t  raw_payload[512];   // Raw DNS payload, parsed on ingress
-};
+// ******************************
+// DNSQueryEvent
+// latency_event
+// Should be added in a separate file or smthing
+
+
+/* ============================================================================
+ * Global state
+ * ========================================================================== */
 
 static volatile sig_atomic_t exiting = 0;
+
+
+/* ============================================================================
+ * Signal handling
+ * ========================================================================== */
 
 static void sig_handler(int sig)
 {
@@ -57,208 +54,737 @@ static void sig_handler(int sig)
     exiting = 1;
 }
 
+
+/* ============================================================================
+ * libbpf logging
+ * ========================================================================== */
+
 static int libbpf_print_fn(enum libbpf_print_level level,
                            const char *format,
                            va_list args)
 {
-    if (level == LIBBPF_WARN || level == LIBBPF_INFO) {
+    if (level == LIBBPF_WARN || level == LIBBPF_INFO)
         vfprintf(stderr, format, args);
-    }
+
     return 0;
 }
 
-static const char *dns_type_to_string(uint16_t type)
-{
-    switch (type) {
-    case 1:  return "A";
-    case 2:  return "NS";
-    case 5:  return "CNAME";
-    case 6:  return "SOA";
-    case 12: return "PTR";
-    case 15: return "MX";
-    case 16: return "TXT";
-    case 28: return "AAAA";
-    default: return "UNKNOWN";
-    }
-}
 
-static const char *rcode_to_string(uint8_t rcode)
+/* ============================================================================
+ * Basic formatting helpers
+ * ========================================================================== */
+
+static void ip_to_string(uint32_t ip, char *buf, size_t len)
 {
-    switch (rcode) {
-    case 0: return "NOERROR";
-    case 1: return "FORMERR";
-    case 2: return "SERVFAIL";
-    case 3: return "NXDOMAIN";
-    case 5: return "REFUSED";
-    default: return "OTHER";
-    }
+    if (!inet_ntop(AF_INET, &ip, buf, len))
+        snprintf(buf, len, "?");
 }
 
 
-/**
- * Parses a DNS name from a raw DNS payload.
+/* ============================================================================
+ * DNS parsing
+ * ========================================================================== */
+
+/*
+ * The BPF event contains a fixed 512-byte raw_payload.
  *
- * @param packet       Pointer to the start of the raw DNS header.
- * @param packet_len   Total length of the captured DNS payload.
- * @param offset       Pointer to the current byte offset (updated as bytes are consumed).
- * @param out_name     Buffer to store the null-terminated dotted domain string.
- * @param max_out      Maximum size of the out_name buffer.
- * @return             0 on success, -1 on a malformed packet or buffer overflow.
+ * There is no payload-length field in the event, so we determine how much
+ * of the buffer is actually a DNS message by parsing it.
+ *
+ * On success:
+ *
+ *     parsed->parsed_len
+ *
+ * gives the amount of DNS data consumed.
+ *
+ * On malformed/truncated input, the parser's parsed_len gives us the furthest
+ * safe position reached.
  */
-int parse_dns_name(const uint8_t *packet, size_t packet_len, size_t *offset, char *out_name, size_t max_out) {
-    size_t current_offset = *offset;
-    size_t out_pos = 0;
-    int jumped = 0;
-    size_t jump_offset = 0;
-    int jumps_taken = 0;
+static size_t useful_dns_length(const uint8_t *payload,
+                                size_t cap,
+                                int *parse_ok,
+                                struct dns_message *parsed)
+{
+    if (parse_ok)
+        *parse_ok = 0;
 
-    if (max_out > 0) {
-        out_name[0] = '\0';
+    if (!payload || !parsed || cap < 12)
+        return 0;
+
+    memset(parsed, 0, sizeof(*parsed));
+
+    if (dns_parse_message(payload, cap, parsed) == 0) {
+        if (parse_ok)
+            *parse_ok = 1;
+
+        if (parsed->parsed_len <= cap)
+            return parsed->parsed_len;
+
+        return cap;
     }
 
-    while (current_offset < packet_len) {
-        uint8_t len = packet[current_offset];
+    /*
+     * Parsing failed.
+     *
+     * parsed_len represents the furthest safe location reached by
+     * the parser. Never use more than that.
+     */
+    if (parsed->parsed_len >= 12 &&
+        parsed->parsed_len <= cap)
+        return parsed->parsed_len;
 
-        // A length of 0 indicates the end of the domain name
-        if (len == 0) {
-            if (!jumped) {
-                *offset = current_offset + 1;
-            } else {
-                *offset = jump_offset;
-            }
-            
-            // Remove the trailing dot if we added one
-            if (out_pos > 0) {
-                out_name[out_pos - 1] = '\0';
-            }
-            return 0; // Success
-        }
-
-        // Check for a DNS compression pointer (top two bits set to 11, i.e., 0xC0)
-        if ((len & 0xC0) == 0xC0) {
-            if (current_offset + 1 >= packet_len) {
-                return -1; // Malformed packet: pointer truncated
-            }
-            
-            // If this is the first jump, record where we need to return to update the offset
-            if (!jumped) {
-                jump_offset = current_offset + 2;
-                jumped = 1;
-            }
-
-            // Calculate the pointer offset (mask out the top 2 bits, combine with next byte)
-            uint16_t pointer = ((len & 0x3F) << 8) | packet[current_offset + 1];
-            current_offset = pointer;
-            
-            // Defend against malicious/malformed packets causing infinite pointer loops
-            jumps_taken++;
-            if (jumps_taken > 256) {
-                return -1; 
-            }
-            continue;
-        }
-
-        // Standard label processing
-        current_offset++;
-        if (current_offset + len > packet_len) {
-            return -1; // Malformed packet: label exceeds packet boundary
-        }
-
-        // Copy the label text into the output buffer and append a dot
-        if (out_pos + len + 1 < max_out) {
-            memcpy(out_name + out_pos, packet + current_offset, len);
-            out_pos += len;
-            out_name[out_pos++] = '.';
-            out_name[out_pos] = '\0';
-        } else {
-            return -1; // Output buffer is too small
-        }
-
-        current_offset += len;
-    }
-
-    return -1; // Malformed packet: hit the end without finding a null terminator
+    return cap;
 }
 
-static int handle_dns_event(void *ctx, void *data, size_t data_sz)
+
+/* ============================================================================
+ * JSON helpers
+ * ========================================================================== */
+
+static void json_escape(FILE *f, const char *s)
 {
-    (void)ctx;
-    if (data_sz < sizeof(struct DNSQueryEvent)) return 0;
+    fputc('"', f);
 
-    const struct DNSQueryEvent *event = data;
-    char src[INET_ADDRSTRLEN], dst[INET_ADDRSTRLEN];
+    if (s) {
+        for (; *s; s++) {
+            unsigned char c = (unsigned char)*s;
 
-    if (!inet_ntop(AF_INET, &event->src_ip, src, sizeof(src))) snprintf(src, sizeof(src), "?");
-    if (!inet_ntop(AF_INET, &event->dst_ip, dst, sizeof(dst))) snprintf(dst, sizeof(dst), "?");
+            switch (c) {
+            case '"':
+                fputs("\\\"", f);
+                break;
 
-    // Parse domain name from raw payload (offset 12 skips 12-byte DNS header)
-    char domain_name[MAX_DNS_NAME_LEN] = "<unknown>";
-    size_t offset = 12;
-    parse_dns_name(event->raw_payload, sizeof(event->raw_payload), &offset, domain_name, sizeof(domain_name));
+            case '\\':
+                fputs("\\\\", f);
+                break;
 
-    uint16_t qtype = event->query_type;
-    if (qtype == 0 && offset + 2 <= sizeof(event->raw_payload)) {
-        qtype = (event->raw_payload[offset] << 8) | event->raw_payload[offset + 1];
+            case '\b':
+                fputs("\\b", f);
+                break;
+
+            case '\f':
+                fputs("\\f", f);
+                break;
+
+            case '\n':
+                fputs("\\n", f);
+                break;
+
+            case '\r':
+                fputs("\\r", f);
+                break;
+
+            case '\t':
+                fputs("\\t", f);
+                break;
+
+            default:
+                if (c < 0x20)
+                    fprintf(f, "\\u%04x", c);
+                else
+                    fputc(c, f);
+
+                break;
+            }
+        }
+    }
+
+    fputc('"', f);
+}
+
+
+static void json_rr(FILE *f, const struct dns_rr *rr)
+{
+    fprintf(f, "{\"name\":");
+
+    json_escape(f, rr->name);
+
+    fprintf(f,
+            ",\"type\":%u,"
+            "\"type_name\":",
+            rr->type);
+
+    json_escape(f, dns_type_name(rr->type));
+
+    fprintf(f,
+            ",\"class\":%u,"
+            "\"class_name\":",
+            rr->rrclass);
+
+    json_escape(f, dns_class_name(rr->rrclass));
+
+    fprintf(f,
+            ",\"ttl\":%u,"
+            "\"rdlength\":%u,"
+            "\"rdata\":",
+            rr->ttl,
+            rr->rdlength);
+
+    json_escape(f, rr->rdata);
+
+    fputc('}', f);
+}
+
+
+static void json_rr_array(FILE *f,
+                          const struct dns_rr *records,
+                          size_t count)
+{
+    fputc('[', f);
+
+    for (size_t i = 0; i < count; i++) {
+        if (i)
+            fputc(',', f);
+
+        json_rr(f, &records[i]);
+    }
+
+    fputc(']', f);
+}
+
+
+/*
+ * Write the fully parsed DNS message as JSON.
+ *
+ * This gives us a machine-readable representation that can later be used
+ * directly for Experiment 1 analysis.
+ */
+static void json_dns_message(FILE *f,
+                             const struct dns_message *m)
+{
+    fprintf(f,
+            "{"
+            "\"dns\":{"
+            "\"id\":%u,"
+            "\"flags\":%u,"
+            "\"qr\":%u,"
+            "\"opcode\":%u,"
+            "\"aa\":%u,"
+            "\"tc\":%u,"
+            "\"rd\":%u,"
+            "\"ra\":%u,"
+            "\"ad\":%u,"
+            "\"cd\":%u,"
+            "\"rcode\":%u,"
+            "\"rcode_name\":",
+            m->id,
+            m->flags,
+            m->qr,
+            m->opcode,
+            m->aa,
+            m->tc,
+            m->rd,
+            m->ra,
+            m->ad,
+            m->cd,
+            m->rcode);
+
+    json_escape(f, dns_rcode_name(m->rcode));
+
+    fprintf(f,
+            ",\"counts\":{"
+            "\"questions\":%u,"
+            "\"answers\":%u,"
+            "\"authority\":%u,"
+            "\"additional\":%u},"
+            "\"questions\":[",
+            m->qdcount,
+            m->ancount,
+            m->nscount,
+            m->arcount);
+
+    for (size_t i = 0; i < m->question_count; i++) {
+        if (i)
+            fputc(',', f);
+
+        fprintf(f, "{\"name\":");
+
+        json_escape(f, m->questions[i].name);
+
+        fprintf(f,
+                ",\"type\":%u,"
+                "\"type_name\":",
+                m->questions[i].type);
+
+        json_escape(f,
+                    dns_type_name(m->questions[i].type));
+
+        fprintf(f,
+                ",\"class\":%u,"
+                "\"class_name\":",
+                m->questions[i].qclass);
+
+        json_escape(f,
+                    dns_class_name(m->questions[i].qclass));
+
+        fputc('}', f);
+    }
+
+    fprintf(f, "],\"answers\":");
+    json_rr_array(f, m->answers, m->answer_count);
+
+    fprintf(f, ",\"authority\":");
+    json_rr_array(f, m->authority, m->authority_count);
+
+    fprintf(f, ",\"additional\":");
+    json_rr_array(f, m->additional, m->additional_count);
+
+    fprintf(f,
+            ",\"parse_ok\":%s,"
+            "\"parsed_len\":%zu,"
+            "\"truncated_by_capture\":%s",
+            m->parse_ok ? "true" : "false",
+            m->parsed_len,
+            m->truncated_by_capture ? "true" : "false");
+
+    fprintf(f, "}}");
+}
+
+
+/* ============================================================================
+ * Detailed human-readable DNS output
+ * ========================================================================== */
+
+static void print_question(const struct dns_question *q,
+                           size_t index)
+{
+    printf("    Question %zu:\n", index + 1);
+    printf("      Name  : %s\n", q->name);
+    printf("      Type  : %u (%s)\n",
+           q->type,
+           dns_type_name(q->type));
+    printf("      Class : %u (%s)\n",
+           q->qclass,
+           dns_class_name(q->qclass));
+}
+
+
+static void print_rr(const struct dns_rr *rr,
+                     size_t index,
+                     const char *section)
+{
+    printf("    %s %zu:\n",
+           section,
+           index + 1);
+
+    printf("      Name     : %s\n",
+           rr->name);
+
+    printf("      Type     : %u (%s)\n",
+           rr->type,
+           dns_type_name(rr->type));
+
+    printf("      Class    : %u (%s)\n",
+           rr->rrclass,
+           dns_class_name(rr->rrclass));
+
+    printf("      TTL      : %u\n",
+           rr->ttl);
+
+    printf("      RDLength : %u\n",
+           rr->rdlength);
+
+    printf("      RDATA    : %s\n",
+           rr->rdata);
+}
+
+
+/*
+ * Print all information extracted by dns_parser.c.
+ *
+ * This is deliberately verbose. For Experiment 1, having the complete
+ * decoded DNS message is much more useful than printing only:
+ *
+ *     name / type / latency
+ */
+static void print_dns_details(const struct dns_message *m)
+{
+    printf("\n");
+    printf("  ---------------- DNS DETAILS ----------------\n");
+
+    printf("  Header:\n");
+
+    printf("    ID      : %u\n", m->id);
+    printf("    Flags   : 0x%04x\n", m->flags);
+
+    printf("    QR      : %u\n", m->qr);
+    printf("    Opcode  : %u\n", m->opcode);
+
+    printf("    AA      : %u\n", m->aa);
+    printf("    TC      : %u\n", m->tc);
+
+    printf("    RD      : %u\n", m->rd);
+    printf("    RA      : %u\n", m->ra);
+
+    printf("    AD      : %u\n", m->ad);
+    printf("    CD      : %u\n", m->cd);
+
+    printf("    RCODE   : %u (%s)\n",
+           m->rcode,
+           dns_rcode_name(m->rcode));
+
+    printf("\n");
+
+    printf("  Counts:\n");
+    printf("    Questions  : %u\n", m->qdcount);
+    printf("    Answers    : %u\n", m->ancount);
+    printf("    Authority  : %u\n", m->nscount);
+    printf("    Additional : %u\n", m->arcount);
+
+    printf("\n");
+
+    /*
+     * Questions
+     */
+    if (m->question_count > 0) {
+        printf("  Questions:\n");
+
+        for (size_t i = 0; i < m->question_count; i++)
+            print_question(&m->questions[i], i);
+    }
+
+    /*
+     * Answers
+     */
+    if (m->answer_count > 0) {
+        printf("\n");
+        printf("  Answers:\n");
+
+        for (size_t i = 0; i < m->answer_count; i++)
+            print_rr(&m->answers[i], i, "Answer");
+    }
+
+    /*
+     * Authority
+     */
+    if (m->authority_count > 0) {
+        printf("\n");
+        printf("  Authority:\n");
+
+        for (size_t i = 0; i < m->authority_count; i++)
+            print_rr(&m->authority[i], i, "Authority");
+    }
+
+    /*
+     * Additional
+     */
+    if (m->additional_count > 0) {
+        printf("\n");
+        printf("  Additional:\n");
+
+        for (size_t i = 0; i < m->additional_count; i++)
+            print_rr(&m->additional[i], i, "Additional");
+    }
+
+    printf("\n");
+
+    printf("  Parser:\n");
+    printf("    Parse OK             : %s\n",
+           m->parse_ok ? "yes" : "no");
+
+    printf("    Parsed length        : %zu bytes\n",
+           m->parsed_len);
+
+    printf("    Truncated by capture : %s\n",
+           m->truncated_by_capture ? "yes" : "no");
+
+    printf("  ---------------------------------------------\n");
+}
+
+
+/* ============================================================================
+ * XDP event
+ * ========================================================================== */
+
+static void print_xdp_event(const struct DNSQueryEvent *event)
+{
+    char src[INET_ADDRSTRLEN];
+    char dst[INET_ADDRSTRLEN];
+
+    struct dns_message msg;
+
+    int parse_ok = 0;
+
+    size_t dns_len;
+
+    ip_to_string(event->src_ip,
+                 src,
+                 sizeof(src));
+
+    ip_to_string(event->dst_ip,
+                 dst,
+                 sizeof(dst));
+
+    /*
+     * Parse the exact payload copied by the BPF program.
+     */
+    dns_len = useful_dns_length(event->raw_payload,
+                                DNS_PAYLOAD_MAX,
+                                &parse_ok,
+                                &msg);
+
+    const char *type = "UNKNOWN";
+    const char *name = "<unknown>";
+
+    if (msg.question_count > 0) {
+        type = dns_type_name(msg.questions[0].type);
+        name = msg.questions[0].name;
+    } else if (event->query_type != 0) {
+        /*
+         * Fallback to the value supplied by BPF.
+         */
+        type = dns_type_name(event->query_type);
     }
 
     printf(
-        "[XDP] %-8s %s:%u -> %s:%u "
-        "id=%u type=%s name=%s rcode=%u(%s) answers=%u%s%s\n",
+        "[XDP] %-8s "
+        "%s:%u -> %s:%u "
+        "id=%u "
+        "type=%s "
+        "name=%s "
+        "rcode=%u(%s) "
+        "answers=%u "
+        "authority=%u "
+        "additional=%u",
         event->is_response ? "RESPONSE" : "QUERY",
-        src, event->src_port, dst, event->dst_port,
+
+        src,
+        event->src_port,
+
+        dst,
+        event->dst_port,
+
         event->query_id,
-        dns_type_to_string(qtype),
-        domain_name,
+
+        type,
+        name,
+
         event->rcode,
-        rcode_to_string(event->rcode),
+        dns_rcode_name(event->rcode),
+
         event->answer_count,
-        event->truncated ? " [TRUNCATED]" : "",
-        event->authoritative ? " [AA]" : ""
+
+        msg.nscount,
+        msg.arcount
     );
 
+    if (event->truncated)
+        printf(" [TC]");
+
+    if (event->authoritative)
+        printf(" [AA]");
+
+    printf("\n");
+
+    /*
+     * Detailed userspace parse.
+     */
+    if (parse_ok)
+        print_dns_details(&msg);
+    else
+        printf("  DNS parser: incomplete/malformed packet "
+               "(safe length=%zu bytes)\n",
+               dns_len);
+
     fflush(stdout);
-    return 0;
 }
 
-static int handle_latency_event(void *ctx, void *data, size_t data_sz)
+
+/* ============================================================================
+ * Latency event
+ * ========================================================================== */
+
+static void print_latency_event(const struct latency_event *event)
 {
-    (void)ctx;
-    if (data_sz < sizeof(struct latency_event)) return 0;
+    char client[INET_ADDRSTRLEN];
+    char server[INET_ADDRSTRLEN];
 
-    const struct latency_event *event = data;
-    char client[INET_ADDRSTRLEN], server[INET_ADDRSTRLEN];
+    struct dns_message query;
 
-    if (!inet_ntop(AF_INET, &event->client_ip, client, sizeof(client))) snprintf(client, sizeof(client), "?");
-    if (!inet_ntop(AF_INET, &event->server_ip, server, sizeof(server))) snprintf(server, sizeof(server), "?");
+    int parse_ok = 0;
 
-    // Parse domain name from raw payload
-    char domain_name[MAX_DNS_NAME_LEN] = "<unknown>";
-    size_t offset = 12;
-    parse_dns_name(event->raw_payload, sizeof(event->raw_payload), &offset, domain_name, sizeof(domain_name));
+    size_t dns_len;
+
+    ip_to_string(event->client_ip,
+                 client,
+                 sizeof(client));
+
+    ip_to_string(event->server_ip,
+                 server,
+                 sizeof(server));
+
+    /*
+     * IMPORTANT:
+     *
+     * The latency_event contains the ORIGINAL QUERY payload.
+     *
+     * The BPF program copies:
+     *
+     *     info->raw_payload
+     *
+     * into:
+     *
+     *     event->raw_payload
+     *
+     * when the response arrives.
+     *
+     * Therefore we can fully parse the original query here.
+     */
+    dns_len = useful_dns_length(event->raw_payload,
+                                DNS_PAYLOAD_MAX,
+                                &parse_ok,
+                                &query);
+
+    fprintf(stderr, "\n========== DEBUG ==========\n");
+
+fprintf(stderr, "BPF event->query_type = %u\n",
+        event->query_type);
+
+fprintf(stderr, "parser parse_ok = %d\n",
+        parse_ok);
+
+fprintf(stderr, "parser parsed_len = %zu\n",
+        query.parsed_len);
+
+fprintf(stderr, "parser qdcount = %u\n",
+        query.qdcount);
+
+fprintf(stderr, "parser question_count = %zu\n",
+        query.question_count);
+
+if (query.question_count > 0) {
+    fprintf(stderr, "parser QTYPE = %u\n",
+            query.questions[0].type);
+
+    fprintf(stderr, "parser QCLASS = %u\n",
+            query.questions[0].qclass);
+
+    fprintf(stderr, "parser QNAME = %s\n",
+            query.questions[0].name);
+}
+
+fprintf(stderr, "RAW DNS PAYLOAD:\n");
+
+for (size_t i = 0; i < dns_len; i++) {
+    fprintf(stderr, "%02x ", event->raw_payload[i]);
+
+    if ((i + 1) % 16 == 0)
+        fprintf(stderr, "\n");
+}
+
+fprintf(stderr, "\n===========================\n");
+
+    const char *type = "UNKNOWN";
+    const char *name = "<unknown>";
+
+    if (query.question_count > 0) {
+        type = dns_type_name(query.questions[0].type);
+        name = query.questions[0].name;
+    } else if (event->query_type != 0) {
+        type = dns_type_name(event->query_type);
+    }
 
     printf(
-        "[TC ] %s -> %s "
-        "id=%u type=%s name=%s latency=%.3f ms "
-        "rcode=%u(%s) answers=%u\n",
-        client, server,
+        "[LATENCY] %s:%u -> %s:53 "
+        "id=%u "
+        "type=%s "
+        "name=%s "
+        "latency=%.3f ms "
+        "response_rcode=%u(%s) "
+        "response_answers=%u\n",
+
+        client,
+        event->client_port,
+        server,
+
         event->query_id,
-        dns_type_to_string(event->query_type),
-        domain_name,
+
+        type,
+        name,
+
         (double)event->latency_ns / 1000000.0,
+
         event->rcode,
-        rcode_to_string(event->rcode),
+        dns_rcode_name(event->rcode),
+
         event->answer_count
     );
 
+    /*
+     * Print the complete QUERY message.
+     *
+     * Note:
+     *
+     *     query.* = original outgoing DNS query
+     *
+     * while:
+     *
+     *     event->rcode
+     *     event->answer_count
+     *
+     * come from the matched response.
+     */
+    if (parse_ok)
+        print_dns_details(&query);
+    else
+        printf("  DNS parser: incomplete/malformed packet "
+               "(safe length=%zu bytes)\n",
+               dns_len);
+
     fflush(stdout);
+}
+
+
+/* ============================================================================
+ * Ring-buffer callbacks
+ * ========================================================================== */
+
+static int handle_dns_event(void *ctx,
+                            void *data,
+                            size_t data_sz)
+{
+    (void)ctx;
+
+    if (data_sz < sizeof(struct DNSQueryEvent))
+        return 0;
+
+    print_xdp_event(
+        (const struct DNSQueryEvent *)data
+    );
+
+    json_logger_record_xdp(
+        (const struct DNSQueryEvent *)data
+    );
+
     return 0;
 }
 
-/*
- * Attach a SCHED_CLS BPF program to a legacy TC ingress/egress hook.
- *
- * This uses the bpf_tc_* API available in libbpf 0.5.0 rather than TCX.
- */
+
+static int handle_latency_event(void *ctx,
+                                void *data,
+                                size_t data_sz)
+{
+    (void)ctx;
+
+    if (data_sz < sizeof(struct latency_event))
+        return 0;
+
+    print_latency_event(
+        (const struct latency_event *)data
+    );
+
+    json_logger_record_latency(
+        (const struct latency_event *)data
+    );
+
+    return 0;
+}
+
+
+/* ============================================================================
+ * TC attachment
+ * ========================================================================== */
+
 static int attach_tc_program(struct bpf_program *prog,
                              int ifindex,
                              enum bpf_tc_attach_point attach_point,
@@ -279,9 +805,12 @@ static int attach_tc_program(struct bpf_program *prog,
     if (err && err != -EEXIST) {
         fprintf(stderr,
                 "bpf_tc_hook_create(%s) failed: %d (%s)\n",
-                attach_point == BPF_TC_INGRESS ? "ingress" : "egress",
+                attach_point == BPF_TC_INGRESS
+                    ? "ingress"
+                    : "egress",
                 err,
                 strerror(-err));
+
         return err;
     }
 
@@ -301,19 +830,26 @@ static int attach_tc_program(struct bpf_program *prog,
     if (err) {
         fprintf(stderr,
                 "bpf_tc_attach(%s) failed: %d (%s)\n",
-                attach_point == BPF_TC_INGRESS ? "ingress" : "egress",
+                attach_point == BPF_TC_INGRESS
+                    ? "ingress"
+                    : "egress",
                 err,
                 strerror(-err));
+
         return err;
     }
 
-    printf("  TC %s attached: handle=%u priority=%u\n",
-           attach_point == BPF_TC_INGRESS ? "ingress" : "egress",
+    printf("  TC %s attached: "
+           "handle=%u priority=%u\n",
+           attach_point == BPF_TC_INGRESS
+               ? "ingress"
+               : "egress",
            opts->handle,
            opts->priority);
 
     return 0;
 }
+
 
 static int detach_tc_program(struct bpf_tc_hook *hook,
                              struct bpf_tc_opts *opts)
@@ -323,27 +859,22 @@ static int detach_tc_program(struct bpf_tc_hook *hook,
     detach_opts.sz = sizeof(detach_opts);
 
     /*
-     * bpf_tc_detach() requires ONLY:
-     *   - handle
-     *   - priority
+     * For libbpf 0.5.0:
      *
-     * prog_fd, prog_id and flags must be zero.
+     * detach requires only handle + priority.
      */
     detach_opts.handle = opts->handle;
     detach_opts.priority = opts->priority;
 
     int err = bpf_tc_detach(hook, &detach_opts);
 
-    if (err) {
-        /*
-         * The filter may already have been removed.
-         * Treat that as harmless during cleanup.
-         */
-        if (err == -ENOENT)
-            return 0;
+    if (err == -ENOENT)
+        return 0;
 
+    if (err) {
         fprintf(stderr,
-                "Warning: bpf_tc_detach failed: %d (%s)\n",
+                "Warning: bpf_tc_detach failed: "
+                "%d (%s)\n",
                 err,
                 strerror(-err));
     }
@@ -351,13 +882,20 @@ static int detach_tc_program(struct bpf_tc_hook *hook,
     return err;
 }
 
+
+/* ============================================================================
+ * Main
+ * ========================================================================== */
+
 int main(int argc, char **argv)
 {
     const char *ifname;
     unsigned int ifindex;
 
     struct dns_tracer_bpf *obj = NULL;
+
     struct ring_buffer *rb = NULL;
+
     bool xdp_attached = false;
 
     struct bpf_tc_hook tc_ingress_hook;
@@ -371,18 +909,41 @@ int main(int argc, char **argv)
 
     int err = 0;
 
-    memset(&tc_ingress_hook, 0, sizeof(tc_ingress_hook));
-    memset(&tc_ingress_opts, 0, sizeof(tc_ingress_opts));
-    memset(&tc_egress_hook, 0, sizeof(tc_egress_hook));
-    memset(&tc_egress_opts, 0, sizeof(tc_egress_opts));
+    memset(&tc_ingress_hook,
+           0,
+           sizeof(tc_ingress_hook));
+
+    memset(&tc_ingress_opts,
+           0,
+           sizeof(tc_ingress_opts));
+
+    memset(&tc_egress_hook,
+           0,
+           sizeof(tc_egress_hook));
+
+    memset(&tc_egress_opts,
+           0,
+           sizeof(tc_egress_opts));
+
+
+    /* ------------------------------------------------------------------------
+     * Argument validation
+     * --------------------------------------------------------------------- */
 
     if (argc != 2) {
-        fprintf(stderr, "Usage: sudo %s <interface>\n", argv[0]);
-        fprintf(stderr, "Example: sudo %s eno1\n", argv[0]);
+        fprintf(stderr,
+                "Usage: sudo %s <interface>\n",
+                argv[0]);
+
+        fprintf(stderr,
+                "Example: sudo %s enp1s0f0np0\n",
+                argv[0]);
+
         return 1;
     }
 
     ifname = argv[1];
+
     ifindex = if_nametoindex(ifname);
 
     if (ifindex == 0) {
@@ -390,34 +951,68 @@ int main(int argc, char **argv)
                 "Interface '%s' not found: %s\n",
                 ifname,
                 strerror(errno));
+
         return 1;
     }
+
+    if (json_logger_init(ifname) != 0) {
+        fprintf(stderr, "Failed to initialize JSON logger\n");
+        return 1;
+    }
+
+
+    /* ------------------------------------------------------------------------
+     * Signals / libbpf
+     * --------------------------------------------------------------------- */
 
     signal(SIGINT, sig_handler);
     signal(SIGTERM, sig_handler);
 
     libbpf_set_print(libbpf_print_fn);
 
+
+    /* ------------------------------------------------------------------------
+     * Startup information
+     * --------------------------------------------------------------------- */
+
     printf("============================================\n");
     printf(" DNS Tracer\n");
     printf("============================================\n");
-    printf("Interface : %s\n", ifname);
-    printf("Ifindex   : %u\n\n", ifindex);
+
+    printf("Interface : %s\n",
+           ifname);
+
+    printf("Ifindex   : %u\n\n",
+           ifindex);
+
+
+    /* ------------------------------------------------------------------------
+     * Open skeleton
+     * --------------------------------------------------------------------- */
 
     obj = dns_tracer_bpf__open();
+
     if (!obj) {
-        fprintf(stderr, "Failed to open BPF skeleton\n");
+        fprintf(stderr,
+                "Failed to open BPF skeleton\n");
+
         return 1;
     }
 
+
+    /* ------------------------------------------------------------------------
+     * Configure TC programs for libbpf 0.5.0
+     * --------------------------------------------------------------------- */
+
     /*
-    * libbpf 0.5.0 does not recognize the newer
-    * SEC("tc/ingress") / SEC("tc/egress") sections.
-    *
-    * Both TC programs are therefore placed in the
-    * legacy "classifier" section and explicitly marked
-    * as BPF_PROG_TYPE_SCHED_CLS.
-    */
+     * The BPF source uses:
+     *
+     *     SEC("classifier")
+     *
+     * for the TC programs.
+     *
+     * Explicitly mark them as SCHED_CLS.
+     */
     bpf_program__set_type(
         obj->progs.tc_dns_egress,
         BPF_PROG_TYPE_SCHED_CLS
@@ -428,47 +1023,56 @@ int main(int argc, char **argv)
         BPF_PROG_TYPE_SCHED_CLS
     );
 
+
+    /* ------------------------------------------------------------------------
+     * Load BPF object
+     * --------------------------------------------------------------------- */
+
     err = dns_tracer_bpf__load(obj);
+
     if (err) {
         fprintf(stderr,
                 "Failed to load BPF object: %d\n",
                 err);
+
         goto cleanup;
     }
 
     printf("BPF object loaded.\n");
 
-    /*
-     * XDP attachment.
-     *
-     * Use explicit generic/SKB mode on this CloudLab setup.
-     * Native/driver XDP was attached successfully but did not
-     * see the packets on this interface.
-     */
+
+    /* ------------------------------------------------------------------------
+     * Attach XDP
+     * --------------------------------------------------------------------- */
+
     printf("Attaching XDP in generic/SKB mode...\n");
 
-    int prog_fd = bpf_program__fd(obj->progs.xdp_dns_parser);
+    int prog_fd =
+        bpf_program__fd(obj->progs.xdp_dns_parser);
 
     if (prog_fd < 0) {
         err = prog_fd;
+
         fprintf(stderr,
                 "Failed to get XDP program FD: %d\n",
                 err);
+
         goto cleanup;
     }
 
-    err = bpf_xdp_attach(
+    err = bpf_set_link_xdp_fd(
         ifindex,
         prog_fd,
-        XDP_FLAGS_SKB_MODE,
-        NULL
+        XDP_FLAGS_SKB_MODE
     );
 
     if (err) {
         fprintf(stderr,
-                "Failed to attach XDP in generic mode: %d (%s)\n",
+                "Failed to attach XDP in generic mode: "
+                "%d (%s)\n",
                 err,
                 strerror(-err));
+
         goto cleanup;
     }
 
@@ -476,9 +1080,11 @@ int main(int argc, char **argv)
 
     printf("  XDP attached in generic/SKB mode.\n");
 
-    /*
-     * Legacy TC ingress.
-     */
+
+    /* ------------------------------------------------------------------------
+     * Attach TC ingress
+     * --------------------------------------------------------------------- */
+
     printf("Attaching TC ingress...\n");
 
     err = attach_tc_program(
@@ -490,16 +1096,19 @@ int main(int argc, char **argv)
     );
 
     if (err) {
-        fprintf(stderr, "Failed to attach TC ingress.\n");
+        fprintf(stderr,
+                "Failed to attach TC ingress.\n");
+
         goto cleanup;
     }
 
     tc_ingress_attached = true;
-    printf("  TC ingress attached.\n");
 
-    /*
-     * Legacy TC egress.
-     */
+
+    /* ------------------------------------------------------------------------
+     * Attach TC egress
+     * --------------------------------------------------------------------- */
+
     printf("Attaching TC egress...\n");
 
     err = attach_tc_program(
@@ -511,18 +1120,24 @@ int main(int argc, char **argv)
     );
 
     if (err) {
-        fprintf(stderr, "Failed to attach TC egress.\n");
+        fprintf(stderr,
+                "Failed to attach TC egress.\n");
+
         goto cleanup;
     }
 
     tc_egress_attached = true;
-    printf("  TC egress attached.\n");
 
-    /*
-     * Create a single ring-buffer manager and register both maps.
-     */
+
+    /* ------------------------------------------------------------------------
+     * Ring buffer
+     * --------------------------------------------------------------------- */
+
     printf("Creating ring-buffer manager...\n");
 
+    /*
+     * Both XDP and TC events are consumed through one ring-buffer manager.
+     */
     rb = ring_buffer__new(
         bpf_map__fd(obj->maps.dns_events),
         handle_dns_event,
@@ -532,13 +1147,20 @@ int main(int argc, char **argv)
 
     if (!rb) {
         err = -errno;
+
         fprintf(stderr,
-                "Failed to create XDP ring buffer: %d (%s)\n",
+                "Failed to create XDP ring buffer: "
+                "%d (%s)\n",
                 err,
                 strerror(-err));
+
         goto cleanup;
     }
 
+
+    /*
+     * Add latency ring buffer to the same manager.
+     */
     err = ring_buffer__add(
         rb,
         bpf_map__fd(obj->maps.latency_events),
@@ -548,19 +1170,30 @@ int main(int argc, char **argv)
 
     if (err) {
         fprintf(stderr,
-                "Failed to add TC latency ring buffer: %d\n",
+                "Failed to add TC latency ring buffer: "
+                "%d\n",
                 err);
+
         goto cleanup;
     }
 
     printf("  XDP ring buffer added.\n");
     printf("  TC  ring buffer added.\n\n");
 
+
+    /* ------------------------------------------------------------------------
+     * Run
+     * --------------------------------------------------------------------- */
+
     printf("============================================\n");
     printf(" Tracer running\n");
     printf("============================================\n");
-    printf("Listening for DNS events on %s...\n", ifname);
+
+    printf("Listening for DNS events on %s...\n",
+           ifname);
+
     printf("Press Ctrl+C to stop.\n\n");
+
 
     while (!exiting) {
         err = ring_buffer__poll(rb, 100);
@@ -570,78 +1203,109 @@ int main(int argc, char **argv)
 
         if (err < 0) {
             fprintf(stderr,
-                    "ring_buffer__poll failed: %d (%s)\n",
+                    "ring_buffer__poll failed: "
+                    "%d (%s)\n",
                     err,
                     strerror(-err));
+
             goto cleanup;
         }
     }
 
     err = 0;
 
+
+/* ============================================================================
+ * Cleanup
+ * ========================================================================== */
+
 cleanup:
+
     if (rb)
         ring_buffer__free(rb);
 
+
     /*
-     * TC attachments are not BPF links with this older API, so
-     * explicitly detach them.
+     * TC filters must be explicitly detached with the old libbpf API.
      */
     if (tc_egress_attached)
-        detach_tc_program(&tc_egress_hook, &tc_egress_opts);
+        detach_tc_program(
+            &tc_egress_hook,
+            &tc_egress_opts
+        );
 
     if (tc_ingress_attached)
-        detach_tc_program(&tc_ingress_hook, &tc_ingress_opts);
+        detach_tc_program(
+            &tc_ingress_hook,
+            &tc_ingress_opts
+        );
+
 
     /*
-     * XDP was attached explicitly in generic/SKB mode, so detach
-     * it explicitly during cleanup.
+     * Detach XDP from generic/SKB mode.
      */
     if (xdp_attached) {
-        int xdp_err = bpf_xdp_detach(
-            ifindex,
-            XDP_FLAGS_SKB_MODE,
-            NULL
-        );
+        int xdp_err =
+            bpf_set_link_xdp_fd(
+                ifindex,
+                -1,
+                XDP_FLAGS_SKB_MODE
+            );
 
         if (xdp_err && xdp_err != -ENOENT) {
             fprintf(stderr,
-                    "Warning: failed to detach XDP: %d (%s)\n",
+                    "Warning: failed to detach XDP: "
+                    "%d (%s)\n",
                     xdp_err,
                     strerror(-xdp_err));
         }
     }
 
+
     /*
-     * Destroy the TC qdisc hooks only after detaching our programs.
-     * If another user/program is using the hook, failure here is
-     * harmless and only results in a warning.
+     * Destroy TC hooks after filters have been detached.
      */
     if (tc_egress_attached) {
-        int tc_err = bpf_tc_hook_destroy(&tc_egress_hook);
+        int tc_err =
+            bpf_tc_hook_destroy(&tc_egress_hook);
+
         if (tc_err && tc_err != -ENOENT) {
             fprintf(stderr,
-                    "Warning: failed to destroy TC egress hook: %d\n",
+                    "Warning: failed to destroy "
+                    "TC egress hook: %d\n",
                     tc_err);
         }
     }
 
     if (tc_ingress_attached) {
-        int tc_err = bpf_tc_hook_destroy(&tc_ingress_hook);
+        int tc_err =
+            bpf_tc_hook_destroy(&tc_ingress_hook);
+
         if (tc_err && tc_err != -ENOENT) {
             fprintf(stderr,
-                    "Warning: failed to destroy TC ingress hook: %d\n",
+                    "Warning: failed to destroy "
+                    "TC ingress hook: %d\n",
                     tc_err);
         }
     }
 
+    json_logger_close();
+
+
+    /*
+     * Destroy skeleton.
+     */
     if (obj)
         dns_tracer_bpf__destroy(obj);
 
+
     if (err)
-        fprintf(stderr, "\nTracer exited with error %d.\n", err);
+        fprintf(stderr,
+                "\nTracer exited with error %d.\n",
+                err);
     else
         printf("\nTracer stopped.\n");
+
 
     return err ? 1 : 0;
 }

@@ -42,6 +42,7 @@ struct latency_event {
     __u64 latency_ns;          // Round-trip latency in nanoseconds
     __u32 client_ip;           // Client IP address
     __u32 server_ip;           // DNS server IP
+    __u16 client_port;         // Client Port
     __u16 query_id;            // Transaction ID
     __u16 query_type;          // Query type (A, AAAA, etc.)
     __u8  rcode;                // Response code

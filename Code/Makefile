@@ -6,6 +6,11 @@ BPF_SRC      := dns_tracer.bpf.c
 BPF_OBJ      := dns_tracer.bpf.o
 
 USER_SRC     := dns_tracer.c
+PARSER_SRC   := dns_parser.c
+PARSER_HDR   := dns_parser.h
+JSON_SRC     := json_logger.c
+JSON_HDR     := json_logger.h
+
 TRACER       := dns_tracer
 
 SKEL         := dns_tracer.skel.h
@@ -14,10 +19,24 @@ CLANG        ?= clang
 CC           ?= gcc
 BPFTOOL      ?= bpftool
 
-IFACE        ?= eno1
+# CloudLab interface
+IFACE        ?= enp1s0f0np0
 
-BPF_CFLAGS   := -O2 -g -target bpf -I/usr/include/x86_64-linux-gnu -Wno-pass-failed
-USER_CFLAGS  := -O2 -g -Wall -Wextra
+# Directory for generated JSON files
+JSON_DIR     ?= json
+
+
+# ============================================================
+# Compiler flags
+# ============================================================
+
+BPF_CFLAGS   := -O2 -g -target bpf \
+                -I/usr/include/x86_64-linux-gnu \
+                -I. \
+                -Wno-pass-failed
+
+USER_CFLAGS  := -O2 -g -Wall -Wextra \
+                -I.
 
 USER_LIBS    := -lbpf -lelf -lz
 
@@ -103,6 +122,16 @@ setup:
 
 
 # ============================================================
+# JSON output directory
+# ============================================================
+
+.PHONY: json-dir
+
+json-dir:
+	@mkdir -p $(JSON_DIR)
+
+
+# ============================================================
 # Compile BPF program
 # ============================================================
 
@@ -143,7 +172,8 @@ $(SKEL): $(BPF_OBJ)
 # Build userspace tracer
 # ============================================================
 
-$(TRACER): $(USER_SRC) $(SKEL)
+$(TRACER): $(USER_SRC) $(PARSER_SRC) $(PARSER_HDR) \
+           $(JSON_SRC) $(JSON_HDR) $(SKEL)
 	@echo ""
 	@echo "=============================================="
 	@echo " Building userspace tracer"
@@ -153,6 +183,8 @@ $(TRACER): $(USER_SRC) $(SKEL)
 	$(CC) \
 		$(USER_CFLAGS) \
 		$(USER_SRC) \
+		$(PARSER_SRC) \
+		$(JSON_SRC) \
 		-o $(TRACER) \
 		$(USER_LIBS)
 
@@ -166,7 +198,7 @@ $(TRACER): $(USER_SRC) $(SKEL)
 
 .PHONY: build
 
-build: $(BPF_OBJ) $(SKEL) $(TRACER)
+build: $(BPF_OBJ) $(SKEL) $(TRACER) json-dir
 
 	@echo ""
 	@echo "=============================================="
@@ -176,6 +208,7 @@ build: $(BPF_OBJ) $(SKEL) $(TRACER)
 	@echo "BPF object : $(BPF_OBJ)"
 	@echo "Skeleton   : $(SKEL)"
 	@echo "Tracer     : $(TRACER)"
+	@echo "JSON dir   : $(JSON_DIR)"
 	@echo ""
 
 
@@ -184,7 +217,9 @@ build: $(BPF_OBJ) $(SKEL) $(TRACER)
 #
 # Usage:
 #
-#   make run IFACE=eno1
+#   make run
+#
+#   make run IFACE=enp1s0f0np0
 #
 # ============================================================
 
@@ -197,9 +232,37 @@ run: build
 	@echo "=============================================="
 	@echo ""
 	@echo "Interface: $(IFACE)"
+	@echo "JSON dir : $(JSON_DIR)"
+	@echo ""
+	@echo "Press Ctrl+C to stop."
 	@echo ""
 
 	sudo ./$(TRACER) $(IFACE)
+
+
+# ============================================================
+# Run with a clean JSON directory
+# ============================================================
+
+.PHONY: run-clean
+
+run-clean: clean-json build
+	@echo ""
+	@echo "Starting DNS tracer with clean JSON output..."
+	@echo ""
+
+	sudo ./$(TRACER) $(IFACE)
+
+
+# ============================================================
+# Clean JSON files
+# ============================================================
+
+.PHONY: clean-json
+
+clean-json:
+	@echo "Removing generated JSON files..."
+	rm -rf $(JSON_DIR)
 
 
 # ============================================================
@@ -310,7 +373,7 @@ bpf-info: $(BPF_OBJ)
 
 
 # ============================================================
-# Clean
+# Clean build artifacts
 # ============================================================
 
 .PHONY: clean
@@ -322,7 +385,20 @@ clean:
 	rm -f $(SKEL)
 	rm -f $(TRACER)
 
-	@echo "Clean complete."
+	@echo "Build artifacts removed."
+
+
+# ============================================================
+# Clean everything including JSON
+# ============================================================
+
+.PHONY: clean-all
+
+clean-all: clean clean-json
+
+	@echo ""
+	@echo "Everything cleaned."
+	@echo ""
 
 
 # ============================================================
@@ -343,7 +419,12 @@ help:
 	@echo "  make build"
 	@echo ""
 	@echo "Run:"
-	@echo "  make run IFACE=eno1"
+	@echo "  make run"
+	@echo "  make run IFACE=enp1s0f0np0"
+	@echo "  make run-clean"
+	@echo ""
+	@echo "JSON:"
+	@echo "  make clean-json"
 	@echo ""
 	@echo "Debug:"
 	@echo "  make trace"
@@ -355,5 +436,7 @@ help:
 	@echo "Other:"
 	@echo "  make interfaces"
 	@echo "  make inspect"
+	@echo "  make bpf-info"
 	@echo "  make clean"
+	@echo "  make clean-all"
 	@echo ""
