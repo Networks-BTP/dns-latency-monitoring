@@ -1,0 +1,1 @@
+scp taryashi@ms0644.utah.cloudlab.us:~/dns-latency-monitoring/Code/exp1_2026-09-08_06-33-40_353838819.json "$HOME\Desktop\"
