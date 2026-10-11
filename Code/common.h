@@ -70,6 +70,7 @@ enum StatKeys {
     STAT_PARSE_ERRORS,
     STAT_TRUNCATED,
     STAT_NXDOMAIN,
+    STAT_RINGBUF_DROPS,
 };
 
 // ---------------------------------------------------------------------------

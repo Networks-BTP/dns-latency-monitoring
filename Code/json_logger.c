@@ -545,6 +545,9 @@ static void try_complete_transaction(struct pending_transaction *tx)
 
     if (!tx->have_latency)
         return;
+    
+    if (!tx->latency.is_timeout && !tx->have_xdp_response)
+    return;
 
     write_transaction(tx);
 

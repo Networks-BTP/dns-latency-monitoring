@@ -116,7 +116,7 @@ for ((i=0; i<TOTAL; i++)); do
 
         echo "[$((i+1))/$TOTAL] $DOMAIN | run=$run | ${QUERY_TIME}ms | $STATUS"
 
-        if (( DELAY > 0 )); then
+        if awk -v delay="$DELAY" 'BEGIN { exit !(delay > 0) }'; then
             sleep "$DELAY"
         fi
     done

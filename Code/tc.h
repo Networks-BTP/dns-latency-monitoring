@@ -25,6 +25,7 @@ struct query_key {
 struct query_info {
     __u8 raw_payload[512];   // Raw DNS payload, parsed on egress
     __u64 start_ts;                 // Timestamp when query was sent
+    __u32 server_ip;
     __u16 query_type;               // DNS query type, parsed on egress
 };
 

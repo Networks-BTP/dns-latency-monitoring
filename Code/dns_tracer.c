@@ -9,6 +9,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
+#include <time.h>
 
 #include <linux/if_link.h>
 #include <bpf/libbpf.h>
@@ -35,6 +36,64 @@
 // DNSQueryEvent
 // latency_event
 // Should be added in a separate file or smthing
+
+static void print_latency_event(const struct latency_event *event);
+
+struct pq_key  { 
+    uint16_t query_id; 
+    uint32_t client_ip;
+    uint16_t client_port; 
+    uint16_t padding; 
+};
+struct pq_info { 
+    uint8_t raw_payload[512]; 
+    uint64_t start_ts;
+    uint32_t server_ip; 
+    uint16_t query_type; 
+};
+
+#define QUERY_TIMEOUT_NS 5000000000ULL   /* 5 s */
+
+static uint64_t mono_ns(void)
+{
+    struct timespec ts;
+    clock_gettime(CLOCK_MONOTONIC, &ts);   /* same clock as bpf_ktime_get_ns */
+    return (uint64_t)ts.tv_sec * 1000000000ULL + ts.tv_nsec;
+}
+
+static void sweep_timeouts(int fd)
+{
+    struct pq_key key, next;
+    struct pq_info info;
+    uint64_t now = mono_ns();
+
+    int rc = bpf_map_get_next_key(fd, NULL, &key);
+    while (rc == 0) {
+        int more = bpf_map_get_next_key(fd, &key, &next); /* fetch BEFORE delete */
+
+        if (bpf_map_lookup_elem(fd, &key, &info) == 0 &&
+            now - info.start_ts >= QUERY_TIMEOUT_NS) {
+
+            struct latency_event ev;
+            memset(&ev, 0, sizeof(ev));
+            ev.timestamp   = now;
+            ev.latency_ns  = now - info.start_ts;
+            ev.client_ip   = key.client_ip;
+            ev.server_ip   = info.server_ip;
+            ev.client_port = key.client_port;
+            ev.query_id    = key.query_id;
+            ev.query_type  = info.query_type;
+            ev.is_timeout  = 1;
+            memcpy(ev.raw_payload, info.raw_payload, sizeof(ev.raw_payload));
+
+            print_latency_event(&ev);          /* print "[TIMEOUT]" when is_timeout */
+            json_logger_record_latency(&ev);
+            bpf_map_delete_elem(fd, &key);
+        }
+        if (more) break;
+        key = next;
+    }
+}
 
 
 /* ============================================================================
@@ -685,7 +744,7 @@ fprintf(stderr, "\n===========================\n");
     }
 
     printf(
-        "[LATENCY] %s:%u -> %s:53 "
+        "[%s] %s:%u -> %s:53 "
         "id=%u "
         "type=%s "
         "name=%s "
@@ -693,6 +752,7 @@ fprintf(stderr, "\n===========================\n");
         "response_rcode=%u(%s) "
         "response_answers=%u\n",
 
+        event->is_timeout ? "TIMEOUT" : "RESPONSE",
         client,
         event->client_port,
         server,
@@ -882,6 +942,39 @@ static int detach_tc_program(struct bpf_tc_hook *hook,
     return err;
 }
 
+static void print_stats(int fd)
+{
+    /* order MUST match enum StatKeys in common.h */
+    static const char *names[] = {
+        "total_packets", "dns_queries", "dns_responses",
+        "parse_errors",  "truncated",   "nxdomain",
+        "ringbuf_drops"
+    };
+    const uint32_t n = sizeof(names) / sizeof(names[0]);
+
+    int ncpu = libbpf_num_possible_cpus();
+    if (ncpu <= 0)
+        return;
+
+    uint64_t *vals = calloc(ncpu, sizeof(*vals));
+    if (!vals)
+        return;
+
+    printf("\n---------- BPF stats ----------\n");
+    for (uint32_t k = 0; k < n; k++) {
+        if (bpf_map_lookup_elem(fd, &k, vals))
+            continue;
+
+        uint64_t sum = 0;
+        for (int i = 0; i < ncpu; i++)
+            sum += vals[i];
+
+        printf("  %-14s %llu\n", names[k], (unsigned long long)sum);
+    }
+    printf("-------------------------------\n");
+
+    free(vals);
+}
 
 /* ============================================================================
  * Main
@@ -1194,6 +1287,7 @@ int main(int argc, char **argv)
 
     printf("Press Ctrl+C to stop.\n\n");
 
+    uint64_t last_sweep = 0; 
 
     while (!exiting) {
         err = ring_buffer__poll(rb, 100);
@@ -1210,8 +1304,15 @@ int main(int argc, char **argv)
 
             goto cleanup;
         }
+
+        uint64_t t = mono_ns();
+        if (t - last_sweep > 1000000000ULL) {
+            sweep_timeouts(bpf_map__fd(obj->maps.pending_queries));
+            last_sweep = t;
+        }
     }
 
+    print_stats(bpf_map__fd(obj->maps.stats));
     err = 0;
 
 

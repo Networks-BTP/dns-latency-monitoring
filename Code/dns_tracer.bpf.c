@@ -84,6 +84,7 @@ int tc_dns_egress(struct __sk_buff *skb)
 
     __builtin_memset(info, 0, sizeof(*info));
     info->start_ts = bpf_ktime_get_ns();
+    info->server_ip = ip->daddr;
 
     /*
     * Save the complete DNS message into query_info.
@@ -244,6 +245,8 @@ int tc_dns_ingress(struct __sk_buff *skb)
         bpf_ringbuf_submit(event, 0);
         bpf_printk("dns_tracer: tc_dns_ingress: id=%u latency_ns=%llu\n",
                    key.query_id, latency_ns);
+    } else {                                 
+        inc_stat(STAT_RINGBUF_DROPS);
     }
 
     bpf_map_delete_elem(&pending_queries, &key);
@@ -295,8 +298,10 @@ int xdp_dns_parser(struct xdp_md *ctx)
     bpf_printk("dns_tracer: xdp_dns_parser: udp/53 candidate\n");
 
     struct DNSHeader *dns = (void *)(udp + 1);
-    if ((void *)(dns + 1) > data_end)
+    if ((void *)(dns + 1) > data_end) {
+        inc_stat(STAT_PARSE_ERRORS);
         return XDP_PASS;
+    }
 
     __u16 flags = bpf_ntohs(dns->flags);
     __u8 qr = (flags >> 15) & 0x1;      // Query (0) or Response (1)
@@ -317,8 +322,10 @@ int xdp_dns_parser(struct xdp_md *ctx)
 
     struct DNSQueryEvent *event;
     event = bpf_ringbuf_reserve(&dns_events, sizeof(*event), 0);
-    if (!event)
+    if (!event){
+        inc_stat(STAT_RINGBUF_DROPS);
         return XDP_PASS;
+    }
 
     __builtin_memset(event, 0, sizeof(*event));
 
