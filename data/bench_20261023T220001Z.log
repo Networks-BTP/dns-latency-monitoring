@@ -1,0 +1,1128 @@
+Starting DNS benchmark
+Resolvers : 10
+Domains   : 100
+Delay     : 0.5s
+Output    : /home/j.toshit/dns-latency-monitoring/data/dig_20261023T220001Z.csv
+
+[1/10] Resolver: 36.50.50.50
+Starting DNS measurements
+Domains : 100
+Runs    : 1
+Type    : A
+Server  : 36.50.50.50
+Output  : /tmp/tmp.dN0bfs2Aw2
+
+[1/100] google.com | run=1 | 48ms | NOERROR
+[2/100] googleapis.com | run=1 | 47ms | NOERROR
+[3/100] cloudflare.com | run=1 | 48ms | NOERROR
+[4/100] gstatic.com | run=1 | 49ms | NOERROR
+[5/100] apple.com | run=1 | 48ms | NOERROR
+[6/100] microsoft.com | run=1 | 49ms | NOERROR
+[7/100] facebook.com | run=1 | 100ms | NOERROR
+[8/100] amazonaws.com | run=1 | 57ms | NOERROR
+[9/100] googlevideo.com | run=1 | 159ms | NOERROR
+[10/100] fbcdn.net | run=1 | 65ms | NOERROR
+[11/100] amazon.com | run=1 | 46ms | NOERROR
+[12/100] whatsapp.net | run=1 | 64ms | NOERROR
+[13/100] instagram.com | run=1 | 154ms | NOERROR
+[14/100] youtube.com | run=1 | 121ms | NOERROR
+[15/100] apple-dns.net | run=1 | 99ms | NOERROR
+[16/100] doubleclick.net | run=1 | 2561ms | NOERROR
+[17/100] bing.com | run=1 | 48ms | NOERROR
+[18/100] netflix.com | run=1 | 152ms | NOERROR
+[19/100] akadns.net | run=1 | 67ms | NOERROR
+[20/100] icloud.com | run=1 | 105ms | NOERROR
+[21/100] ntp.org | run=1 | 99ms | NOERROR
+[22/100] googleusercontent.com | run=1 | 157ms | NOERROR
+[23/100] aaplimg.com | run=1 | 102ms | NOERROR
+[24/100] cloudflare-dns.com | run=1 | 93ms | NOERROR
+[25/100] live.com | run=1 | 113ms | NOERROR
+[26/100] cdninstagram.com | run=1 | 65ms | NOERROR
+[27/100] akamai.net | run=1 | 65ms | NOERROR
+[28/100] googlesyndication.com | run=1 | 1728ms | NOERROR
+[29/100] tiktokv.com | run=1 | 351ms | NOERROR
+[30/100] tiktokcdn.com | run=1 | 162ms | NOERROR
+[31/100] cloudfront.net | run=1 | 52ms | NOERROR
+[32/100] chatgpt.com | run=1 | 47ms | NOERROR
+[33/100] ui.com | run=1 | 266ms | NOERROR
+[34/100] openai.com | run=1 | 121ms | NOERROR
+[35/100] ytimg.com | run=1 | 124ms | NOERROR
+[36/100] akamaiedge.net | run=1 | 48ms | NOERROR
+[37/100] app-analytics-services.com | run=1 | 1022ms | NOERROR
+[38/100] roblox.com | run=1 | 114ms | NOERROR
+[39/100] yahoo.com | run=1 | 120ms | NOERROR
+[40/100] fastly.net | run=1 | 75ms | NOERROR
+[41/100] spotify.com | run=1 | 111ms | NOERROR
+[42/100] sentry.io | run=1 | 272ms | NOERROR
+[43/100] baidu.com | run=1 | 324ms | NOERROR
+[44/100] gvt2.com | run=1 | 923ms | NOERROR
+[45/100] samsung.com | run=1 | 211ms | NOERROR
+[46/100] app-measurement.com | run=1 | 216ms | NOERROR
+[47/100] office.com | run=1 | 116ms | NOERROR
+[48/100] steamserver.net | run=1 | 153ms | NOERROR
+[49/100] one.one | run=1 | 490ms | NOERROR
+[50/100] gvt1.com | run=1 | 52ms | NOERROR
+[51/100] wikipedia.org | run=1 | 47ms | NOERROR
+[52/100] dns.google | run=1 | 46ms | NOERROR
+[53/100] appsflyersdk.com | run=1 | 158ms | NOERROR
+[54/100] msftncsi.com | run=1 | 117ms | NOERROR
+[55/100] google-analytics.com | run=1 | 49ms | NOERROR
+[56/100] applovin.com | run=1 | 117ms | NOERROR
+[57/100] trafficmanager.net | run=1 | 117ms | NOERROR
+[58/100] snapchat.com | run=1 | 66ms | NOERROR
+[59/100] a2z.com | run=1 | 65ms | NOERROR
+[60/100] azure.com | run=1 | 127ms | NOERROR
+[61/100] criteo.com | run=1 | 311ms | NOERROR
+[62/100] 3gppnetwork.org | run=1 | 100ms | NOERROR
+[63/100] windows.com | run=1 | 48ms | NOERROR
+[64/100] whatsapp.com | run=1 | 63ms | NOERROR
+[65/100] amazon-adsystem.com | run=1 | 68ms | NOERROR
+[66/100] amazon.dev | run=1 | 310ms | NOERROR
+[67/100] adsafeprotected.com | run=1 | 210ms | NOERROR
+[68/100] ggpht.com | run=1 | 46ms | NOERROR
+[69/100] msn.com | run=1 | 117ms | NOERROR
+[70/100] unity3d.com | run=1 | 342ms | NOERROR
+[71/100] linkedin.com | run=1 | 109ms | NOERROR
+[72/100] googletagmanager.com | run=1 | 46ms | NOERROR
+[73/100] windows.net | run=1 | 125ms | NOERROR
+[74/100] twc.com | run=1 | 991ms | NOERROR
+[75/100] microsoftonline.com | run=1 | 48ms | NOERROR
+[76/100] playstation.net | run=1 | 420ms | NOERROR
+[77/100] statsigapi.net | run=1 | 151ms | NOERROR
+[78/100] capcutapi.com | run=1 | 242ms | NOERROR
+[79/100] adtrafficquality.google | run=1 | 1122ms | NOERROR
+[80/100] rubiconproject.com | run=1 | 182ms | NOERROR
+[81/100] xiaomi.com | run=1 | 251ms | NOERROR
+[82/100] cloud.microsoft | run=1 | 47ms | NOERROR
+[83/100] vungle.com | run=1 | 66ms | NOERROR
+[84/100] digicert.com | run=1 | 104ms | NOERROR
+[85/100] windowsupdate.com | run=1 | 114ms | NOERROR
+[86/100] skype.com | run=1 | 49ms | NOERROR
+[87/100] cdn-apple.com | run=1 | 95ms | NOERROR
+[88/100] msftconnecttest.com | run=1 | 113ms | NOERROR
+[89/100] gmail.com | run=1 | 49ms | NOERROR
+[90/100] yandex.net | run=1 | 374ms | NOERROR
+[91/100] tiktok.com | run=1 | 150ms | NOERROR
+[92/100] aws.dev | run=1 | 149ms | NOERROR
+[93/100] appsflyer.com | run=1 | 187ms | NOERROR
+[94/100] taboola.com | run=1 | 272ms | NOERROR
+[95/100] media-amazon.com | run=1 | 66ms | NOERROR
+[96/100] lencr.org | run=1 | 91ms | NOERROR
+[97/100] miui.com | run=1 | 345ms | NOERROR
+[98/100] qq.com | run=1 | 132ms | NOERROR
+[99/100] outlook.com | run=1 | 48ms | NOERROR
+[100/100] amazonvideo.com | run=1 | 93ms | NOERROR
+
+Done.
+Results saved to: /tmp/tmp.dN0bfs2Aw2
+
+[2/10] Resolver: 182.156.93.102
+Starting DNS measurements
+Domains : 100
+Runs    : 1
+Type    : A
+Server  : 182.156.93.102
+Output  : /tmp/tmp.RsZXb1hOfC
+
+[1/100] google.com | run=1 | 149ms | NOERROR
+[2/100] googleapis.com | run=1 | 195ms | NOERROR
+[3/100] cloudflare.com | run=1 | 128ms | NOERROR
+[4/100] gstatic.com | run=1 | 178ms | NOERROR
+[5/100] apple.com | run=1 | 129ms | NOERROR
+[6/100] microsoft.com | run=1 | 127ms | NOERROR
+[7/100] facebook.com | run=1 | 171ms | NOERROR
+[8/100] amazonaws.com | run=1 | 132ms | NOERROR
+[9/100] googlevideo.com | run=1 | 151ms | NOERROR
+[10/100] fbcdn.net | run=1 | 155ms | NOERROR
+[11/100] amazon.com | run=1 | 129ms | NOERROR
+[12/100] whatsapp.net | run=1 | 126ms | NOERROR
+[13/100] instagram.com | run=1 | 152ms | NOERROR
+[14/100] youtube.com | run=1 | 152ms | NOERROR
+[15/100] apple-dns.net | run=1 | 221ms | NOERROR
+[16/100] doubleclick.net | run=1 | 189ms | NOERROR
+[17/100] bing.com | run=1 | 143ms | NOERROR
+[18/100] netflix.com | run=1 | 145ms | NOERROR
+[19/100] akadns.net | run=1 | 175ms | NOERROR
+[20/100] icloud.com | run=1 | 156ms | NOERROR
+[21/100] ntp.org | run=1 | 1369ms | NOERROR
+[22/100] googleusercontent.com | run=1 | 141ms | NOERROR
+[23/100] aaplimg.com | run=1 | 174ms | NOERROR
+[24/100] cloudflare-dns.com | run=1 | 144ms | NOERROR
+[25/100] live.com | run=1 | 141ms | NOERROR
+[26/100] cdninstagram.com | run=1 | 223ms | NOERROR
+[27/100] akamai.net | run=1 | 194ms | NOERROR
+[28/100] googlesyndication.com | run=1 | 154ms | NOERROR
+[29/100] tiktokv.com | run=1 | 220ms | NOERROR
+[30/100] tiktokcdn.com | run=1 | 208ms | NOERROR
+[31/100] cloudfront.net | run=1 | 138ms | NOERROR
+[32/100] chatgpt.com | run=1 | 151ms | NOERROR
+[33/100] ui.com | run=1 | 158ms | NOERROR
+[34/100] openai.com | run=1 | 135ms | NOERROR
+[35/100] ytimg.com | run=1 | 196ms | NOERROR
+[36/100] akamaiedge.net | run=1 | 128ms | NOERROR
+[37/100] app-analytics-services.com | run=1 | 198ms | NOERROR
+[38/100] roblox.com | run=1 | 190ms | NOERROR
+[39/100] yahoo.com | run=1 | 136ms | NOERROR
+[40/100] fastly.net | run=1 | 163ms | NOERROR
+[41/100] spotify.com | run=1 | 131ms | NOERROR
+[42/100] sentry.io | run=1 | 140ms | NOERROR
+[43/100] baidu.com | run=1 | 135ms | NOERROR
+[44/100] gvt2.com | run=1 | 156ms | NOERROR
+[45/100] samsung.com | run=1 | 421ms | NOERROR
+[46/100] app-measurement.com | run=1 | 182ms | NOERROR
+[47/100] office.com | run=1 | 148ms | NOERROR
+[48/100] steamserver.net | run=1 | 134ms | NOERROR
+[49/100] one.one | run=1 | 451ms | NOERROR
+[50/100] gvt1.com | run=1 | 143ms | NOERROR
+[51/100] wikipedia.org | run=1 | 379ms | NOERROR
+[52/100] dns.google | run=1 | 73ms | NOERROR
+[53/100] appsflyersdk.com | run=1 | 184ms | NOERROR
+[54/100] msftncsi.com | run=1 | 183ms | NOERROR
+[55/100] google-analytics.com | run=1 | 142ms | NOERROR
+[56/100] applovin.com | run=1 | 142ms | NOERROR
+[57/100] trafficmanager.net | run=1 | 135ms | NOERROR
+[58/100] snapchat.com | run=1 | 114ms | NOERROR
+[59/100] a2z.com | run=1 | 117ms | NOERROR
+[60/100] azure.com | run=1 | 123ms | NOERROR
+[61/100] criteo.com | run=1 | 168ms | NOERROR
+[62/100] 3gppnetwork.org | run=1 | 128ms | NOERROR
+[63/100] windows.com | run=1 | 122ms | NOERROR
+[64/100] whatsapp.com | run=1 | 166ms | NOERROR
+[65/100] amazon-adsystem.com | run=1 | 141ms | NOERROR
+[66/100] amazon.dev | run=1 | 158ms | NOERROR
+[67/100] adsafeprotected.com | run=1 | 326ms | NOERROR
+[68/100] ggpht.com | run=1 | 156ms | NOERROR
+[69/100] msn.com | run=1 | 137ms | NOERROR
+[70/100] unity3d.com | run=1 | 244ms | NOERROR
+[71/100] linkedin.com | run=1 | 335ms | NOERROR
+[72/100] googletagmanager.com | run=1 | 150ms | NOERROR
+[73/100] windows.net | run=1 | 139ms | NOERROR
+[74/100] twc.com | run=1 | 562ms | NOERROR
+[75/100] microsoftonline.com | run=1 | 160ms | NOERROR
+[76/100] playstation.net | run=1 | 198ms | NOERROR
+[77/100] statsigapi.net | run=1 | 146ms | NOERROR
+[78/100] capcutapi.com | run=1 | 194ms | NOERROR
+[79/100] adtrafficquality.google | run=1 | 195ms | NOERROR
+[80/100] rubiconproject.com | run=1 | 184ms | NOERROR
+[81/100] xiaomi.com | run=1 | 295ms | NOERROR
+[82/100] cloud.microsoft | run=1 | 148ms | NOERROR
+[83/100] vungle.com | run=1 | 201ms | NOERROR
+[84/100] digicert.com | run=1 | 149ms | NOERROR
+[85/100] windowsupdate.com | run=1 | 136ms | NOERROR
+[86/100] skype.com | run=1 | 138ms | NOERROR
+[87/100] cdn-apple.com | run=1 | 173ms | NOERROR
+[88/100] msftconnecttest.com | run=1 | 137ms | NOERROR
+[89/100] gmail.com | run=1 | 199ms | NOERROR
+[90/100] yandex.net | run=1 | 357ms | NOERROR
+[91/100] tiktok.com | run=1 | 138ms | NOERROR
+[92/100] aws.dev | run=1 | 141ms | NOERROR
+[93/100] appsflyer.com | run=1 | 142ms | NOERROR
+[94/100] taboola.com | run=1 | 128ms | NOERROR
+[95/100] media-amazon.com | run=1 | 171ms | NOERROR
+[96/100] lencr.org | run=1 | 141ms | NOERROR
+[97/100] miui.com | run=1 | 276ms | NOERROR
+[98/100] qq.com | run=1 | 476ms | NOERROR
+[99/100] outlook.com | run=1 | 156ms | NOERROR
+[100/100] amazonvideo.com | run=1 | 149ms | NOERROR
+
+Done.
+Results saved to: /tmp/tmp.RsZXb1hOfC
+
+[3/10] Resolver: 169.38.73.5
+Starting DNS measurements
+Domains : 100
+Runs    : 1
+Type    : A
+Server  : 169.38.73.5
+Output  : /tmp/tmp.pX9gLAoX84
+
+[1/100] google.com | run=1 | 266ms | NOERROR
+[2/100] googleapis.com | run=1 | 325ms | NOERROR
+[3/100] cloudflare.com | run=1 | 251ms | NOERROR
+[4/100] gstatic.com | run=1 | 331ms | NOERROR
+[5/100] apple.com | run=1 | 248ms | NOERROR
+[6/100] microsoft.com | run=1 | 271ms | NOERROR
+[7/100] facebook.com | run=1 | 254ms | NOERROR
+[8/100] amazonaws.com | run=1 | 284ms | NOERROR
+[9/100] googlevideo.com | run=1 | 326ms | NOERROR
+[10/100] fbcdn.net | run=1 | 261ms | NOERROR
+[11/100] amazon.com | run=1 | 246ms | NOERROR
+[12/100] whatsapp.net | run=1 | 314ms | NOERROR
+[13/100] instagram.com | run=1 | 289ms | NOERROR
+[14/100] youtube.com | run=1 | 250ms | NOERROR
+[15/100] apple-dns.net | run=1 | 426ms | NOERROR
+[16/100] doubleclick.net | run=1 | 279ms | NOERROR
+[17/100] bing.com | run=1 | 255ms | NOERROR
+[18/100] netflix.com | run=1 | 254ms | NOERROR
+[19/100] akadns.net | run=1 | 272ms | NOERROR
+[20/100] icloud.com | run=1 | 284ms | NOERROR
+[21/100] ntp.org | run=1 | 477ms | NOERROR
+[22/100] googleusercontent.com | run=1 | 296ms | NOERROR
+[23/100] aaplimg.com | run=1 | 288ms | NOERROR
+[24/100] cloudflare-dns.com | run=1 | 249ms | NOERROR
+[25/100] live.com | run=1 | 244ms | NOERROR
+[26/100] cdninstagram.com | run=1 | 340ms | NOERROR
+[27/100] akamai.net | run=1 | 251ms | NOERROR
+[28/100] googlesyndication.com | run=1 | 321ms | NOERROR
+[29/100] tiktokv.com | run=1 | 296ms | NOERROR
+[30/100] tiktokcdn.com | run=1 | 272ms | NOERROR
+[31/100] cloudfront.net | run=1 | 248ms | NOERROR
+[32/100] chatgpt.com | run=1 | 248ms | NOERROR
+[33/100] ui.com | run=1 | 252ms | NOERROR
+[34/100] openai.com | run=1 | 307ms | NOERROR
+[35/100] ytimg.com | run=1 | -1ms | ERROR
+[36/100] akamaiedge.net | run=1 | 276ms | NOERROR
+[37/100] app-analytics-services.com | run=1 | 249ms | NOERROR
+[38/100] roblox.com | run=1 | 391ms | NOERROR
+[39/100] yahoo.com | run=1 | 250ms | NOERROR
+[40/100] fastly.net | run=1 | -1ms | ERROR
+[41/100] spotify.com | run=1 | 368ms | NOERROR
+[42/100] sentry.io | run=1 | 356ms | NOERROR
+[43/100] baidu.com | run=1 | 262ms | NOERROR
+[44/100] gvt2.com | run=1 | 289ms | NOERROR
+[45/100] samsung.com | run=1 | 482ms | NOERROR
+[46/100] app-measurement.com | run=1 | 255ms | NOERROR
+[47/100] office.com | run=1 | -1ms | ERROR
+[48/100] steamserver.net | run=1 | 280ms | NOERROR
+[49/100] one.one | run=1 | 716ms | NOERROR
+[50/100] gvt1.com | run=1 | 296ms | NOERROR
+[51/100] wikipedia.org | run=1 | 256ms | NOERROR
+[52/100] dns.google | run=1 | 254ms | NOERROR
+[53/100] appsflyersdk.com | run=1 | -1ms | ERROR
+[54/100] msftncsi.com | run=1 | 263ms | NOERROR
+[55/100] google-analytics.com | run=1 | 288ms | NOERROR
+[56/100] applovin.com | run=1 | 354ms | NOERROR
+[57/100] trafficmanager.net | run=1 | 264ms | NOERROR
+[58/100] snapchat.com | run=1 | 288ms | NOERROR
+[59/100] a2z.com | run=1 | -1ms | ERROR
+[60/100] azure.com | run=1 | 281ms | NOERROR
+[61/100] criteo.com | run=1 | 299ms | NOERROR
+[62/100] 3gppnetwork.org | run=1 | 310ms | NOERROR
+[63/100] windows.com | run=1 | 272ms | NOERROR
+[64/100] whatsapp.com | run=1 | -1ms | ERROR
+[65/100] amazon-adsystem.com | run=1 | 279ms | NOERROR
+[66/100] amazon.dev | run=1 | 273ms | NOERROR
+[67/100] adsafeprotected.com | run=1 | 317ms | NOERROR
+[68/100] ggpht.com | run=1 | 323ms | NOERROR
+[69/100] msn.com | run=1 | 279ms | NOERROR
+[70/100] unity3d.com | run=1 | -1ms | ERROR
+[71/100] linkedin.com | run=1 | 259ms | NOERROR
+[72/100] googletagmanager.com | run=1 | 291ms | NOERROR
+[73/100] windows.net | run=1 | 270ms | NOERROR
+[74/100] twc.com | run=1 | 545ms | NOERROR
+[75/100] microsoftonline.com | run=1 | 314ms | NOERROR
+[76/100] playstation.net | run=1 | -1ms | ERROR
+[77/100] statsigapi.net | run=1 | 379ms | NOERROR
+[78/100] capcutapi.com | run=1 | 271ms | NOERROR
+[79/100] adtrafficquality.google | run=1 | 398ms | NOERROR
+[80/100] rubiconproject.com | run=1 | 297ms | NOERROR
+[81/100] xiaomi.com | run=1 | 323ms | NOERROR
+[82/100] cloud.microsoft | run=1 | -1ms | ERROR
+[83/100] vungle.com | run=1 | 288ms | NOERROR
+[84/100] digicert.com | run=1 | 280ms | NOERROR
+[85/100] windowsupdate.com | run=1 | 270ms | NOERROR
+[86/100] skype.com | run=1 | 271ms | NOERROR
+[87/100] cdn-apple.com | run=1 | 508ms | NOERROR
+[88/100] msftconnecttest.com | run=1 | -1ms | ERROR
+[89/100] gmail.com | run=1 | 278ms | NOERROR
+[90/100] yandex.net | run=1 | 448ms | NOERROR
+[91/100] tiktok.com | run=1 | 399ms | NOERROR
+[92/100] aws.dev | run=1 | 357ms | NOERROR
+[93/100] appsflyer.com | run=1 | 353ms | NOERROR
+[94/100] taboola.com | run=1 | 288ms | NOERROR
+[95/100] media-amazon.com | run=1 | -1ms | ERROR
+[96/100] lencr.org | run=1 | 288ms | NOERROR
+[97/100] miui.com | run=1 | 468ms | NOERROR
+[98/100] qq.com | run=1 | 387ms | NOERROR
+[99/100] outlook.com | run=1 | 266ms | NOERROR
+[100/100] amazonvideo.com | run=1 | 249ms | NOERROR
+
+Done.
+Results saved to: /tmp/tmp.pX9gLAoX84
+
+[4/10] Resolver: 115.243.102.142
+Starting DNS measurements
+Domains : 100
+Runs    : 1
+Type    : A
+Server  : 115.243.102.142
+Output  : /tmp/tmp.SbAoO4swyJ
+
+[1/100] google.com | run=1 | 84ms | NOERROR
+[2/100] googleapis.com | run=1 | 94ms | NOERROR
+[3/100] cloudflare.com | run=1 | 103ms | NOERROR
+[4/100] gstatic.com | run=1 | 95ms | NOERROR
+[5/100] apple.com | run=1 | 96ms | NOERROR
+[6/100] microsoft.com | run=1 | 104ms | NOERROR
+[7/100] facebook.com | run=1 | 97ms | NOERROR
+[8/100] amazonaws.com | run=1 | 99ms | NOERROR
+[9/100] googlevideo.com | run=1 | 96ms | NOERROR
+[10/100] fbcdn.net | run=1 | 92ms | NOERROR
+[11/100] amazon.com | run=1 | 104ms | NOERROR
+[12/100] whatsapp.net | run=1 | 101ms | NOERROR
+[13/100] instagram.com | run=1 | 99ms | NOERROR
+[14/100] youtube.com | run=1 | 161ms | NOERROR
+[15/100] apple-dns.net | run=1 | 102ms | NOERROR
+[16/100] doubleclick.net | run=1 | 104ms | NOERROR
+[17/100] bing.com | run=1 | 150ms | NOERROR
+[18/100] netflix.com | run=1 | 108ms | NOERROR
+[19/100] akadns.net | run=1 | 143ms | NOERROR
+[20/100] icloud.com | run=1 | 112ms | NOERROR
+[21/100] ntp.org | run=1 | 237ms | NOERROR
+[22/100] googleusercontent.com | run=1 | 155ms | NOERROR
+[23/100] aaplimg.com | run=1 | 98ms | NOERROR
+[24/100] cloudflare-dns.com | run=1 | 100ms | NOERROR
+[25/100] live.com | run=1 | 103ms | NOERROR
+[26/100] cdninstagram.com | run=1 | 98ms | NOERROR
+[27/100] akamai.net | run=1 | 147ms | NOERROR
+[28/100] googlesyndication.com | run=1 | 87ms | NOERROR
+[29/100] tiktokv.com | run=1 | 216ms | NOERROR
+[30/100] tiktokcdn.com | run=1 | 100ms | NOERROR
+[31/100] cloudfront.net | run=1 | 100ms | NOERROR
+[32/100] chatgpt.com | run=1 | 103ms | NOERROR
+[33/100] ui.com | run=1 | 111ms | NOERROR
+[34/100] openai.com | run=1 | 107ms | NOERROR
+[35/100] ytimg.com | run=1 | 155ms | NOERROR
+[36/100] akamaiedge.net | run=1 | 151ms | NOERROR
+[37/100] app-analytics-services.com | run=1 | 105ms | NOERROR
+[38/100] roblox.com | run=1 | 161ms | NOERROR
+[39/100] yahoo.com | run=1 | 66ms | NOERROR
+[40/100] fastly.net | run=1 | 90ms | NOERROR
+[41/100] spotify.com | run=1 | 104ms | NOERROR
+[42/100] sentry.io | run=1 | 130ms | NOERROR
+[43/100] baidu.com | run=1 | 361ms | NOERROR
+[44/100] gvt2.com | run=1 | 152ms | NOERROR
+[45/100] samsung.com | run=1 | 228ms | NOERROR
+[46/100] app-measurement.com | run=1 | 153ms | NOERROR
+[47/100] office.com | run=1 | 101ms | NOERROR
+[48/100] steamserver.net | run=1 | 147ms | NOERROR
+[49/100] one.one | run=1 | 275ms | NOERROR
+[50/100] gvt1.com | run=1 | 103ms | NOERROR
+[51/100] wikipedia.org | run=1 | 442ms | NOERROR
+[52/100] dns.google | run=1 | 70ms | NOERROR
+[53/100] appsflyersdk.com | run=1 | 105ms | NOERROR
+[54/100] msftncsi.com | run=1 | 92ms | NOERROR
+[55/100] google-analytics.com | run=1 | 100ms | NOERROR
+[56/100] applovin.com | run=1 | 96ms | NOERROR
+[57/100] trafficmanager.net | run=1 | 101ms | NOERROR
+[58/100] snapchat.com | run=1 | 90ms | NOERROR
+[59/100] a2z.com | run=1 | 91ms | NOERROR
+[60/100] azure.com | run=1 | 100ms | NOERROR
+[61/100] criteo.com | run=1 | 152ms | NOERROR
+[62/100] 3gppnetwork.org | run=1 | 225ms | NOERROR
+[63/100] windows.com | run=1 | 118ms | NOERROR
+[64/100] whatsapp.com | run=1 | 120ms | NOERROR
+[65/100] amazon-adsystem.com | run=1 | 106ms | NOERROR
+[66/100] amazon.dev | run=1 | 110ms | NOERROR
+[67/100] adsafeprotected.com | run=1 | 159ms | NOERROR
+[68/100] ggpht.com | run=1 | 152ms | NOERROR
+[69/100] msn.com | run=1 | 102ms | NOERROR
+[70/100] unity3d.com | run=1 | 217ms | NOERROR
+[71/100] linkedin.com | run=1 | 152ms | NOERROR
+[72/100] googletagmanager.com | run=1 | 92ms | NOERROR
+[73/100] windows.net | run=1 | 108ms | NOERROR
+[74/100] twc.com | run=1 | 211ms | NOERROR
+[75/100] microsoftonline.com | run=1 | 102ms | NOERROR
+[76/100] playstation.net | run=1 | 146ms | NOERROR
+[77/100] statsigapi.net | run=1 | 119ms | NOERROR
+[78/100] capcutapi.com | run=1 | 95ms | NOERROR
+[79/100] adtrafficquality.google | run=1 | 152ms | NOERROR
+[80/100] rubiconproject.com | run=1 | 105ms | NOERROR
+[81/100] xiaomi.com | run=1 | 109ms | NOERROR
+[82/100] cloud.microsoft | run=1 | 100ms | NOERROR
+[83/100] vungle.com | run=1 | 215ms | NOERROR
+[84/100] digicert.com | run=1 | 154ms | NOERROR
+[85/100] windowsupdate.com | run=1 | 108ms | NOERROR
+[86/100] skype.com | run=1 | 98ms | NOERROR
+[87/100] cdn-apple.com | run=1 | 97ms | NOERROR
+[88/100] msftconnecttest.com | run=1 | 99ms | NOERROR
+[89/100] gmail.com | run=1 | 97ms | NOERROR
+[90/100] yandex.net | run=1 | 225ms | NOERROR
+[91/100] tiktok.com | run=1 | 95ms | NOERROR
+[92/100] aws.dev | run=1 | 107ms | NOERROR
+[93/100] appsflyer.com | run=1 | 107ms | NOERROR
+[94/100] taboola.com | run=1 | 156ms | NOERROR
+[95/100] media-amazon.com | run=1 | 91ms | NOERROR
+[96/100] lencr.org | run=1 | 91ms | NOERROR
+[97/100] miui.com | run=1 | 163ms | NOERROR
+[98/100] qq.com | run=1 | 187ms | NOERROR
+[99/100] outlook.com | run=1 | 72ms | NOERROR
+[100/100] amazonvideo.com | run=1 | 103ms | NOERROR
+
+Done.
+Results saved to: /tmp/tmp.SbAoO4swyJ
+
+[5/10] Resolver: 103.174.102.61
+Starting DNS measurements
+Domains : 100
+Runs    : 1
+Type    : A
+Server  : 103.174.102.61
+Output  : /tmp/tmp.2DOK6AqLY0
+
+[1/100] google.com | run=1 | 50ms | NOERROR
+[2/100] googleapis.com | run=1 | 108ms | NOERROR
+[3/100] cloudflare.com | run=1 | 94ms | NOERROR
+[4/100] gstatic.com | run=1 | 136ms | NOERROR
+[5/100] apple.com | run=1 | 49ms | NOERROR
+[6/100] microsoft.com | run=1 | 50ms | NOERROR
+[7/100] facebook.com | run=1 | 50ms | NOERROR
+[8/100] amazonaws.com | run=1 | 79ms | NOERROR
+[9/100] googlevideo.com | run=1 | 50ms | NOERROR
+[10/100] fbcdn.net | run=1 | 66ms | NOERROR
+[11/100] amazon.com | run=1 | 50ms | NOERROR
+[12/100] whatsapp.net | run=1 | 81ms | NOERROR
+[13/100] instagram.com | run=1 | 71ms | NOERROR
+[14/100] youtube.com | run=1 | 106ms | NOERROR
+[15/100] apple-dns.net | run=1 | 62ms | NOERROR
+[16/100] doubleclick.net | run=1 | 50ms | NOERROR
+[17/100] bing.com | run=1 | 49ms | NOERROR
+[18/100] netflix.com | run=1 | 49ms | NOERROR
+[19/100] akadns.net | run=1 | 58ms | NOERROR
+[20/100] icloud.com | run=1 | 50ms | NOERROR
+[21/100] ntp.org | run=1 | 75ms | NOERROR
+[22/100] googleusercontent.com | run=1 | 109ms | NOERROR
+[23/100] aaplimg.com | run=1 | 50ms | NOERROR
+[24/100] cloudflare-dns.com | run=1 | 48ms | NOERROR
+[25/100] live.com | run=1 | 78ms | NOERROR
+[26/100] cdninstagram.com | run=1 | 77ms | NOERROR
+[27/100] akamai.net | run=1 | 47ms | NOERROR
+[28/100] googlesyndication.com | run=1 | 106ms | NOERROR
+[29/100] tiktokv.com | run=1 | 47ms | NOERROR
+[30/100] tiktokcdn.com | run=1 | 47ms | NOERROR
+[31/100] cloudfront.net | run=1 | 66ms | NOERROR
+[32/100] chatgpt.com | run=1 | 57ms | NOERROR
+[33/100] ui.com | run=1 | 53ms | NOERROR
+[34/100] openai.com | run=1 | 52ms | NOERROR
+[35/100] ytimg.com | run=1 | 108ms | NOERROR
+[36/100] akamaiedge.net | run=1 | 48ms | NOERROR
+[37/100] app-analytics-services.com | run=1 | 109ms | NOERROR
+[38/100] roblox.com | run=1 | 49ms | NOERROR
+[39/100] yahoo.com | run=1 | 116ms | NOERROR
+[40/100] fastly.net | run=1 | 65ms | NOERROR
+[41/100] spotify.com | run=1 | 52ms | NOERROR
+[42/100] sentry.io | run=1 | 51ms | NOERROR
+[43/100] baidu.com | run=1 | 402ms | NOERROR
+[44/100] gvt2.com | run=1 | 73ms | NOERROR
+[45/100] samsung.com | run=1 | 173ms | NOERROR
+[46/100] app-measurement.com | run=1 | 106ms | NOERROR
+[47/100] office.com | run=1 | 51ms | NOERROR
+[48/100] steamserver.net | run=1 | 47ms | NOERROR
+[49/100] one.one | run=1 | 190ms | NOERROR
+[50/100] gvt1.com | run=1 | 111ms | NOERROR
+[51/100] wikipedia.org | run=1 | 46ms | NOERROR
+[52/100] dns.google | run=1 | 47ms | NOERROR
+[53/100] appsflyersdk.com | run=1 | 51ms | NOERROR
+[54/100] msftncsi.com | run=1 | 53ms | NOERROR
+[55/100] google-analytics.com | run=1 | 107ms | NOERROR
+[56/100] applovin.com | run=1 | 52ms | NOERROR
+[57/100] trafficmanager.net | run=1 | 54ms | NOERROR
+[58/100] snapchat.com | run=1 | 50ms | NOERROR
+[59/100] a2z.com | run=1 | 65ms | NOERROR
+[60/100] azure.com | run=1 | 51ms | NOERROR
+[61/100] criteo.com | run=1 | 98ms | NOERROR
+[62/100] 3gppnetwork.org | run=1 | 190ms | NOERROR
+[63/100] windows.com | run=1 | 55ms | NOERROR
+[64/100] whatsapp.com | run=1 | 49ms | NOERROR
+[65/100] amazon-adsystem.com | run=1 | 48ms | NOERROR
+[66/100] amazon.dev | run=1 | 69ms | NOERROR
+[67/100] adsafeprotected.com | run=1 | 4624ms | NOERROR
+[68/100] ggpht.com | run=1 | 51ms | NOERROR
+[69/100] msn.com | run=1 | 50ms | NOERROR
+[70/100] unity3d.com | run=1 | 51ms | NOERROR
+[71/100] linkedin.com | run=1 | 49ms | NOERROR
+[72/100] googletagmanager.com | run=1 | 76ms | NOERROR
+[73/100] windows.net | run=1 | 54ms | NOERROR
+[74/100] twc.com | run=1 | 49ms | NOERROR
+[75/100] microsoftonline.com | run=1 | 53ms | NOERROR
+[76/100] playstation.net | run=1 | 50ms | NOERROR
+[77/100] statsigapi.net | run=1 | 66ms | NOERROR
+[78/100] capcutapi.com | run=1 | 49ms | NOERROR
+[79/100] adtrafficquality.google | run=1 | 51ms | NOERROR
+[80/100] rubiconproject.com | run=1 | 117ms | NOERROR
+[81/100] xiaomi.com | run=1 | 52ms | NOERROR
+[82/100] cloud.microsoft | run=1 | 54ms | NOERROR
+[83/100] vungle.com | run=1 | 49ms | NOERROR
+[84/100] digicert.com | run=1 | 51ms | NOERROR
+[85/100] windowsupdate.com | run=1 | 52ms | NOERROR
+[86/100] skype.com | run=1 | 55ms | NOERROR
+[87/100] cdn-apple.com | run=1 | 51ms | NOERROR
+[88/100] msftconnecttest.com | run=1 | 50ms | NOERROR
+[89/100] gmail.com | run=1 | 84ms | NOERROR
+[90/100] yandex.net | run=1 | 254ms | NOERROR
+[91/100] tiktok.com | run=1 | 48ms | NOERROR
+[92/100] aws.dev | run=1 | 68ms | NOERROR
+[93/100] appsflyer.com | run=1 | 48ms | NOERROR
+[94/100] taboola.com | run=1 | 52ms | NOERROR
+[95/100] media-amazon.com | run=1 | 52ms | NOERROR
+[96/100] lencr.org | run=1 | 51ms | NOERROR
+[97/100] miui.com | run=1 | 118ms | NOERROR
+[98/100] qq.com | run=1 | 136ms | NOERROR
+[99/100] outlook.com | run=1 | 52ms | NOERROR
+[100/100] amazonvideo.com | run=1 | 52ms | NOERROR
+
+Done.
+Results saved to: /tmp/tmp.2DOK6AqLY0
+
+[6/10] Resolver: 103.13.112.251
+Starting DNS measurements
+Domains : 100
+Runs    : 1
+Type    : A
+Server  : 103.13.112.251
+Output  : /tmp/tmp.xeX8Wfz0k8
+
+[1/100] google.com | run=1 | 59ms | NOERROR
+[2/100] googleapis.com | run=1 | 66ms | NOERROR
+[3/100] cloudflare.com | run=1 | 61ms | NOERROR
+[4/100] gstatic.com | run=1 | 62ms | NOERROR
+[5/100] apple.com | run=1 | 58ms | NOERROR
+[6/100] microsoft.com | run=1 | 61ms | NOERROR
+[7/100] facebook.com | run=1 | 62ms | NOERROR
+[8/100] amazonaws.com | run=1 | 62ms | NOERROR
+[9/100] googlevideo.com | run=1 | 62ms | NOERROR
+[10/100] fbcdn.net | run=1 | 58ms | NOERROR
+[11/100] amazon.com | run=1 | 60ms | NOERROR
+[12/100] whatsapp.net | run=1 | 153ms | NOERROR
+[13/100] instagram.com | run=1 | 59ms | NOERROR
+[14/100] youtube.com | run=1 | 58ms | NOERROR
+[15/100] apple-dns.net | run=1 | 65ms | NOERROR
+[16/100] doubleclick.net | run=1 | 62ms | NOERROR
+[17/100] bing.com | run=1 | 55ms | NOERROR
+[18/100] netflix.com | run=1 | 63ms | NOERROR
+[19/100] akadns.net | run=1 | 65ms | NOERROR
+[20/100] icloud.com | run=1 | 62ms | NOERROR
+[21/100] ntp.org | run=1 | 63ms | NOERROR
+[22/100] googleusercontent.com | run=1 | 67ms | NOERROR
+[23/100] aaplimg.com | run=1 | 67ms | NOERROR
+[24/100] cloudflare-dns.com | run=1 | 62ms | NOERROR
+[25/100] live.com | run=1 | 60ms | NOERROR
+[26/100] cdninstagram.com | run=1 | 63ms | NOERROR
+[27/100] akamai.net | run=1 | 66ms | NOERROR
+[28/100] googlesyndication.com | run=1 | 65ms | NOERROR
+[29/100] tiktokv.com | run=1 | 63ms | NOERROR
+[30/100] tiktokcdn.com | run=1 | 58ms | NOERROR
+[31/100] cloudfront.net | run=1 | 63ms | NOERROR
+[32/100] chatgpt.com | run=1 | 60ms | NOERROR
+[33/100] ui.com | run=1 | 59ms | NOERROR
+[34/100] openai.com | run=1 | 62ms | NOERROR
+[35/100] ytimg.com | run=1 | 63ms | NOERROR
+[36/100] akamaiedge.net | run=1 | 61ms | NOERROR
+[37/100] app-analytics-services.com | run=1 | 59ms | NOERROR
+[38/100] roblox.com | run=1 | 189ms | NOERROR
+[39/100] yahoo.com | run=1 | 58ms | NOERROR
+[40/100] fastly.net | run=1 | 59ms | NOERROR
+[41/100] spotify.com | run=1 | 61ms | NOERROR
+[42/100] sentry.io | run=1 | 57ms | NOERROR
+[43/100] baidu.com | run=1 | 65ms | NOERROR
+[44/100] gvt2.com | run=1 | 63ms | NOERROR
+[45/100] samsung.com | run=1 | 63ms | NOERROR
+[46/100] app-measurement.com | run=1 | 61ms | NOERROR
+[47/100] office.com | run=1 | 68ms | NOERROR
+[48/100] steamserver.net | run=1 | 63ms | NOERROR
+[49/100] one.one | run=1 | 59ms | NOERROR
+[50/100] gvt1.com | run=1 | 58ms | NOERROR
+[51/100] wikipedia.org | run=1 | 61ms | NOERROR
+[52/100] dns.google | run=1 | 61ms | NOERROR
+[53/100] appsflyersdk.com | run=1 | 64ms | NOERROR
+[54/100] msftncsi.com | run=1 | 64ms | NOERROR
+[55/100] google-analytics.com | run=1 | 65ms | NOERROR
+[56/100] applovin.com | run=1 | 66ms | NOERROR
+[57/100] trafficmanager.net | run=1 | 68ms | NOERROR
+[58/100] snapchat.com | run=1 | 63ms | NOERROR
+[59/100] a2z.com | run=1 | 70ms | NOERROR
+[60/100] azure.com | run=1 | 65ms | NOERROR
+[61/100] criteo.com | run=1 | 113ms | NOERROR
+[62/100] 3gppnetwork.org | run=1 | 63ms | NOERROR
+[63/100] windows.com | run=1 | 68ms | NOERROR
+[64/100] whatsapp.com | run=1 | 64ms | NOERROR
+[65/100] amazon-adsystem.com | run=1 | 62ms | NOERROR
+[66/100] amazon.dev | run=1 | 62ms | NOERROR
+[67/100] adsafeprotected.com | run=1 | 67ms | NOERROR
+[68/100] ggpht.com | run=1 | 65ms | NOERROR
+[69/100] msn.com | run=1 | 65ms | NOERROR
+[70/100] unity3d.com | run=1 | 143ms | NOERROR
+[71/100] linkedin.com | run=1 | 62ms | NOERROR
+[72/100] googletagmanager.com | run=1 | 63ms | NOERROR
+[73/100] windows.net | run=1 | 58ms | NOERROR
+[74/100] twc.com | run=1 | 364ms | NOERROR
+[75/100] microsoftonline.com | run=1 | 64ms | NOERROR
+[76/100] playstation.net | run=1 | 67ms | NOERROR
+[77/100] statsigapi.net | run=1 | 64ms | NOERROR
+[78/100] capcutapi.com | run=1 | 61ms | NOERROR
+[79/100] adtrafficquality.google | run=1 | 63ms | NOERROR
+[80/100] rubiconproject.com | run=1 | 65ms | NOERROR
+[81/100] xiaomi.com | run=1 | 62ms | NOERROR
+[82/100] cloud.microsoft | run=1 | 59ms | NOERROR
+[83/100] vungle.com | run=1 | 67ms | NOERROR
+[84/100] digicert.com | run=1 | 63ms | NOERROR
+[85/100] windowsupdate.com | run=1 | 63ms | NOERROR
+[86/100] skype.com | run=1 | 67ms | NOERROR
+[87/100] cdn-apple.com | run=1 | 64ms | NOERROR
+[88/100] msftconnecttest.com | run=1 | 65ms | NOERROR
+[89/100] gmail.com | run=1 | 87ms | NOERROR
+[90/100] yandex.net | run=1 | 61ms | NOERROR
+[91/100] tiktok.com | run=1 | 61ms | NOERROR
+[92/100] aws.dev | run=1 | 60ms | NOERROR
+[93/100] appsflyer.com | run=1 | 57ms | NOERROR
+[94/100] taboola.com | run=1 | 65ms | NOERROR
+[95/100] media-amazon.com | run=1 | 62ms | NOERROR
+[96/100] lencr.org | run=1 | 71ms | NOERROR
+[97/100] miui.com | run=1 | 156ms | NOERROR
+[98/100] qq.com | run=1 | 66ms | NOERROR
+[99/100] outlook.com | run=1 | 64ms | NOERROR
+[100/100] amazonvideo.com | run=1 | 71ms | NOERROR
+
+Done.
+Results saved to: /tmp/tmp.xeX8Wfz0k8
+
+[7/10] Resolver: 103.99.150.10
+Starting DNS measurements
+Domains : 100
+Runs    : 1
+Type    : A
+Server  : 103.99.150.10
+Output  : /tmp/tmp.MwysUFCTpX
+
+[1/100] google.com | run=1 | 57ms | NOERROR
+[2/100] googleapis.com | run=1 | 56ms | NOERROR
+[3/100] cloudflare.com | run=1 | 52ms | NOERROR
+[4/100] gstatic.com | run=1 | 51ms | NOERROR
+[5/100] apple.com | run=1 | 54ms | NOERROR
+[6/100] microsoft.com | run=1 | 55ms | NOERROR
+[7/100] facebook.com | run=1 | 45ms | NOERROR
+[8/100] amazonaws.com | run=1 | 51ms | NOERROR
+[9/100] googlevideo.com | run=1 | 54ms | NOERROR
+[10/100] fbcdn.net | run=1 | 67ms | NOERROR
+[11/100] amazon.com | run=1 | 54ms | NOERROR
+[12/100] whatsapp.net | run=1 | 62ms | NOERROR
+[13/100] instagram.com | run=1 | 61ms | NOERROR
+[14/100] youtube.com | run=1 | 52ms | NOERROR
+[15/100] apple-dns.net | run=1 | 73ms | NOERROR
+[16/100] doubleclick.net | run=1 | 71ms | NOERROR
+[17/100] bing.com | run=1 | 48ms | NOERROR
+[18/100] netflix.com | run=1 | 57ms | NOERROR
+[19/100] akadns.net | run=1 | 70ms | NOERROR
+[20/100] icloud.com | run=1 | 49ms | NOERROR
+[21/100] ntp.org | run=1 | 332ms | NOERROR
+[22/100] googleusercontent.com | run=1 | 75ms | NOERROR
+[23/100] aaplimg.com | run=1 | 66ms | NOERROR
+[24/100] cloudflare-dns.com | run=1 | 51ms | NOERROR
+[25/100] live.com | run=1 | 53ms | NOERROR
+[26/100] cdninstagram.com | run=1 | 58ms | NOERROR
+[27/100] akamai.net | run=1 | 81ms | NOERROR
+[28/100] googlesyndication.com | run=1 | 75ms | NOERROR
+[29/100] tiktokv.com | run=1 | 72ms | NOERROR
+[30/100] tiktokcdn.com | run=1 | 49ms | NOERROR
+[31/100] cloudfront.net | run=1 | 73ms | NOERROR
+[32/100] chatgpt.com | run=1 | 54ms | NOERROR
+[33/100] ui.com | run=1 | 57ms | NOERROR
+[34/100] openai.com | run=1 | 70ms | NOERROR
+[35/100] ytimg.com | run=1 | 76ms | NOERROR
+[36/100] akamaiedge.net | run=1 | 73ms | NOERROR
+[37/100] app-analytics-services.com | run=1 | 51ms | NOERROR
+[38/100] roblox.com | run=1 | 67ms | NOERROR
+[39/100] yahoo.com | run=1 | 52ms | NOERROR
+[40/100] fastly.net | run=1 | 64ms | NOERROR
+[41/100] spotify.com | run=1 | 71ms | NOERROR
+[42/100] sentry.io | run=1 | 47ms | NOERROR
+[43/100] baidu.com | run=1 | 46ms | NOERROR
+[44/100] gvt2.com | run=1 | 75ms | NOERROR
+[45/100] samsung.com | run=1 | 165ms | NOERROR
+[46/100] app-measurement.com | run=1 | 51ms | NOERROR
+[47/100] office.com | run=1 | 46ms | NOERROR
+[48/100] steamserver.net | run=1 | 54ms | NOERROR
+[49/100] one.one | run=1 | 240ms | NOERROR
+[50/100] gvt1.com | run=1 | 82ms | NOERROR
+[51/100] wikipedia.org | run=1 | 53ms | NOERROR
+[52/100] dns.google | run=1 | 47ms | NOERROR
+[53/100] appsflyersdk.com | run=1 | 74ms | NOERROR
+[54/100] msftncsi.com | run=1 | 60ms | NOERROR
+[55/100] google-analytics.com | run=1 | 79ms | NOERROR
+[56/100] applovin.com | run=1 | 70ms | NOERROR
+[57/100] trafficmanager.net | run=1 | 55ms | NOERROR
+[58/100] snapchat.com | run=1 | 66ms | NOERROR
+[59/100] a2z.com | run=1 | 51ms | NOERROR
+[60/100] azure.com | run=1 | 59ms | NOERROR
+[61/100] criteo.com | run=1 | 266ms | NOERROR
+[62/100] 3gppnetwork.org | run=1 | 92ms | NOERROR
+[63/100] windows.com | run=1 | 56ms | NOERROR
+[64/100] whatsapp.com | run=1 | 55ms | NOERROR
+[65/100] amazon-adsystem.com | run=1 | 47ms | NOERROR
+[66/100] amazon.dev | run=1 | 59ms | NOERROR
+[67/100] adsafeprotected.com | run=1 | 76ms | NOERROR
+[68/100] ggpht.com | run=1 | 75ms | NOERROR
+[69/100] msn.com | run=1 | 71ms | NOERROR
+[70/100] unity3d.com | run=1 | 67ms | NOERROR
+[71/100] linkedin.com | run=1 | 59ms | NOERROR
+[72/100] googletagmanager.com | run=1 | 69ms | NOERROR
+[73/100] windows.net | run=1 | 61ms | NOERROR
+[74/100] twc.com | run=1 | 320ms | NOERROR
+[75/100] microsoftonline.com | run=1 | 57ms | NOERROR
+[76/100] playstation.net | run=1 | 65ms | NOERROR
+[77/100] statsigapi.net | run=1 | 49ms | NOERROR
+[78/100] capcutapi.com | run=1 | 71ms | NOERROR
+[79/100] adtrafficquality.google | run=1 | 74ms | NOERROR
+[80/100] rubiconproject.com | run=1 | 91ms | NOERROR
+[81/100] xiaomi.com | run=1 | 47ms | NOERROR
+[82/100] cloud.microsoft | run=1 | 70ms | NOERROR
+[83/100] vungle.com | run=1 | 67ms | NOERROR
+[84/100] digicert.com | run=1 | 67ms | NOERROR
+[85/100] windowsupdate.com | run=1 | 66ms | NOERROR
+[86/100] skype.com | run=1 | 48ms | NOERROR
+[87/100] cdn-apple.com | run=1 | 77ms | NOERROR
+[88/100] msftconnecttest.com | run=1 | 60ms | NOERROR
+[89/100] gmail.com | run=1 | 57ms | NOERROR
+[90/100] yandex.net | run=1 | 261ms | NOERROR
+[91/100] tiktok.com | run=1 | 48ms | NOERROR
+[92/100] aws.dev | run=1 | 65ms | NOERROR
+[93/100] appsflyer.com | run=1 | 61ms | NOERROR
+[94/100] taboola.com | run=1 | 84ms | NOERROR
+[95/100] media-amazon.com | run=1 | 62ms | NOERROR
+[96/100] lencr.org | run=1 | 59ms | NOERROR
+[97/100] miui.com | run=1 | 69ms | NOERROR
+[98/100] qq.com | run=1 | 330ms | NOERROR
+[99/100] outlook.com | run=1 | 47ms | NOERROR
+[100/100] amazonvideo.com | run=1 | 75ms | NOERROR
+
+Done.
+Results saved to: /tmp/tmp.MwysUFCTpX
+
+[8/10] Resolver: 112.196.19.243
+Starting DNS measurements
+Domains : 100
+Runs    : 1
+Type    : A
+Server  : 112.196.19.243
+Output  : /tmp/tmp.1NNngjyI60
+
+[1/100] google.com | run=1 | 63ms | NOERROR
+[2/100] googleapis.com | run=1 | 58ms | NOERROR
+[3/100] cloudflare.com | run=1 | 55ms | NOERROR
+[4/100] gstatic.com | run=1 | 57ms | NOERROR
+[5/100] apple.com | run=1 | 56ms | NOERROR
+[6/100] microsoft.com | run=1 | 87ms | NOERROR
+[7/100] facebook.com | run=1 | 63ms | NOERROR
+[8/100] amazonaws.com | run=1 | 60ms | NOERROR
+[9/100] googlevideo.com | run=1 | 55ms | NOERROR
+[10/100] fbcdn.net | run=1 | 76ms | NOERROR
+[11/100] amazon.com | run=1 | 54ms | NOERROR
+[12/100] whatsapp.net | run=1 | 62ms | NOERROR
+[13/100] instagram.com | run=1 | 61ms | NOERROR
+[14/100] youtube.com | run=1 | 58ms | NOERROR
+[15/100] apple-dns.net | run=1 | 88ms | NOERROR
+[16/100] doubleclick.net | run=1 | 64ms | NOERROR
+[17/100] bing.com | run=1 | 60ms | NOERROR
+[18/100] netflix.com | run=1 | 63ms | NOERROR
+[19/100] akadns.net | run=1 | 68ms | NOERROR
+[20/100] icloud.com | run=1 | 63ms | NOERROR
+[21/100] ntp.org | run=1 | 227ms | NOERROR
+[22/100] googleusercontent.com | run=1 | 59ms | NOERROR
+[23/100] aaplimg.com | run=1 | 90ms | NOERROR
+[24/100] cloudflare-dns.com | run=1 | 67ms | NOERROR
+[25/100] live.com | run=1 | 57ms | NOERROR
+[26/100] cdninstagram.com | run=1 | 61ms | NOERROR
+[27/100] akamai.net | run=1 | 87ms | NOERROR
+[28/100] googlesyndication.com | run=1 | 66ms | NOERROR
+[29/100] tiktokv.com | run=1 | 188ms | NOERROR
+[30/100] tiktokcdn.com | run=1 | 86ms | NOERROR
+[31/100] cloudfront.net | run=1 | 89ms | NOERROR
+[32/100] chatgpt.com | run=1 | 54ms | NOERROR
+[33/100] ui.com | run=1 | 60ms | NOERROR
+[34/100] openai.com | run=1 | 96ms | NOERROR
+[35/100] ytimg.com | run=1 | 66ms | NOERROR
+[36/100] akamaiedge.net | run=1 | 86ms | NOERROR
+[37/100] app-analytics-services.com | run=1 | 61ms | NOERROR
+[38/100] roblox.com | run=1 | 88ms | NOERROR
+[39/100] yahoo.com | run=1 | 54ms | NOERROR
+[40/100] fastly.net | run=1 | 92ms | NOERROR
+[41/100] spotify.com | run=1 | 59ms | NOERROR
+[42/100] sentry.io | run=1 | 57ms | NOERROR
+[43/100] baidu.com | run=1 | 56ms | NOERROR
+[44/100] gvt2.com | run=1 | 143ms | NOERROR
+[45/100] samsung.com | run=1 | 298ms | NOERROR
+[46/100] app-measurement.com | run=1 | 63ms | NOERROR
+[47/100] office.com | run=1 | 61ms | NOERROR
+[48/100] steamserver.net | run=1 | 58ms | NOERROR
+[49/100] one.one | run=1 | 411ms | NOERROR
+[50/100] gvt1.com | run=1 | 68ms | NOERROR
+[51/100] wikipedia.org | run=1 | 57ms | NOERROR
+[52/100] dns.google | run=1 | 56ms | NOERROR
+[53/100] appsflyersdk.com | run=1 | 96ms | NOERROR
+[54/100] msftncsi.com | run=1 | 89ms | NOERROR
+[55/100] google-analytics.com | run=1 | 69ms | NOERROR
+[56/100] applovin.com | run=1 | 85ms | NOERROR
+[57/100] trafficmanager.net | run=1 | 94ms | NOERROR
+[58/100] snapchat.com | run=1 | 74ms | NOERROR
+[59/100] a2z.com | run=1 | 66ms | NOERROR
+[60/100] azure.com | run=1 | 95ms | NOERROR
+[61/100] criteo.com | run=1 | 221ms | NOERROR
+[62/100] 3gppnetwork.org | run=1 | 59ms | NOERROR
+[63/100] windows.com | run=1 | 55ms | NOERROR
+[64/100] whatsapp.com | run=1 | 59ms | NOERROR
+[65/100] amazon-adsystem.com | run=1 | 57ms | NOERROR
+[66/100] amazon.dev | run=1 | 69ms | NOERROR
+[67/100] adsafeprotected.com | run=1 | 109ms | NOERROR
+[68/100] ggpht.com | run=1 | 67ms | NOERROR
+[69/100] msn.com | run=1 | 165ms | NOERROR
+[70/100] unity3d.com | run=1 | 94ms | NOERROR
+[71/100] linkedin.com | run=1 | 54ms | NOERROR
+[72/100] googletagmanager.com | run=1 | 54ms | NOERROR
+[73/100] windows.net | run=1 | 92ms | NOERROR
+[74/100] twc.com | run=1 | 55ms | NOERROR
+[75/100] microsoftonline.com | run=1 | 93ms | NOERROR
+[76/100] playstation.net | run=1 | 93ms | NOERROR
+[77/100] statsigapi.net | run=1 | 190ms | NOERROR
+[78/100] capcutapi.com | run=1 | 165ms | NOERROR
+[79/100] adtrafficquality.google | run=1 | 74ms | NOERROR
+[80/100] rubiconproject.com | run=1 | 98ms | NOERROR
+[81/100] xiaomi.com | run=1 | 131ms | NOERROR
+[82/100] cloud.microsoft | run=1 | 56ms | NOERROR
+[83/100] vungle.com | run=1 | 197ms | NOERROR
+[84/100] digicert.com | run=1 | 58ms | NOERROR
+[85/100] windowsupdate.com | run=1 | 60ms | NOERROR
+[86/100] skype.com | run=1 | 61ms | NOERROR
+[87/100] cdn-apple.com | run=1 | 185ms | NOERROR
+[88/100] msftconnecttest.com | run=1 | 178ms | NOERROR
+[89/100] gmail.com | run=1 | 61ms | NOERROR
+[90/100] yandex.net | run=1 | 444ms | NOERROR
+[91/100] tiktok.com | run=1 | 55ms | NOERROR
+[92/100] aws.dev | run=1 | 87ms | NOERROR
+[93/100] appsflyer.com | run=1 | 150ms | NOERROR
+[94/100] taboola.com | run=1 | 113ms | NOERROR
+[95/100] media-amazon.com | run=1 | 106ms | NOERROR
+[96/100] lencr.org | run=1 | 60ms | NOERROR
+[97/100] miui.com | run=1 | 151ms | NOERROR
+[98/100] qq.com | run=1 | 62ms | NOERROR
+[99/100] outlook.com | run=1 | 54ms | NOERROR
+[100/100] amazonvideo.com | run=1 | 86ms | NOERROR
+
+Done.
+Results saved to: /tmp/tmp.1NNngjyI60
+
+[9/10] Resolver: 182.19.95.98
+Starting DNS measurements
+Domains : 100
+Runs    : 1
+Type    : A
+Server  : 182.19.95.98
+Output  : /tmp/tmp.iCoPzwPCJ7
+
+[1/100] google.com | run=1 | 74ms | NOERROR
+[2/100] googleapis.com | run=1 | 73ms | NOERROR
+[3/100] cloudflare.com | run=1 | 73ms | NOERROR
+[4/100] gstatic.com | run=1 | 77ms | NOERROR
+[5/100] apple.com | run=1 | 74ms | NOERROR
+[6/100] microsoft.com | run=1 | 74ms | NOERROR
+[7/100] facebook.com | run=1 | 72ms | NOERROR
+[8/100] amazonaws.com | run=1 | 75ms | NOERROR
+[9/100] googlevideo.com | run=1 | 99ms | NOERROR
+[10/100] fbcdn.net | run=1 | 73ms | NOERROR
+[11/100] amazon.com | run=1 | 74ms | NOERROR
+[12/100] whatsapp.net | run=1 | 77ms | NOERROR
+[13/100] instagram.com | run=1 | 102ms | NOERROR
+[14/100] youtube.com | run=1 | 72ms | NXDOMAIN
+[15/100] apple-dns.net | run=1 | 102ms | NOERROR
+[16/100] doubleclick.net | run=1 | 144ms | NOERROR
+[17/100] bing.com | run=1 | 73ms | NOERROR
+[18/100] netflix.com | run=1 | 114ms | NOERROR
+[19/100] akadns.net | run=1 | 74ms | NOERROR
+[20/100] icloud.com | run=1 | 99ms | NOERROR
+[21/100] ntp.org | run=1 | 336ms | NOERROR
+[22/100] googleusercontent.com | run=1 | 74ms | NOERROR
+[23/100] aaplimg.com | run=1 | 103ms | NOERROR
+[24/100] cloudflare-dns.com | run=1 | 75ms | NOERROR
+[25/100] live.com | run=1 | 74ms | NOERROR
+[26/100] cdninstagram.com | run=1 | 111ms | NOERROR
+[27/100] akamai.net | run=1 | 99ms | NOERROR
+[28/100] googlesyndication.com | run=1 | 142ms | NOERROR
+[29/100] tiktokv.com | run=1 | 240ms | NOERROR
+[30/100] tiktokcdn.com | run=1 | 101ms | NOERROR
+[31/100] cloudfront.net | run=1 | 104ms | NOERROR
+[32/100] chatgpt.com | run=1 | 228ms | NOERROR
+[33/100] ui.com | run=1 | 104ms | NOERROR
+[34/100] openai.com | run=1 | 102ms | NOERROR
+[35/100] ytimg.com | run=1 | 99ms | NOERROR
+[36/100] akamaiedge.net | run=1 | 145ms | NOERROR
+[37/100] app-analytics-services.com | run=1 | 221ms | NOERROR
+[38/100] roblox.com | run=1 | 114ms | NOERROR
+[39/100] yahoo.com | run=1 | 75ms | NOERROR
+[40/100] fastly.net | run=1 | 102ms | NOERROR
+[41/100] spotify.com | run=1 | 107ms | NOERROR
+[42/100] sentry.io | run=1 | 102ms | NOERROR
+[43/100] baidu.com | run=1 | 326ms | NOERROR
+[44/100] gvt2.com | run=1 | 146ms | NOERROR
+[45/100] samsung.com | run=1 | 221ms | NOERROR
+[46/100] app-measurement.com | run=1 | 74ms | NOERROR
+[47/100] office.com | run=1 | 73ms | NOERROR
+[48/100] steamserver.net | run=1 | 142ms | NOERROR
+[49/100] one.one | run=1 | 237ms | NOERROR
+[50/100] gvt1.com | run=1 | 74ms | NOERROR
+[51/100] wikipedia.org | run=1 | 73ms | NOERROR
+[52/100] dns.google | run=1 | 72ms | NOERROR
+[53/100] appsflyersdk.com | run=1 | 144ms | NOERROR
+[54/100] msftncsi.com | run=1 | 103ms | NOERROR
+[55/100] google-analytics.com | run=1 | 73ms | NOERROR
+[56/100] applovin.com | run=1 | 98ms | NOERROR
+[57/100] trafficmanager.net | run=1 | 101ms | NOERROR
+[58/100] snapchat.com | run=1 | 101ms | NOERROR
+[59/100] a2z.com | run=1 | 75ms | NOERROR
+[60/100] azure.com | run=1 | 73ms | NOERROR
+[61/100] criteo.com | run=1 | 221ms | NOERROR
+[62/100] 3gppnetwork.org | run=1 | 116ms | NOERROR
+[63/100] windows.com | run=1 | 105ms | NOERROR
+[64/100] whatsapp.com | run=1 | 74ms | NOERROR
+[65/100] amazon-adsystem.com | run=1 | 111ms | NOERROR
+[66/100] amazon.dev | run=1 | 99ms | NOERROR
+[67/100] adsafeprotected.com | run=1 | 185ms | NOERROR
+[68/100] ggpht.com | run=1 | 140ms | NOERROR
+[69/100] msn.com | run=1 | 76ms | NOERROR
+[70/100] unity3d.com | run=1 | 188ms | NOERROR
+[71/100] linkedin.com | run=1 | 73ms | NOERROR
+[72/100] googletagmanager.com | run=1 | 76ms | NOERROR
+[73/100] windows.net | run=1 | 74ms | NOERROR
+[74/100] twc.com | run=1 | 492ms | NOERROR
+[75/100] microsoftonline.com | run=1 | 72ms | NOERROR
+[76/100] playstation.net | run=1 | 101ms | NOERROR
+[77/100] statsigapi.net | run=1 | 203ms | NOERROR
+[78/100] capcutapi.com | run=1 | 282ms | NOERROR
+[79/100] adtrafficquality.google | run=1 | 75ms | NOERROR
+[80/100] rubiconproject.com | run=1 | 103ms | NOERROR
+[81/100] xiaomi.com | run=1 | 185ms | NOERROR
+[82/100] cloud.microsoft | run=1 | 103ms | NOERROR
+[83/100] vungle.com | run=1 | 98ms | NOERROR
+[84/100] digicert.com | run=1 | 75ms | NOERROR
+[85/100] windowsupdate.com | run=1 | 104ms | NOERROR
+[86/100] skype.com | run=1 | 103ms | NOERROR
+[87/100] cdn-apple.com | run=1 | 106ms | NOERROR
+[88/100] msftconnecttest.com | run=1 | 242ms | NOERROR
+[89/100] gmail.com | run=1 | 75ms | NOERROR
+[90/100] yandex.net | run=1 | 317ms | NOERROR
+[91/100] tiktok.com | run=1 | 72ms | NXDOMAIN
+[92/100] aws.dev | run=1 | 77ms | NOERROR
+[93/100] appsflyer.com | run=1 | 77ms | NOERROR
+[94/100] taboola.com | run=1 | 215ms | NOERROR
+[95/100] media-amazon.com | run=1 | 101ms | NOERROR
+[96/100] lencr.org | run=1 | 78ms | NOERROR
+[97/100] miui.com | run=1 | 180ms | NOERROR
+[98/100] qq.com | run=1 | 74ms | NXDOMAIN
+[99/100] outlook.com | run=1 | 73ms | NOERROR
+[100/100] amazonvideo.com | run=1 | 125ms | NOERROR
+
+Done.
+Results saved to: /tmp/tmp.iCoPzwPCJ7
+
+[10/10] Resolver: 93.127.172.59
+Starting DNS measurements
+Domains : 100
+Runs    : 1
+Type    : A
+Server  : 93.127.172.59
+Output  : /tmp/tmp.OA256H6GxP
+
+[1/100] google.com | run=1 | 116ms | NOERROR
+[2/100] googleapis.com | run=1 | 113ms | NOERROR
+[3/100] cloudflare.com | run=1 | 51ms | NOERROR
+[4/100] gstatic.com | run=1 | 55ms | NOERROR
+[5/100] apple.com | run=1 | 55ms | NOERROR
+[6/100] microsoft.com | run=1 | 56ms | NOERROR
+[7/100] facebook.com | run=1 | 52ms | NOERROR
+[8/100] amazonaws.com | run=1 | 71ms | NOERROR
+[9/100] googlevideo.com | run=1 | 74ms | NOERROR
+[10/100] fbcdn.net | run=1 | 52ms | NOERROR
+[11/100] amazon.com | run=1 | 78ms | NOERROR
+[12/100] whatsapp.net | run=1 | 52ms | NOERROR
+[13/100] instagram.com | run=1 | 53ms | NOERROR
+[14/100] youtube.com | run=1 | 53ms | NOERROR
+[15/100] apple-dns.net | run=1 | 182ms | NOERROR
+[16/100] doubleclick.net | run=1 | 53ms | NOERROR
+[17/100] bing.com | run=1 | 183ms | NOERROR
+[18/100] netflix.com | run=1 | 72ms | NOERROR
+[19/100] akadns.net | run=1 | 54ms | NOERROR
+[20/100] icloud.com | run=1 | 54ms | NOERROR
+[21/100] ntp.org | run=1 | 99ms | NOERROR
+[22/100] googleusercontent.com | run=1 | 52ms | NOERROR
+[23/100] aaplimg.com | run=1 | 51ms | NOERROR
+[24/100] cloudflare-dns.com | run=1 | 53ms | NOERROR
+[25/100] live.com | run=1 | 62ms | NOERROR
+[26/100] cdninstagram.com | run=1 | 63ms | NOERROR
+[27/100] akamai.net | run=1 | 53ms | NOERROR
+[28/100] googlesyndication.com | run=1 | 54ms | NOERROR
+[29/100] tiktokv.com | run=1 | 53ms | NOERROR
+[30/100] tiktokcdn.com | run=1 | 48ms | NOERROR
+[31/100] cloudfront.net | run=1 | 57ms | NOERROR
+[32/100] chatgpt.com | run=1 | 57ms | NOERROR
+[33/100] ui.com | run=1 | 90ms | NOERROR
+[34/100] openai.com | run=1 | 56ms | NOERROR
+[35/100] ytimg.com | run=1 | 52ms | NOERROR
+[36/100] akamaiedge.net | run=1 | 54ms | NOERROR
+[37/100] app-analytics-services.com | run=1 | 53ms | NOERROR
+[38/100] roblox.com | run=1 | 157ms | NOERROR
+[39/100] yahoo.com | run=1 | 292ms | NOERROR
+[40/100] fastly.net | run=1 | 53ms | NOERROR
+[41/100] spotify.com | run=1 | 66ms | NOERROR
+[42/100] sentry.io | run=1 | 116ms | NOERROR
+[43/100] baidu.com | run=1 | 306ms | NOERROR
+[44/100] gvt2.com | run=1 | 56ms | NOERROR
+[45/100] samsung.com | run=1 | 322ms | NOERROR
+[46/100] app-measurement.com | run=1 | 55ms | NOERROR
+[47/100] office.com | run=1 | 60ms | NOERROR
+[48/100] steamserver.net | run=1 | 46ms | NOERROR
+[49/100] one.one | run=1 | 359ms | NOERROR
+[50/100] gvt1.com | run=1 | 53ms | NOERROR
+[51/100] wikipedia.org | run=1 | 343ms | NOERROR
+[52/100] dns.google | run=1 | 1148ms | NOERROR
+[53/100] appsflyersdk.com | run=1 | 92ms | NOERROR
+[54/100] msftncsi.com | run=1 | 57ms | NOERROR
+[55/100] google-analytics.com | run=1 | 52ms | NOERROR
+[56/100] applovin.com | run=1 | 54ms | NOERROR
+[57/100] trafficmanager.net | run=1 | 63ms | NOERROR
+[58/100] snapchat.com | run=1 | 70ms | NOERROR
+[59/100] a2z.com | run=1 | 47ms | NOERROR
+[60/100] azure.com | run=1 | 59ms | NOERROR
+[61/100] criteo.com | run=1 | 125ms | NOERROR
+[62/100] 3gppnetwork.org | run=1 | 50ms | NOERROR
+[63/100] windows.com | run=1 | 56ms | NOERROR
+[64/100] whatsapp.com | run=1 | 56ms | NOERROR
+[65/100] amazon-adsystem.com | run=1 | 69ms | NOERROR
+[66/100] amazon.dev | run=1 | 457ms | NOERROR
+[67/100] adsafeprotected.com | run=1 | 191ms | NOERROR
+[68/100] ggpht.com | run=1 | 55ms | NOERROR
+[69/100] msn.com | run=1 | 56ms | NOERROR
+[70/100] unity3d.com | run=1 | 106ms | NOERROR
+[71/100] linkedin.com | run=1 | 198ms | NOERROR
+[72/100] googletagmanager.com | run=1 | 56ms | NOERROR
+[73/100] windows.net | run=1 | 57ms | NOERROR
+[74/100] twc.com | run=1 | 341ms | NOERROR
+[75/100] microsoftonline.com | run=1 | 57ms | NOERROR
+[76/100] playstation.net | run=1 | 52ms | NOERROR
+[77/100] statsigapi.net | run=1 | 56ms | NOERROR
+[78/100] capcutapi.com | run=1 | 122ms | NOERROR
+[79/100] adtrafficquality.google | run=1 | 56ms | NOERROR
+[80/100] rubiconproject.com | run=1 | 91ms | NOERROR
+[81/100] xiaomi.com | run=1 | 278ms | NOERROR
+[82/100] cloud.microsoft | run=1 | 192ms | NOERROR
+[83/100] vungle.com | run=1 | 110ms | NOERROR
+[84/100] digicert.com | run=1 | 53ms | NOERROR
+[85/100] windowsupdate.com | run=1 | 57ms | NOERROR
+[86/100] skype.com | run=1 | 56ms | NOERROR
+[87/100] cdn-apple.com | run=1 | 54ms | NOERROR
+[88/100] msftconnecttest.com | run=1 | 62ms | NOERROR
+[89/100] gmail.com | run=1 | 56ms | NOERROR
+[90/100] yandex.net | run=1 | 229ms | NOERROR
+[91/100] tiktok.com | run=1 | 53ms | NOERROR
+[92/100] aws.dev | run=1 | 56ms | NOERROR
+[93/100] appsflyer.com | run=1 | 72ms | NOERROR
+[94/100] taboola.com | run=1 | 267ms | NOERROR
+[95/100] media-amazon.com | run=1 | 74ms | NOERROR
+[96/100] lencr.org | run=1 | 103ms | NOERROR
+[97/100] miui.com | run=1 | 324ms | NOERROR
+[98/100] qq.com | run=1 | 320ms | NOERROR
+[99/100] outlook.com | run=1 | 55ms | NOERROR
+[100/100] amazonvideo.com | run=1 | 56ms | NOERROR
+
+Done.
+Results saved to: /tmp/tmp.OA256H6GxP
+
+Benchmark complete.
+Results saved to: /home/j.toshit/dns-latency-monitoring/data/dig_20261023T220001Z.csv

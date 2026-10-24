@@ -1,0 +1,27 @@
+DNS DATA VALIDATION REPORT
+==========================
+Input files discovered: 141
+Valid JSON files: 141
+Invalid JSON files: 0
+Files with invalid structure: 0
+Records in valid files: 140478
+Rows flattened: 140478
+Resolvers discovered: 25
+Malformed records skipped: 0
+Records missing resolver: 0
+Records missing domain: 0
+Records missing/invalid latency: 0
+Potential duplicate observations: 1
+
+Issues:
+- json_20261010T161938Z_exp1_2026-10-10_16-19-38_640425406.json: Expected 1000 records; found 441
+- json_20261010T200001Z_exp1_2026-10-10_20-00-01_410485027.json: Expected 1000 records; found 1002
+- json_20261011T180001Z_exp1_2026-10-11_18-00-01_529886938.json: Expected 1000 records; found 1002
+- json_20261013T160001Z_exp1_2026-10-13_16-00-01_523995248.json: Expected 1000 records; found 1002
+- json_20261016T160001Z_exp1_2026-10-16_16-00-01_907874814.json: Expected 1000 records; found 1006
+- json_20261017T120001Z_exp1_2026-10-17_12-00-01_095853205.json: Expected 1000 records; found 1002
+- json_20261018T100001Z_exp1_2026-10-18_10-00-01_268170612.json: Expected 1000 records; found 1004
+- json_20261018T220001Z_exp1_2026-10-18_22-00-01_337278628.json: Expected 1000 records; found 1002
+- json_20261019T200001Z_exp1_2026-10-19_20-00-01_576697026.json: Expected 1000 records; found 1015
+- json_20261020T000001Z_exp1_2026-10-20_00-00-01_751184396.json: Expected 1000 records; found 1002
+- ALL: Potential duplicate observations: 1

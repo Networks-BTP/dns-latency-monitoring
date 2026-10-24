@@ -1,0 +1,101 @@
+rank,domain,categories
+1,google.com,Search Engines
+2,googleapis.com,Information Technology;Content Servers
+3,cloudflare.com,Technology
+4,gstatic.com,Content Servers
+5,apple.com,Information Technology;Technology
+6,microsoft.com,Information Technology;Business
+7,facebook.com,Social Networks
+8,amazonaws.com,Technology
+9,googlevideo.com,Search Engines;Video Streaming
+10,fbcdn.net,Social Networks
+11,amazon.com,Ecommerce
+12,whatsapp.net,Instant Messengers;Internet Phone & VOIP
+13,instagram.com,Social Networks
+14,youtube.com,Video Streaming
+15,apple-dns.net,Content Servers
+16,doubleclick.net,Trackers/Analytics;Advertisements
+17,bing.com,Search Engines
+18,netflix.com,Movies;Video Streaming
+19,akadns.net,Content Servers
+20,icloud.com,File Sharing;Content Servers
+21,ntp.org,Technology;Government/Legal
+22,googleusercontent.com,Content Servers
+23,aaplimg.com,Information Technology;Content Servers;Technology
+24,cloudflare-dns.com,Content Servers
+25,live.com,Technology;Webmail
+26,cdninstagram.com,Content Servers
+27,akamai.net,Content Servers
+28,googlesyndication.com,Trackers/Analytics;Search Engines;Advertisements
+29,tiktokv.com,Social Networks;Video Streaming
+30,tiktokcdn.com,Content Servers;Social Networks
+31,cloudfront.net,Content Servers
+32,chatgpt.com,Artificial Intelligence;Chat
+33,ui.com,Technology
+34,openai.com,Artificial Intelligence;Chat;Technology
+35,ytimg.com,Content Servers
+36,akamaiedge.net,Content Servers
+37,app-analytics-services.com,Content Servers;Trackers/Analytics
+38,roblox.com,Gaming;Safe for Kids
+39,yahoo.com,News & Media
+40,fastly.net,Information Security;Information Technology;Technology
+41,spotify.com,Audio Streaming
+42,sentry.io,Business;Trackers/Analytics
+43,baidu.com,Search Engines
+44,gvt2.com,Content Servers
+45,samsung.com,Technology
+46,app-measurement.com,Trackers/Analytics;APIs
+47,office.com,Business
+48,steamserver.net,Gaming;Content Servers
+49,one.one,Information Technology
+50,gvt1.com,Content Servers
+51,wikipedia.org,Education;Reference
+52,dns.google,Information Technology
+53,appsflyersdk.com,Content Servers;Trackers/Analytics;APIs
+54,msftncsi.com,Content Servers
+55,google-analytics.com,Business;Trackers/Analytics;Technology
+56,applovin.com,Business;Trackers/Analytics;Technology
+57,trafficmanager.net,Information Technology;Content Servers
+58,snapchat.com,Photography;Social Networks
+59,a2z.com,Content Servers
+60,azure.com,Technology
+61,criteo.com,Business;Trackers/Analytics
+62,3gppnetwork.org,Content Servers
+63,windows.com,Information Technology
+64,whatsapp.com,Instant Messengers;Internet Phone & VOIP
+65,amazon-adsystem.com,Trackers/Analytics;Advertisements
+66,amazon.dev,Content Servers
+67,adsafeprotected.com,Trackers/Analytics;Advertisements
+68,ggpht.com,Content Servers
+69,msn.com,News & Media
+70,unity3d.com,Gaming;Technology
+71,linkedin.com,Professional Networking
+72,googletagmanager.com,Content Servers;Trackers/Analytics
+73,windows.net,Technology
+74,twc.com,Information Technology
+75,microsoftonline.com,Technology
+76,playstation.net,Gaming
+77,statsigapi.net,Content Servers;Trackers/Analytics;APIs
+78,capcutapi.com,Content Servers
+79,adtrafficquality.google,Trackers/Analytics
+80,rubiconproject.com,Business;Trackers/Analytics;Technology
+81,xiaomi.com,Technology
+82,cloud.microsoft,Information Technology;Business
+83,vungle.com,Business;Trackers/Analytics;Technology
+84,digicert.com,Information Security
+85,windowsupdate.com,Information Technology;Business
+86,skype.com,Instant Messengers;Internet Phone & VOIP
+87,cdn-apple.com,Content Servers
+88,msftconnecttest.com,Content Servers
+89,gmail.com,Webmail
+90,yandex.net,News & Media
+91,tiktok.com,Social Networks;Video Streaming
+92,aws.dev,Content Servers
+93,appsflyer.com,Business;Trackers/Analytics;Technology
+94,taboola.com,Business;Trackers/Analytics;Advertisements
+95,media-amazon.com,Content Servers
+96,lencr.org,Information Technology
+97,miui.com,Technology
+98,qq.com,News & Media
+99,outlook.com,Webmail
+100,amazonvideo.com,Television;Movies;Video Streaming

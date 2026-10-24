@@ -1,0 +1,7214 @@
+libbpf: Kernel error message: Exclusivity flag on, cannot modify
+libbpf: Kernel error message: Exclusivity flag on, cannot modify
+JSON output : json/exp1_2026-10-10_16-05-10_122278621.json
+============================================
+ DNS Tracer
+============================================
+Interface : enX0
+Ifindex   : 2
+
+BPF object loaded.
+Attaching XDP in generic/SKB mode...
+  XDP attached in generic/SKB mode.
+Attaching TC ingress...
+  TC ingress attached: handle=1 priority=1
+Attaching TC egress...
+  TC egress attached: handle=2 priority=1
+Creating ring-buffer manager...
+  XDP ring buffer added.
+  TC  ring buffer added.
+
+============================================
+ Tracer running
+============================================
+Listening for DNS events on enX0...
+Press Ctrl+C to stop.
+
+[XDP] RESPONSE 36.50.50.50:53 -> 172.16.14.27:54902 id=61352 type=A name=google.com rcode=0(NOERROR) answers=1 authority=0 additional=1
+
+  ---------------- DNS DETAILS ----------------
+  Header:
+    ID      : 61352
+    Flags   : 0x8180
+    QR      : 1
+    Opcode  : 0
+    AA      : 0
+    TC      : 0
+    RD      : 1
+    RA      : 1
+    AD      : 0
+    CD      : 0
+    RCODE   : 0 (NOERROR)
+
+  Counts:
+    Questions  : 1
+    Answers    : 1
+    Authority  : 0
+    Additional : 1
+
+  Questions:
+    Question 1:
+      Name  : google.com
+      Type  : 1 (A)
+      Class : 1 (IN)
+
+  Answers:
+    Answer 1:
+      Name     : google.com
+      Type     : 1 (A)
+      Class    : 1 (IN)
+      TTL      : 104
+      RDLength : 4
+      RDATA    : 142.250.182.238
+
+  Additional:
+    Additional 1:
+      Name     : .
+      Type     : 41 (OPT)
+      Class    : 1232 (UNKNOWN)
+      TTL      : 0
+      RDLength : 28
+      RDATA    : 000a0018c2af8c37c3739bf0010000006aca62396c815cdef8b27eba
+
+  Parser:
+    Parse OK             : yes
+    Parsed length        : 83 bytes
+    Truncated by capture : no
+  ---------------------------------------------
+
+========== DEBUG ==========
+BPF event->query_type = 1
+parser parse_ok = 1
+parser parsed_len = 51
+parser qdcount = 1
+parser question_count = 1
+parser QTYPE = 1
+parser QCLASS = 1
+parser QNAME = google.com
+RAW DNS PAYLOAD:
+ef a8 01 20 00 01 00 00 00 00 00 01 06 67 6f 6f 
+67 6c 65 03 63 6f 6d 00 00 01 00 01 00 00 29 04 
+d0 00 00 00 00 00 0c 00 0a 00 08 c2 af 8c 37 c3 
+73 9b f0 
+===========================
+[RESPONSE] 172.16.14.27:54902 -> 36.50.50.50:53 id=61352 type=A name=google.com latency=46.333 ms response_rcode=0(NOERROR) response_answers=1
+
+  ---------------- DNS DETAILS ----------------
+  Header:
+    ID      : 61352
+    Flags   : 0x0120
+    QR      : 0
+    Opcode  : 0
+    AA      : 0
+    TC      : 0
+    RD      : 1
+    RA      : 0
+    AD      : 1
+    CD      : 0
+    RCODE   : 0 (NOERROR)
+
+  Counts:
+    Questions  : 1
+    Answers    : 0
+    Authority  : 0
+    Additional : 1
+
+  Questions:
+    Question 1:
+      Name  : google.com
+      Type  : 1 (A)
+      Class : 1 (IN)
+
+  Additional:
+    Additional 1:
+      Name     : .
+      Type     : 41 (OPT)
+      Class    : 1232 (UNKNOWN)
+      TTL      : 0
+      RDLength : 12
+      RDATA    : 000a0008c2af8c37c3739bf0
+
+  Parser:
+    Parse OK             : yes
+    Parsed length        : 51 bytes
+    Truncated by capture : no
+  ---------------------------------------------
+[XDP] RESPONSE 36.50.50.50:53 -> 172.16.14.27:57230 id=4448 type=A name=googleapis.com rcode=0(NOERROR) answers=6 authority=0 additional=1
+
+  ---------------- DNS DETAILS ----------------
+  Header:
+    ID      : 4448
+    Flags   : 0x8180
+    QR      : 1
+    Opcode  : 0
+    AA      : 0
+    TC      : 0
+    RD      : 1
+    RA      : 1
+    AD      : 0
+    CD      : 0
+    RCODE   : 0 (NOERROR)
+
+  Counts:
+    Questions  : 1
+    Answers    : 6
+    Authority  : 0
+    Additional : 1
+
+  Questions:
+    Question 1:
+      Name  : googleapis.com
+      Type  : 1 (A)
+      Class : 1 (IN)
+
+  Answers:
+    Answer 1:
+      Name     : googleapis.com
+      Type     : 1 (A)
+      Class    : 1 (IN)
+      TTL      : 35
+      RDLength : 4
+      RDATA    : 192.178.158.106
+    Answer 2:
+      Name     : googleapis.com
+      Type     : 1 (A)
+      Class    : 1 (IN)
+      TTL      : 35
+      RDLength : 4
+      RDATA    : 192.178.158.105
+    Answer 3:
+      Name     : googleapis.com
+      Type     : 1 (A)
+      Class    : 1 (IN)
+      TTL      : 35
+      RDLength : 4
+      RDATA    : 192.178.158.104
+    Answer 4:
+      Name     : googleapis.com
+      Type     : 1 (A)
+      Class    : 1 (IN)
+      TTL      : 35
+      RDLength : 4
+      RDATA    : 192.178.158.99
+    Answer 5:
+      Name     : googleapis.com
+      Type     : 1 (A)
+      Class    : 1 (IN)
+      TTL      : 35
+      RDLength : 4
+      RDATA    : 192.178.158.103
+    Answer 6:
+      Name     : googleapis.com
+      Type     : 1 (A)
+      Class    : 1 (IN)
+      TTL      : 35
+      RDLength : 4
+      RDATA    : 192.178.158.147
+
+  Additional:
+    Additional 1:
+      Name     : .
+      Type     : 41 (OPT)
+      Class    : 1232 (UNKNOWN)
+      TTL      : 0
+      RDLength : 28
+      RDATA    : 000a0018cc4e0db635ac4a99010000006aca6239e246666b225b8c72
+
+  Parser:
+    Parse OK             : yes
+    Parsed length        : 167 bytes
+    Truncated by capture : no
+  ---------------------------------------------
+
+========== DEBUG ==========
+BPF event->query_type = 1
+parser parse_ok = 1
+parser parsed_len = 55
+parser qdcount = 1
+parser question_count = 1
+parser QTYPE = 1
+parser QCLASS = 1
+parser QNAME = googleapis.com
+RAW DNS PAYLOAD:
+11 60 01 20 00 01 00 00 00 00 00 01 0a 67 6f 6f 
+67 6c 65 61 70 69 73 03 63 6f 6d 00 00 01 00 01 
+00 00 29 04 d0 00 00 00 00 00 0c 00 0a 00 08 cc 
+4e 0d b6 35 ac 4a 99 
+===========================
+[RESPONSE] 172.16.14.27:57230 -> 36.50.50.50:53 id=4448 type=A name=googleapis.com latency=45.043 ms response_rcode=0(NOERROR) response_answers=6
+
+  ---------------- DNS DETAILS ----------------
+  Header:
+    ID      : 4448
+    Flags   : 0x0120
+    QR      : 0
+    Opcode  : 0
+    AA      : 0
+    TC      : 0
+    RD      : 1
+    RA      : 0
+    AD      : 1
+    CD      : 0
+    RCODE   : 0 (NOERROR)
+
+  Counts:
+    Questions  : 1
+    Answers    : 0
+    Authority  : 0
+    Additional : 1
+
+  Questions:
+    Question 1:
+      Name  : googleapis.com
+      Type  : 1 (A)
+      Class : 1 (IN)
+
+  Additional:
+    Additional 1:
+      Name     : .
+      Type     : 41 (OPT)
+      Class    : 1232 (UNKNOWN)
+      TTL      : 0
+      RDLength : 12
+      RDATA    : 000a0008cc4e0db635ac4a99
+
+  Parser:
+    Parse OK             : yes
+    Parsed length        : 55 bytes
+    Truncated by capture : no
+  ---------------------------------------------
+[XDP] RESPONSE 36.50.50.50:53 -> 172.16.14.27:35857 id=48684 type=A name=cloudflare.com rcode=0(NOERROR) answers=2 authority=0 additional=1
+
+  ---------------- DNS DETAILS ----------------
+  Header:
+    ID      : 48684
+    Flags   : 0x81a0
+    QR      : 1
+    Opcode  : 0
+    AA      : 0
+    TC      : 0
+    RD      : 1
+    RA      : 1
+    AD      : 1
+    CD      : 0
+    RCODE   : 0 (NOERROR)
+
+  Counts:
+    Questions  : 1
+    Answers    : 2
+    Authority  : 0
+    Additional : 1
+
+  Questions:
+    Question 1:
+      Name  : cloudflare.com
+      Type  : 1 (A)
+      Class : 1 (IN)
+
+  Answers:
+    Answer 1:
+      Name     : cloudflare.com
+      Type     : 1 (A)
+      Class    : 1 (IN)
+      TTL      : 284
+      RDLength : 4
+      RDATA    : 104.16.132.229
+    Answer 2:
+      Name     : cloudflare.com
+      Type     : 1 (A)
+      Class    : 1 (IN)
+      TTL      : 284
+      RDLength : 4
+      RDATA    : 104.16.133.229
+
+  Additional:
+    Additional 1:
+      Name     : .
+      Type     : 41 (OPT)
+      Class    : 1232 (UNKNOWN)
+      TTL      : 0
+      RDLength : 28
+      RDATA    : 000a0018e436f32978ede64a010000006aca62395a162524a7f619de
+
+  Parser:
+    Parse OK             : yes
+    Parsed length        : 103 bytes
+    Truncated by capture : no
+  ---------------------------------------------
+
+========== DEBUG ==========
+BPF event->query_type = 1
+parser parse_ok = 1
+parser parsed_len = 55
+parser qdcount = 1
+parser question_count = 1
+parser QTYPE = 1
+parser QCLASS = 1
+parser QNAME = cloudflare.com
+RAW DNS PAYLOAD:
+be 2c 01 20 00 01 00 00 00 00 00 01 0a 63 6c 6f 
+75 64 66 6c 61 72 65 03 63 6f 6d 00 00 01 00 01 
+00 00 29 04 d0 00 00 00 00 00 0c 00 0a 00 08 e4 
+36 f3 29 78 ed e6 4a 
+===========================
+[RESPONSE] 172.16.14.27:35857 -> 36.50.50.50:53 id=48684 type=A name=cloudflare.com latency=44.963 ms response_rcode=0(NOERROR) response_answers=2
+
+  ---------------- DNS DETAILS ----------------
+  Header:
+    ID      : 48684
+    Flags   : 0x0120
+    QR      : 0
+    Opcode  : 0
+    AA      : 0
+    TC      : 0
+    RD      : 1
+    RA      : 0
+    AD      : 1
+    CD      : 0
+    RCODE   : 0 (NOERROR)
+
+  Counts:
+    Questions  : 1
+    Answers    : 0
+    Authority  : 0
+    Additional : 1
+
+  Questions:
+    Question 1:
+      Name  : cloudflare.com
+      Type  : 1 (A)
+      Class : 1 (IN)
+
+  Additional:
+    Additional 1:
+      Name     : .
+      Type     : 41 (OPT)
+      Class    : 1232 (UNKNOWN)
+      TTL      : 0
+      RDLength : 12
+      RDATA    : 000a0008e436f32978ede64a
+
+  Parser:
+    Parse OK             : yes
+    Parsed length        : 55 bytes
+    Truncated by capture : no
+  ---------------------------------------------
+[XDP] RESPONSE 36.50.50.50:53 -> 172.16.14.27:47708 id=15171 type=A name=gstatic.com rcode=0(NOERROR) answers=2 authority=0 additional=1
+
+  ---------------- DNS DETAILS ----------------
+  Header:
+    ID      : 15171
+    Flags   : 0x8180
+    QR      : 1
+    Opcode  : 0
+    AA      : 0
+    TC      : 0
+    RD      : 1
+    RA      : 1
+    AD      : 0
+    CD      : 0
+    RCODE   : 0 (NOERROR)
+
+  Counts:
+    Questions  : 1
+    Answers    : 2
+    Authority  : 0
+    Additional : 1
+
+  Questions:
+    Question 1:
+      Name  : gstatic.com
+      Type  : 1 (A)
+      Class : 1 (IN)
+
+  Answers:
+    Answer 1:
+      Name     : gstatic.com
+      Type     : 1 (A)
+      Class    : 1 (IN)
+      TTL      : 134
+      RDLength : 4
+      RDATA    : 192.178.177.94
+    Answer 2:
+      Name     : gstatic.com
+      Type     : 1 (A)
+      Class    : 1 (IN)
+      TTL      : 134
+      RDLength : 4
+      RDATA    : 192.178.177.120
+
+  Additional:
+    Additional 1:
+      Name     : .
+      Type     : 41 (OPT)
+      Class    : 1232 (UNKNOWN)
+      TTL      : 0
+      RDLength : 28
+      RDATA    : 000a00189cf2e8089de6caef010000006aca62395c0520920743f586
+
+  Parser:
+    Parse OK             : yes
+    Parsed length        : 100 bytes
+    Truncated by capture : no
+  ---------------------------------------------
+
+========== DEBUG ==========
+BPF event->query_type = 1
+parser parse_ok = 1
+parser parsed_len = 52
+parser qdcount = 1
+parser question_count = 1
+parser QTYPE = 1
+parser QCLASS = 1
+parser QNAME = gstatic.com
+RAW DNS PAYLOAD:
+3b 43 01 20 00 01 00 00 00 00 00 01 07 67 73 74 
+61 74 69 63 03 63 6f 6d 00 00 01 00 01 00 00 29 
+04 d0 00 00 00 00 00 0c 00 0a 00 08 9c f2 e8 08 
+9d e6 ca ef 
+===========================
+[RESPONSE] 172.16.14.27:47708 -> 36.50.50.50:53 id=15171 type=A name=gstatic.com latency=45.070 ms response_rcode=0(NOERROR) response_answers=2
+
+  ---------------- DNS DETAILS ----------------
+  Header:
+    ID      : 15171
+    Flags   : 0x0120
+    QR      : 0
+    Opcode  : 0
+    AA      : 0
+    TC      : 0
+    RD      : 1
+    RA      : 0
+    AD      : 1
+    CD      : 0
+    RCODE   : 0 (NOERROR)
+
+  Counts:
+    Questions  : 1
+    Answers    : 0
+    Authority  : 0
+    Additional : 1
+
+  Questions:
+    Question 1:
+      Name  : gstatic.com
+      Type  : 1 (A)
+      Class : 1 (IN)
+
+  Additional:
+    Additional 1:
+      Name     : .
+      Type     : 41 (OPT)
+      Class    : 1232 (UNKNOWN)
+      TTL      : 0
+      RDLength : 12
+      RDATA    : 000a00089cf2e8089de6caef
+
+  Parser:
+    Parse OK             : yes
+    Parsed length        : 52 bytes
+    Truncated by capture : no
+  ---------------------------------------------
+[XDP] RESPONSE 36.50.50.50:53 -> 172.16.14.27:41850 id=42831 type=A name=apple.com rcode=0(NOERROR) answers=1 authority=0 additional=1
+
+  ---------------- DNS DETAILS ----------------
+  Header:
+    ID      : 42831
+    Flags   : 0x8180
+    QR      : 1
+    Opcode  : 0
+    AA      : 0
+    TC      : 0
+    RD      : 1
+    RA      : 1
+    AD      : 0
+    CD      : 0
+    RCODE   : 0 (NOERROR)
+
+  Counts:
+    Questions  : 1
+    Answers    : 1
+    Authority  : 0
+    Additional : 1
+
+  Questions:
+    Question 1:
+      Name  : apple.com
+      Type  : 1 (A)
+      Class : 1 (IN)
+
+  Answers:
+    Answer 1:
+      Name     : apple.com
+      Type     : 1 (A)
+      Class    : 1 (IN)
+      TTL      : 267
+      RDLength : 4
+      RDATA    : 17.253.144.10
+
+  Additional:
+    Additional 1:
+      Name     : .
+      Type     : 41 (OPT)
+      Class    : 1232 (UNKNOWN)
+      TTL      : 0
+      RDLength : 28
+      RDATA    : 000a0018ab4a0bf5e3d00511010000006aca62398be49b9f90f353db
+
+  Parser:
+    Parse OK             : yes
+    Parsed length        : 82 bytes
+    Truncated by capture : no
+  ---------------------------------------------
+
+========== DEBUG ==========
+BPF event->query_type = 1
+parser parse_ok = 1
+parser parsed_len = 50
+parser qdcount = 1
+parser question_count = 1
+parser QTYPE = 1
+parser QCLASS = 1
+parser QNAME = apple.com
+RAW DNS PAYLOAD:
+a7 4f 01 20 00 01 00 00 00 00 00 01 05 61 70 70 
+6c 65 03 63 6f 6d 00 00 01 00 01 00 00 29 04 d0 
+00 00 00 00 00 0c 00 0a 00 08 ab 4a 0b f5 e3 d0 
+05 11 
+===========================
+[RESPONSE] 172.16.14.27:41850 -> 36.50.50.50:53 id=42831 type=A name=apple.com latency=47.887 ms response_rcode=0(NOERROR) response_answers=1
+
+  ---------------- DNS DETAILS ----------------
+  Header:
+    ID      : 42831
+    Flags   : 0x0120
+    QR      : 0
+    Opcode  : 0
+    AA      : 0
+    TC      : 0
+    RD      : 1
+    RA      : 0
+    AD      : 1
+    CD      : 0
+    RCODE   : 0 (NOERROR)
+
+  Counts:
+    Questions  : 1
+    Answers    : 0
+    Authority  : 0
+    Additional : 1
+
+  Questions:
+    Question 1:
+      Name  : apple.com
+      Type  : 1 (A)
+      Class : 1 (IN)
+
+  Additional:
+    Additional 1:
+      Name     : .
+      Type     : 41 (OPT)
+      Class    : 1232 (UNKNOWN)
+      TTL      : 0
+      RDLength : 12
+      RDATA    : 000a0008ab4a0bf5e3d00511
+
+  Parser:
+    Parse OK             : yes
+    Parsed length        : 50 bytes
+    Truncated by capture : no
+  ---------------------------------------------
+[XDP] RESPONSE 36.50.50.50:53 -> 172.16.14.27:53579 id=47063 type=A name=microsoft.com rcode=0(NOERROR) answers=1 authority=0 additional=1
+
+  ---------------- DNS DETAILS ----------------
+  Header:
+    ID      : 47063
+    Flags   : 0x8180
+    QR      : 1
+    Opcode  : 0
+    AA      : 0
+    TC      : 0
+    RD      : 1
+    RA      : 1
+    AD      : 0
+    CD      : 0
+    RCODE   : 0 (NOERROR)
+
+  Counts:
+    Questions  : 1
+    Answers    : 1
+    Authority  : 0
+    Additional : 1
+
+  Questions:
+    Question 1:
+      Name  : microsoft.com
+      Type  : 1 (A)
+      Class : 1 (IN)
+
+  Answers:
+    Answer 1:
+      Name     : microsoft.com
+      Type     : 1 (A)
+      Class    : 1 (IN)
+      TTL      : 747
+      RDLength : 4
+      RDATA    : 150.171.109.130
+
+  Additional:
+    Additional 1:
+      Name     : .
+      Type     : 41 (OPT)
+      Class    : 1232 (UNKNOWN)
+      TTL      : 0
+      RDLength : 28
+      RDATA    : 000a00189025518ebf2a7b98010000006aca62398d169ea518208db4
+
+  Parser:
+    Parse OK             : yes
+    Parsed length        : 86 bytes
+    Truncated by capture : no
+  ---------------------------------------------
+
+========== DEBUG ==========
+BPF event->query_type = 1
+parser parse_ok = 1
+parser parsed_len = 54
+parser qdcount = 1
+parser question_count = 1
+parser QTYPE = 1
+parser QCLASS = 1
+parser QNAME = microsoft.com
+RAW DNS PAYLOAD:
+b7 d7 01 20 00 01 00 00 00 00 00 01 09 6d 69 63 
+72 6f 73 6f 66 74 03 63 6f 6d 00 00 01 00 01 00 
+00 29 04 d0 00 00 00 00 00 0c 00 0a 00 08 90 25 
+51 8e bf 2a 7b 98 
+===========================
+[RESPONSE] 172.16.14.27:53579 -> 36.50.50.50:53 id=47063 type=A name=microsoft.com latency=45.924 ms response_rcode=0(NOERROR) response_answers=1
+
+  ---------------- DNS DETAILS ----------------
+  Header:
+    ID      : 47063
+    Flags   : 0x0120
+    QR      : 0
+    Opcode  : 0
+    AA      : 0
+    TC      : 0
+    RD      : 1
+    RA      : 0
+    AD      : 1
+    CD      : 0
+    RCODE   : 0 (NOERROR)
+
+  Counts:
+    Questions  : 1
+    Answers    : 0
+    Authority  : 0
+    Additional : 1
+
+  Questions:
+    Question 1:
+      Name  : microsoft.com
+      Type  : 1 (A)
+      Class : 1 (IN)
+
+  Additional:
+    Additional 1:
+      Name     : .
+      Type     : 41 (OPT)
+      Class    : 1232 (UNKNOWN)
+      TTL      : 0
+      RDLength : 12
+      RDATA    : 000a00089025518ebf2a7b98
+
+  Parser:
+    Parse OK             : yes
+    Parsed length        : 54 bytes
+    Truncated by capture : no
+  ---------------------------------------------
+[XDP] RESPONSE 36.50.50.50:53 -> 172.16.14.27:59753 id=10091 type=A name=facebook.com rcode=0(NOERROR) answers=1 authority=0 additional=1
+
+  ---------------- DNS DETAILS ----------------
+  Header:
+    ID      : 10091
+    Flags   : 0x8180
+    QR      : 1
+    Opcode  : 0
+    AA      : 0
+    TC      : 0
+    RD      : 1
+    RA      : 1
+    AD      : 0
+    CD      : 0
+    RCODE   : 0 (NOERROR)
+
+  Counts:
+    Questions  : 1
+    Answers    : 1
+    Authority  : 0
+    Additional : 1
+
+  Questions:
+    Question 1:
+      Name  : facebook.com
+      Type  : 1 (A)
+      Class : 1 (IN)
+
+  Answers:
+    Answer 1:
+      Name     : facebook.com
+      Type     : 1 (A)
+      Class    : 1 (IN)
+      TTL      : 60
+      RDLength : 4
+      RDATA    : 57.144.142.1
+
+  Additional:
+    Additional 1:
+      Name     : .
+      Type     : 41 (OPT)
+      Class    : 1232 (UNKNOWN)
+      TTL      : 0
+      RDLength : 28
+      RDATA    : 000a0018597cfecf68a950c7010000006aca623919553ca36570faa9
+
+  Parser:
+    Parse OK             : yes
+    Parsed length        : 85 bytes
+    Truncated by capture : no
+  ---------------------------------------------
+
+========== DEBUG ==========
+BPF event->query_type = 1
+parser parse_ok = 1
+parser parsed_len = 53
+parser qdcount = 1
+parser question_count = 1
+parser QTYPE = 1
+parser QCLASS = 1
+parser QNAME = facebook.com
+RAW DNS PAYLOAD:
+27 6b 01 20 00 01 00 00 00 00 00 01 08 66 61 63 
+65 62 6f 6f 6b 03 63 6f 6d 00 00 01 00 01 00 00 
+29 04 d0 00 00 00 00 00 0c 00 0a 00 08 59 7c fe 
+cf 68 a9 50 c7 
+===========================
+[RESPONSE] 172.16.14.27:59753 -> 36.50.50.50:53 id=10091 type=A name=facebook.com latency=87.631 ms response_rcode=0(NOERROR) response_answers=1
+
+  ---------------- DNS DETAILS ----------------
+  Header:
+    ID      : 10091
+    Flags   : 0x0120
+    QR      : 0
+    Opcode  : 0
+    AA      : 0
+    TC      : 0
+    RD      : 1
+    RA      : 0
+    AD      : 1
+    CD      : 0
+    RCODE   : 0 (NOERROR)
+
+  Counts:
+    Questions  : 1
+    Answers    : 0
+    Authority  : 0
+    Additional : 1
+
+  Questions:
+    Question 1:
+      Name  : facebook.com
+      Type  : 1 (A)
+      Class : 1 (IN)
+
+  Additional:
+    Additional 1:
+      Name     : .
+      Type     : 41 (OPT)
+      Class    : 1232 (UNKNOWN)
+      TTL      : 0
+      RDLength : 12
+      RDATA    : 000a0008597cfecf68a950c7
+
+  Parser:
+    Parse OK             : yes
+    Parsed length        : 53 bytes
+    Truncated by capture : no
+  ---------------------------------------------
+
+========== DEBUG ==========
+BPF event->query_type = 1
+parser parse_ok = 1
+parser parsed_len = 54
+parser qdcount = 1
+parser question_count = 1
+parser QTYPE = 1
+parser QCLASS = 1
+parser QNAME = amazonaws.com
+RAW DNS PAYLOAD:
+08 c4 01 20 00 01 00 00 00 00 00 01 09 61 6d 61 
+7a 6f 6e 61 77 73 03 63 6f 6d 00 00 01 00 01 00 
+00 29 04 d0 00 00 00 00 00 0c 00 0a 00 08 b9 a1 
+e9 19 5b 28 b9 32 
+===========================
+[TIMEOUT] 172.16.14.27:53582 -> 36.50.50.50:53 id=2244 type=A name=amazonaws.com latency=5477.279 ms response_rcode=0(NOERROR) response_answers=0
+
+  ---------------- DNS DETAILS ----------------
+  Header:
+    ID      : 2244
+    Flags   : 0x0120
+    QR      : 0
+    Opcode  : 0
+    AA      : 0
+    TC      : 0
+    RD      : 1
+    RA      : 0
+    AD      : 1
+    CD      : 0
+    RCODE   : 0 (NOERROR)
+
+  Counts:
+    Questions  : 1
+    Answers    : 0
+    Authority  : 0
+    Additional : 1
+
+  Questions:
+    Question 1:
+      Name  : amazonaws.com
+      Type  : 1 (A)
+      Class : 1 (IN)
+
+  Additional:
+    Additional 1:
+      Name     : .
+      Type     : 41 (OPT)
+      Class    : 1232 (UNKNOWN)
+      TTL      : 0
+      RDLength : 12
+      RDATA    : 000a0008b9a1e9195b28b932
+
+  Parser:
+    Parse OK             : yes
+    Parsed length        : 54 bytes
+    Truncated by capture : no
+  ---------------------------------------------
+[XDP] RESPONSE 36.50.50.50:53 -> 172.16.14.27:39340 id=519 type=A name=fbcdn.net rcode=0(NOERROR) answers=1 authority=0 additional=1
+
+  ---------------- DNS DETAILS ----------------
+  Header:
+    ID      : 519
+    Flags   : 0x8180
+    QR      : 1
+    Opcode  : 0
+    AA      : 0
+    TC      : 0
+    RD      : 1
+    RA      : 1
+    AD      : 0
+    CD      : 0
+    RCODE   : 0 (NOERROR)
+
+  Counts:
+    Questions  : 1
+    Answers    : 1
+    Authority  : 0
+    Additional : 1
+
+  Questions:
+    Question 1:
+      Name  : fbcdn.net
+      Type  : 1 (A)
+      Class : 1 (IN)
+
+  Answers:
+    Answer 1:
+      Name     : fbcdn.net
+      Type     : 1 (A)
+      Class    : 1 (IN)
+      TTL      : 60
+      RDLength : 4
+      RDATA    : 57.144.142.1
+
+  Additional:
+    Additional 1:
+      Name     : .
+      Type     : 41 (OPT)
+      Class    : 1232 (UNKNOWN)
+      TTL      : 0
+      RDLength : 28
+      RDATA    : 000a0018115277ca0c100d54010000006aca624499ae4bc5ba93dda1
+
+  Parser:
+    Parse OK             : yes
+    Parsed length        : 82 bytes
+    Truncated by capture : no
+  ---------------------------------------------
+
+========== DEBUG ==========
+BPF event->query_type = 1
+parser parse_ok = 1
+parser parsed_len = 50
+parser qdcount = 1
+parser question_count = 1
+parser QTYPE = 1
+parser QCLASS = 1
+parser QNAME = fbcdn.net
+RAW DNS PAYLOAD:
+02 07 01 20 00 01 00 00 00 00 00 01 05 66 62 63 
+64 6e 03 6e 65 74 00 00 01 00 01 00 00 29 04 d0 
+00 00 00 00 00 0c 00 0a 00 08 11 52 77 ca 0c 10 
+0d 54 
+===========================
+[RESPONSE] 172.16.14.27:39340 -> 36.50.50.50:53 id=519 type=A name=fbcdn.net latency=87.920 ms response_rcode=0(NOERROR) response_answers=1
+
+  ---------------- DNS DETAILS ----------------
+  Header:
+    ID      : 519
+    Flags   : 0x0120
+    QR      : 0
+    Opcode  : 0
+    AA      : 0
+    TC      : 0
+    RD      : 1
+    RA      : 0
+    AD      : 1
+    CD      : 0
+    RCODE   : 0 (NOERROR)
+
+  Counts:
+    Questions  : 1
+    Answers    : 0
+    Authority  : 0
+    Additional : 1
+
+  Questions:
+    Question 1:
+      Name  : fbcdn.net
+      Type  : 1 (A)
+      Class : 1 (IN)
+
+  Additional:
+    Additional 1:
+      Name     : .
+      Type     : 41 (OPT)
+      Class    : 1232 (UNKNOWN)
+      TTL      : 0
+      RDLength : 12
+      RDATA    : 000a0008115277ca0c100d54
+
+  Parser:
+    Parse OK             : yes
+    Parsed length        : 50 bytes
+    Truncated by capture : no
+  ---------------------------------------------
+[XDP] RESPONSE 36.50.50.50:53 -> 172.16.14.27:47282 id=61452 type=A name=amazon.com rcode=0(NOERROR) answers=3 authority=0 additional=1
+
+  ---------------- DNS DETAILS ----------------
+  Header:
+    ID      : 61452
+    Flags   : 0x8180
+    QR      : 1
+    Opcode  : 0
+    AA      : 0
+    TC      : 0
+    RD      : 1
+    RA      : 1
+    AD      : 0
+    CD      : 0
+    RCODE   : 0 (NOERROR)
+
+  Counts:
+    Questions  : 1
+    Answers    : 3
+    Authority  : 0
+    Additional : 1
+
+  Questions:
+    Question 1:
+      Name  : amazon.com
+      Type  : 1 (A)
+      Class : 1 (IN)
+
+  Answers:
+    Answer 1:
+      Name     : amazon.com
+      Type     : 1 (A)
+      Class    : 1 (IN)
+      TTL      : 586
+      RDLength : 4
+      RDATA    : 98.87.170.71
+    Answer 2:
+      Name     : amazon.com
+      Type     : 1 (A)
+      Class    : 1 (IN)
+      TTL      : 586
+      RDLength : 4
+      RDATA    : 98.87.170.74
+    Answer 3:
+      Name     : amazon.com
+      Type     : 1 (A)
+      Class    : 1 (IN)
+      TTL      : 586
+      RDLength : 4
+      RDATA    : 98.82.161.185
+
+  Additional:
+    Additional 1:
+      Name     : .
+      Type     : 41 (OPT)
+      Class    : 1232 (UNKNOWN)
+      TTL      : 0
+      RDLength : 28
+      RDATA    : 000a001850d5d0d270d6c734010000006aca62442e0d05bd853e1a5d
+
+  Parser:
+    Parse OK             : yes
+    Parsed length        : 115 bytes
+    Truncated by capture : no
+  ---------------------------------------------
+
+========== DEBUG ==========
+BPF event->query_type = 1
+parser parse_ok = 1
+parser parsed_len = 51
+parser qdcount = 1
+parser question_count = 1
+parser QTYPE = 1
+parser QCLASS = 1
+parser QNAME = amazon.com
+RAW DNS PAYLOAD:
+f0 0c 01 20 00 01 00 00 00 00 00 01 06 61 6d 61 
+7a 6f 6e 03 63 6f 6d 00 00 01 00 01 00 00 29 04 
+d0 00 00 00 00 00 0c 00 0a 00 08 50 d5 d0 d2 70 
+d6 c7 34 
+===========================
+[RESPONSE] 172.16.14.27:47282 -> 36.50.50.50:53 id=61452 type=A name=amazon.com latency=45.011 ms response_rcode=0(NOERROR) response_answers=3
+
+  ---------------- DNS DETAILS ----------------
+  Header:
+    ID      : 61452
+    Flags   : 0x0120
+    QR      : 0
+    Opcode  : 0
+    AA      : 0
+    TC      : 0
+    RD      : 1
+    RA      : 0
+    AD      : 1
+    CD      : 0
+    RCODE   : 0 (NOERROR)
+
+  Counts:
+    Questions  : 1
+    Answers    : 0
+    Authority  : 0
+    Additional : 1
+
+  Questions:
+    Question 1:
+      Name  : amazon.com
+      Type  : 1 (A)
+      Class : 1 (IN)
+
+  Additional:
+    Additional 1:
+      Name     : .
+      Type     : 41 (OPT)
+      Class    : 1232 (UNKNOWN)
+      TTL      : 0
+      RDLength : 12
+      RDATA    : 000a000850d5d0d270d6c734
+
+  Parser:
+    Parse OK             : yes
+    Parsed length        : 51 bytes
+    Truncated by capture : no
+  ---------------------------------------------
+[XDP] RESPONSE 36.50.50.50:53 -> 172.16.14.27:57103 id=9532 type=A name=whatsapp.net rcode=0(NOERROR) answers=1 authority=0 additional=1
+
+  ---------------- DNS DETAILS ----------------
+  Header:
+    ID      : 9532
+    Flags   : 0x8180
+    QR      : 1
+    Opcode  : 0
+    AA      : 0
+    TC      : 0
+    RD      : 1
+    RA      : 1
+    AD      : 0
+    CD      : 0
+    RCODE   : 0 (NOERROR)
+
+  Counts:
+    Questions  : 1
+    Answers    : 1
+    Authority  : 0
+    Additional : 1
+
+  Questions:
+    Question 1:
+      Name  : whatsapp.net
+      Type  : 1 (A)
+      Class : 1 (IN)
+
+  Answers:
+    Answer 1:
+      Name     : whatsapp.net
+      Type     : 1 (A)
+      Class    : 1 (IN)
+      TTL      : 60
+      RDLength : 4
+      RDATA    : 57.144.143.32
+
+  Additional:
+    Additional 1:
+      Name     : .
+      Type     : 41 (OPT)
+      Class    : 1232 (UNKNOWN)
+      TTL      : 0
+      RDLength : 28
+      RDATA    : 000a001882ae713630b842b8010000006aca6244630f66296db6b8b9
+
+  Parser:
+    Parse OK             : yes
+    Parsed length        : 85 bytes
+    Truncated by capture : no
+  ---------------------------------------------
+
+========== DEBUG ==========
+BPF event->query_type = 1
+parser parse_ok = 1
+parser parsed_len = 53
+parser qdcount = 1
+parser question_count = 1
+parser QTYPE = 1
+parser QCLASS = 1
+parser QNAME = whatsapp.net
+RAW DNS PAYLOAD:
+25 3c 01 20 00 01 00 00 00 00 00 01 08 77 68 61 
+74 73 61 70 70 03 6e 65 74 00 00 01 00 01 00 00 
+29 04 d0 00 00 00 00 00 0c 00 0a 00 08 82 ae 71 
+36 30 b8 42 b8 
+===========================
+[RESPONSE] 172.16.14.27:57103 -> 36.50.50.50:53 id=9532 type=A name=whatsapp.net latency=86.628 ms response_rcode=0(NOERROR) response_answers=1
+
+  ---------------- DNS DETAILS ----------------
+  Header:
+    ID      : 9532
+    Flags   : 0x0120
+    QR      : 0
+    Opcode  : 0
+    AA      : 0
+    TC      : 0
+    RD      : 1
+    RA      : 0
+    AD      : 1
+    CD      : 0
+    RCODE   : 0 (NOERROR)
+
+  Counts:
+    Questions  : 1
+    Answers    : 0
+    Authority  : 0
+    Additional : 1
+
+  Questions:
+    Question 1:
+      Name  : whatsapp.net
+      Type  : 1 (A)
+      Class : 1 (IN)
+
+  Additional:
+    Additional 1:
+      Name     : .
+      Type     : 41 (OPT)
+      Class    : 1232 (UNKNOWN)
+      TTL      : 0
+      RDLength : 12
+      RDATA    : 000a000882ae713630b842b8
+
+  Parser:
+    Parse OK             : yes
+    Parsed length        : 53 bytes
+    Truncated by capture : no
+  ---------------------------------------------
+
+========== DEBUG ==========
+BPF event->query_type = 1
+parser parse_ok = 1
+parser parsed_len = 56
+parser qdcount = 1
+parser question_count = 1
+parser QTYPE = 1
+parser QCLASS = 1
+parser QNAME = googlevideo.com
+RAW DNS PAYLOAD:
+bc 1a 01 20 00 01 00 00 00 00 00 01 0b 67 6f 6f 
+67 6c 65 76 69 64 65 6f 03 63 6f 6d 00 00 01 00 
+01 00 00 29 04 d0 00 00 00 00 00 0c 00 0a 00 08 
+3c 9b e8 13 8e 88 ae 0a 
+===========================
+[TIMEOUT] 172.16.14.27:53485 -> 36.50.50.50:53 id=48154 type=A name=googlevideo.com latency=5459.865 ms response_rcode=0(NOERROR) response_answers=0
+
+  ---------------- DNS DETAILS ----------------
+  Header:
+    ID      : 48154
+    Flags   : 0x0120
+    QR      : 0
+    Opcode  : 0
+    AA      : 0
+    TC      : 0
+    RD      : 1
+    RA      : 0
+    AD      : 1
+    CD      : 0
+    RCODE   : 0 (NOERROR)
+
+  Counts:
+    Questions  : 1
+    Answers    : 0
+    Authority  : 0
+    Additional : 1
+
+  Questions:
+    Question 1:
+      Name  : googlevideo.com
+      Type  : 1 (A)
+      Class : 1 (IN)
+
+  Additional:
+    Additional 1:
+      Name     : .
+      Type     : 41 (OPT)
+      Class    : 1232 (UNKNOWN)
+      TTL      : 0
+      RDLength : 12
+      RDATA    : 000a00083c9be8138e88ae0a
+
+  Parser:
+    Parse OK             : yes
+    Parsed length        : 56 bytes
+    Truncated by capture : no
+  ---------------------------------------------
+
+========== DEBUG ==========
+BPF event->query_type = 1
+parser parse_ok = 1
+parser parsed_len = 54
+parser qdcount = 1
+parser question_count = 1
+parser QTYPE = 1
+parser QCLASS = 1
+parser QNAME = instagram.com
+RAW DNS PAYLOAD:
+02 47 01 20 00 01 00 00 00 00 00 01 09 69 6e 73 
+74 61 67 72 61 6d 03 63 6f 6d 00 00 01 00 01 00 
+00 29 04 d0 00 00 00 00 00 0c 00 0a 00 08 4e 49 
+66 45 ce 1a 7d dc 
+===========================
+[TIMEOUT] 172.16.14.27:56670 -> 36.50.50.50:53 id=583 type=A name=instagram.com latency=5071.569 ms response_rcode=0(NOERROR) response_answers=0
+
+  ---------------- DNS DETAILS ----------------
+  Header:
+    ID      : 583
+    Flags   : 0x0120
+    QR      : 0
+    Opcode  : 0
+    AA      : 0
+    TC      : 0
+    RD      : 1
+    RA      : 0
+    AD      : 1
+    CD      : 0
+    RCODE   : 0 (NOERROR)
+
+  Counts:
+    Questions  : 1
+    Answers    : 0
+    Authority  : 0
+    Additional : 1
+
+  Questions:
+    Question 1:
+      Name  : instagram.com
+      Type  : 1 (A)
+      Class : 1 (IN)
+
+  Additional:
+    Additional 1:
+      Name     : .
+      Type     : 41 (OPT)
+      Class    : 1232 (UNKNOWN)
+      TTL      : 0
+      RDLength : 12
+      RDATA    : 000a00084e496645ce1a7ddc
+
+  Parser:
+    Parse OK             : yes
+    Parsed length        : 54 bytes
+    Truncated by capture : no
+  ---------------------------------------------
+[XDP] RESPONSE 36.50.50.50:53 -> 172.16.14.27:33462 id=21994 type=A name=youtube.com rcode=0(NOERROR) answers=4 authority=0 additional=1
+
+  ---------------- DNS DETAILS ----------------
+  Header:
+    ID      : 21994
+    Flags   : 0x8180
+    QR      : 1
+    Opcode  : 0
+    AA      : 0
+    TC      : 0
+    RD      : 1
+    RA      : 1
+    AD      : 0
+    CD      : 0
+    RCODE   : 0 (NOERROR)
+
+  Counts:
+    Questions  : 1
+    Answers    : 4
+    Authority  : 0
+    Additional : 1
+
+  Questions:
+    Question 1:
+      Name  : youtube.com
+      Type  : 1 (A)
+      Class : 1 (IN)
+
+  Answers:
+    Answer 1:
+      Name     : youtube.com
+      Type     : 1 (A)
+      Class    : 1 (IN)
+      TTL      : 300
+      RDLength : 4
+      RDATA    : 192.178.211.190
+    Answer 2:
+      Name     : youtube.com
+      Type     : 1 (A)
+      Class    : 1 (IN)
+      TTL      : 300
+      RDLength : 4
+      RDATA    : 192.178.211.136
+    Answer 3:
+      Name     : youtube.com
+      Type     : 1 (A)
+      Class    : 1 (IN)
+      TTL      : 300
+      RDLength : 4
+      RDATA    : 192.178.211.91
+    Answer 4:
+      Name     : youtube.com
+      Type     : 1 (A)
+      Class    : 1 (IN)
+      TTL      : 300
+      RDLength : 4
+      RDATA    : 192.178.211.93
+
+  Additional:
+    Additional 1:
+      Name     : .
+      Type     : 41 (OPT)
+      Class    : 1232 (UNKNOWN)
+      TTL      : 0
+      RDLength : 28
+      RDATA    : 000a0018e5812dc98d3213fd010000006aca6249e92a37494e904968
+
+  Parser:
+    Parse OK             : yes
+    Parsed length        : 132 bytes
+    Truncated by capture : no
+  ---------------------------------------------
+
+========== DEBUG ==========
+BPF event->query_type = 1
+parser parse_ok = 1
+parser parsed_len = 52
+parser qdcount = 1
+parser question_count = 1
+parser QTYPE = 1
+parser QCLASS = 1
+parser QNAME = youtube.com
+RAW DNS PAYLOAD:
+55 ea 01 20 00 01 00 00 00 00 00 01 07 79 6f 75 
+74 75 62 65 03 63 6f 6d 00 00 01 00 01 00 00 29 
+04 d0 00 00 00 00 00 0c 00 0a 00 08 e5 81 2d c9 
+8d 32 13 fd 
+===========================
+[RESPONSE] 172.16.14.27:33462 -> 36.50.50.50:53 id=21994 type=A name=youtube.com latency=121.969 ms response_rcode=0(NOERROR) response_answers=4
+
+  ---------------- DNS DETAILS ----------------
+  Header:
+    ID      : 21994
+    Flags   : 0x0120
+    QR      : 0
+    Opcode  : 0
+    AA      : 0
+    TC      : 0
+    RD      : 1
+    RA      : 0
+    AD      : 1
+    CD      : 0
+    RCODE   : 0 (NOERROR)
+
+  Counts:
+    Questions  : 1
+    Answers    : 0
+    Authority  : 0
+    Additional : 1
+
+  Questions:
+    Question 1:
+      Name  : youtube.com
+      Type  : 1 (A)
+      Class : 1 (IN)
+
+  Additional:
+    Additional 1:
+      Name     : .
+      Type     : 41 (OPT)
+      Class    : 1232 (UNKNOWN)
+      TTL      : 0
+      RDLength : 12
+      RDATA    : 000a0008e5812dc98d3213fd
+
+  Parser:
+    Parse OK             : yes
+    Parsed length        : 52 bytes
+    Truncated by capture : no
+  ---------------------------------------------
+[XDP] RESPONSE 36.50.50.50:53 -> 172.16.14.27:33194 id=64461 type=A name=apple-dns.net rcode=0(NOERROR) answers=0 authority=1 additional=1
+
+  ---------------- DNS DETAILS ----------------
+  Header:
+    ID      : 64461
+    Flags   : 0x8180
+    QR      : 1
+    Opcode  : 0
+    AA      : 0
+    TC      : 0
+    RD      : 1
+    RA      : 1
+    AD      : 0
+    CD      : 0
+    RCODE   : 0 (NOERROR)
+
+  Counts:
+    Questions  : 1
+    Answers    : 0
+    Authority  : 1
+    Additional : 1
+
+  Questions:
+    Question 1:
+      Name  : apple-dns.net
+      Type  : 1 (A)
+      Class : 1 (IN)
+
+  Authority:
+    Authority 1:
+      Name     : apple-dns.net
+      Type     : 6 (SOA)
+      Class    : 1 (IN)
+      TTL      : 300
+      RDLength : 66
+      RDATA    : ns-ext-prod.jackfruit.apple.com dnscontact.apple.com 166 7200 5400 3628800 300
+
+  Additional:
+    Additional 1:
+      Name     : .
+      Type     : 41 (OPT)
+      Class    : 1232 (UNKNOWN)
+      TTL      : 0
+      RDLength : 28
+      RDATA    : 000a0018c722dbaa03387a79010000006aca624984c8d3ba2571c817
+
+  Parser:
+    Parse OK             : yes
+    Parsed length        : 148 bytes
+    Truncated by capture : no
+  ---------------------------------------------
+
+========== DEBUG ==========
+BPF event->query_type = 1
+parser parse_ok = 1
+parser parsed_len = 54
+parser qdcount = 1
+parser question_count = 1
+parser QTYPE = 1
+parser QCLASS = 1
+parser QNAME = apple-dns.net
+RAW DNS PAYLOAD:
+fb cd 01 20 00 01 00 00 00 00 00 01 09 61 70 70 
+6c 65 2d 64 6e 73 03 6e 65 74 00 00 01 00 01 00 
+00 29 04 d0 00 00 00 00 00 0c 00 0a 00 08 c7 22 
+db aa 03 38 7a 79 
+===========================
+[RESPONSE] 172.16.14.27:33194 -> 36.50.50.50:53 id=64461 type=A name=apple-dns.net latency=104.977 ms response_rcode=0(NOERROR) response_answers=0
+
+  ---------------- DNS DETAILS ----------------
+  Header:
+    ID      : 64461
+    Flags   : 0x0120
+    QR      : 0
+    Opcode  : 0
+    AA      : 0
+    TC      : 0
+    RD      : 1
+    RA      : 0
+    AD      : 1
+    CD      : 0
+    RCODE   : 0 (NOERROR)
+
+  Counts:
+    Questions  : 1
+    Answers    : 0
+    Authority  : 0
+    Additional : 1
+
+  Questions:
+    Question 1:
+      Name  : apple-dns.net
+      Type  : 1 (A)
+      Class : 1 (IN)
+
+  Additional:
+    Additional 1:
+      Name     : .
+      Type     : 41 (OPT)
+      Class    : 1232 (UNKNOWN)
+      TTL      : 0
+      RDLength : 12
+      RDATA    : 000a0008c722dbaa03387a79
+
+  Parser:
+    Parse OK             : yes
+    Parsed length        : 54 bytes
+    Truncated by capture : no
+  ---------------------------------------------
+[XDP] RESPONSE 36.50.50.50:53 -> 172.16.14.27:45313 id=53244 type=A name=doubleclick.net rcode=0(NOERROR) answers=6 authority=0 additional=1
+
+  ---------------- DNS DETAILS ----------------
+  Header:
+    ID      : 53244
+    Flags   : 0x8180
+    QR      : 1
+    Opcode  : 0
+    AA      : 0
+    TC      : 0
+    RD      : 1
+    RA      : 1
+    AD      : 0
+    CD      : 0
+    RCODE   : 0 (NOERROR)
+
+  Counts:
+    Questions  : 1
+    Answers    : 6
+    Authority  : 0
+    Additional : 1
+
+  Questions:
+    Question 1:
+      Name  : doubleclick.net
+      Type  : 1 (A)
+      Class : 1 (IN)
+
+  Answers:
+    Answer 1:
+      Name     : doubleclick.net
+      Type     : 1 (A)
+      Class    : 1 (IN)
+      TTL      : 300
+      RDLength : 4
+      RDATA    : 192.178.158.138
+    Answer 2:
+      Name     : doubleclick.net
+      Type     : 1 (A)
+      Class    : 1 (IN)
+      TTL      : 300
+      RDLength : 4
+      RDATA    : 192.178.158.101
+    Answer 3:
+      Name     : doubleclick.net
+      Type     : 1 (A)
+      Class    : 1 (IN)
+      TTL      : 300
+      RDLength : 4
+      RDATA    : 192.178.158.100
+    Answer 4:
+      Name     : doubleclick.net
+      Type     : 1 (A)
+      Class    : 1 (IN)
+      TTL      : 300
+      RDLength : 4
+      RDATA    : 192.178.158.102
+    Answer 5:
+      Name     : doubleclick.net
+      Type     : 1 (A)
+      Class    : 1 (IN)
+      TTL      : 300
+      RDLength : 4
+      RDATA    : 192.178.158.113
+    Answer 6:
+      Name     : doubleclick.net
+      Type     : 1 (A)
+      Class    : 1 (IN)
+      TTL      : 300
+      RDLength : 4
+      RDATA    : 192.178.158.139
+
+  Additional:
+    Additional 1:
+      Name     : .
+      Type     : 41 (OPT)
+      Class    : 1232 (UNKNOWN)
+      TTL      : 0
+      RDLength : 28
+      RDATA    : 000a0018911e7ef397d60cd0010000006aca624da2e6c6d769eaceb9
+
+  Parser:
+    Parse OK             : yes
+    Parsed length        : 168 bytes
+    Truncated by capture : no
+  ---------------------------------------------
+
+========== DEBUG ==========
+BPF event->query_type = 1
+parser parse_ok = 1
+parser parsed_len = 56
+parser qdcount = 1
+parser question_count = 1
+parser QTYPE = 1
+parser QCLASS = 1
+parser QNAME = doubleclick.net
+RAW DNS PAYLOAD:
+cf fc 01 20 00 01 00 00 00 00 00 01 0b 64 6f 75 
+62 6c 65 63 6c 69 63 6b 03 6e 65 74 00 00 01 00 
+01 00 00 29 04 d0 00 00 00 00 00 0c 00 0a 00 08 
+91 1e 7e f3 97 d6 0c d0 
+===========================
+[RESPONSE] 172.16.14.27:45313 -> 36.50.50.50:53 id=53244 type=A name=doubleclick.net latency=4117.197 ms response_rcode=0(NOERROR) response_answers=6
+
+  ---------------- DNS DETAILS ----------------
+  Header:
+    ID      : 53244
+    Flags   : 0x0120
+    QR      : 0
+    Opcode  : 0
+    AA      : 0
+    TC      : 0
+    RD      : 1
+    RA      : 0
+    AD      : 1
+    CD      : 0
+    RCODE   : 0 (NOERROR)
+
+  Counts:
+    Questions  : 1
+    Answers    : 0
+    Authority  : 0
+    Additional : 1
+
+  Questions:
+    Question 1:
+      Name  : doubleclick.net
+      Type  : 1 (A)
+      Class : 1 (IN)
+
+  Additional:
+    Additional 1:
+      Name     : .
+      Type     : 41 (OPT)
+      Class    : 1232 (UNKNOWN)
+      TTL      : 0
+      RDLength : 12
+      RDATA    : 000a0008911e7ef397d60cd0
+
+  Parser:
+    Parse OK             : yes
+    Parsed length        : 56 bytes
+    Truncated by capture : no
+  ---------------------------------------------
+[XDP] RESPONSE 36.50.50.50:53 -> 172.16.14.27:50229 id=49957 type=A name=netflix.com rcode=0(NOERROR) answers=3 authority=0 additional=1
+
+  ---------------- DNS DETAILS ----------------
+  Header:
+    ID      : 49957
+    Flags   : 0x8180
+    QR      : 1
+    Opcode  : 0
+    AA      : 0
+    TC      : 0
+    RD      : 1
+    RA      : 1
+    AD      : 0
+    CD      : 0
+    RCODE   : 0 (NOERROR)
+
+  Counts:
+    Questions  : 1
+    Answers    : 3
+    Authority  : 0
+    Additional : 1
+
+  Questions:
+    Question 1:
+      Name  : netflix.com
+      Type  : 1 (A)
+      Class : 1 (IN)
+
+  Answers:
+    Answer 1:
+      Name     : netflix.com
+      Type     : 1 (A)
+      Class    : 1 (IN)
+      TTL      : 60
+      RDLength : 4
+      RDATA    : 54.74.73.31
+    Answer 2:
+      Name     : netflix.com
+      Type     : 1 (A)
+      Class    : 1 (IN)
+      TTL      : 60
+      RDLength : 4
+      RDATA    : 3.251.50.149
+    Answer 3:
+      Name     : netflix.com
+      Type     : 1 (A)
+      Class    : 1 (IN)
+      TTL      : 60
+      RDLength : 4
+      RDATA    : 54.155.178.5
+
+  Additional:
+    Additional 1:
+      Name     : .
+      Type     : 41 (OPT)
+      Class    : 1232 (UNKNOWN)
+      TTL      : 0
+      RDLength : 28
+      RDATA    : 000a001808c748f44ff6a206010000006aca6252537270a53d870851
+
+  Parser:
+    Parse OK             : yes
+    Parsed length        : 116 bytes
+    Truncated by capture : no
+  ---------------------------------------------
+
+========== DEBUG ==========
+BPF event->query_type = 1
+parser parse_ok = 1
+parser parsed_len = 52
+parser qdcount = 1
+parser question_count = 1
+parser QTYPE = 1
+parser QCLASS = 1
+parser QNAME = netflix.com
+RAW DNS PAYLOAD:
+c3 25 01 20 00 01 00 00 00 00 00 01 07 6e 65 74 
+66 6c 69 78 03 63 6f 6d 00 00 01 00 01 00 00 29 
+04 d0 00 00 00 00 00 0c 00 0a 00 08 08 c7 48 f4 
+4f f6 a2 06 
+===========================
+[RESPONSE] 172.16.14.27:50229 -> 36.50.50.50:53 id=49957 type=A name=netflix.com latency=100.458 ms response_rcode=0(NOERROR) response_answers=3
+
+  ---------------- DNS DETAILS ----------------
+  Header:
+    ID      : 49957
+    Flags   : 0x0120
+    QR      : 0
+    Opcode  : 0
+    AA      : 0
+    TC      : 0
+    RD      : 1
+    RA      : 0
+    AD      : 1
+    CD      : 0
+    RCODE   : 0 (NOERROR)
+
+  Counts:
+    Questions  : 1
+    Answers    : 0
+    Authority  : 0
+    Additional : 1
+
+  Questions:
+    Question 1:
+      Name  : netflix.com
+      Type  : 1 (A)
+      Class : 1 (IN)
+
+  Additional:
+    Additional 1:
+      Name     : .
+      Type     : 41 (OPT)
+      Class    : 1232 (UNKNOWN)
+      TTL      : 0
+      RDLength : 12
+      RDATA    : 000a000808c748f44ff6a206
+
+  Parser:
+    Parse OK             : yes
+    Parsed length        : 52 bytes
+    Truncated by capture : no
+  ---------------------------------------------
+[XDP] RESPONSE 36.50.50.50:53 -> 172.16.14.27:38308 id=2684 type=A name=akadns.net rcode=0(NOERROR) answers=0 authority=1 additional=1
+
+  ---------------- DNS DETAILS ----------------
+  Header:
+    ID      : 2684
+    Flags   : 0x8180
+    QR      : 1
+    Opcode  : 0
+    AA      : 0
+    TC      : 0
+    RD      : 1
+    RA      : 1
+    AD      : 0
+    CD      : 0
+    RCODE   : 0 (NOERROR)
+
+  Counts:
+    Questions  : 1
+    Answers    : 0
+    Authority  : 1
+    Additional : 1
+
+  Questions:
+    Question 1:
+      Name  : akadns.net
+      Type  : 1 (A)
+      Class : 1 (IN)
+
+  Authority:
+    Authority 1:
+      Name     : akadns.net
+      Type     : 6 (SOA)
+      Class    : 1 (IN)
+      TTL      : 180
+      RDLength : 54
+      RDATA    : internal.akadns.net hostmaster.akamai.com 1741200000 90000 90000 90000 180
+
+  Additional:
+    Additional 1:
+      Name     : .
+      Type     : 41 (OPT)
+      Class    : 1232 (UNKNOWN)
+      TTL      : 0
+      RDLength : 28
+      RDATA    : 000a0018bc00b6866471584f010000006aca6253f781a8bf7bbc5ca0
+
+  Parser:
+    Parse OK             : yes
+    Parsed length        : 133 bytes
+    Truncated by capture : no
+  ---------------------------------------------
+
+========== DEBUG ==========
+BPF event->query_type = 1
+parser parse_ok = 1
+parser parsed_len = 51
+parser qdcount = 1
+parser question_count = 1
+parser QTYPE = 1
+parser QCLASS = 1
+parser QNAME = akadns.net
+RAW DNS PAYLOAD:
+0a 7c 01 20 00 01 00 00 00 00 00 01 06 61 6b 61 
+64 6e 73 03 6e 65 74 00 00 01 00 01 00 00 29 04 
+d0 00 00 00 00 00 0c 00 0a 00 08 bc 00 b6 86 64 
+71 58 4f 
+===========================
+[RESPONSE] 172.16.14.27:38308 -> 36.50.50.50:53 id=2684 type=A name=akadns.net latency=86.015 ms response_rcode=0(NOERROR) response_answers=0
+
+  ---------------- DNS DETAILS ----------------
+  Header:
+    ID      : 2684
+    Flags   : 0x0120
+    QR      : 0
+    Opcode  : 0
+    AA      : 0
+    TC      : 0
+    RD      : 1
+    RA      : 0
+    AD      : 1
+    CD      : 0
+    RCODE   : 0 (NOERROR)
+
+  Counts:
+    Questions  : 1
+    Answers    : 0
+    Authority  : 0
+    Additional : 1
+
+  Questions:
+    Question 1:
+      Name  : akadns.net
+      Type  : 1 (A)
+      Class : 1 (IN)
+
+  Additional:
+    Additional 1:
+      Name     : .
+      Type     : 41 (OPT)
+      Class    : 1232 (UNKNOWN)
+      TTL      : 0
+      RDLength : 12
+      RDATA    : 000a0008bc00b6866471584f
+
+  Parser:
+    Parse OK             : yes
+    Parsed length        : 51 bytes
+    Truncated by capture : no
+  ---------------------------------------------
+[XDP] RESPONSE 36.50.50.50:53 -> 172.16.14.27:44452 id=3877 type=A name=icloud.com rcode=0(NOERROR) answers=1 authority=0 additional=1
+
+  ---------------- DNS DETAILS ----------------
+  Header:
+    ID      : 3877
+    Flags   : 0x8180
+    QR      : 1
+    Opcode  : 0
+    AA      : 0
+    TC      : 0
+    RD      : 1
+    RA      : 1
+    AD      : 0
+    CD      : 0
+    RCODE   : 0 (NOERROR)
+
+  Counts:
+    Questions  : 1
+    Answers    : 1
+    Authority  : 0
+    Additional : 1
+
+  Questions:
+    Question 1:
+      Name  : icloud.com
+      Type  : 1 (A)
+      Class : 1 (IN)
+
+  Answers:
+    Answer 1:
+      Name     : icloud.com
+      Type     : 1 (A)
+      Class    : 1 (IN)
+      TTL      : 600
+      RDLength : 4
+      RDATA    : 17.253.144.10
+
+  Additional:
+    Additional 1:
+      Name     : .
+      Type     : 41 (OPT)
+      Class    : 1232 (UNKNOWN)
+      TTL      : 0
+      RDLength : 28
+      RDATA    : 000a00181cdfa2bf9ee05a8f010000006aca625330b9fd07494a60fd
+
+  Parser:
+    Parse OK             : yes
+    Parsed length        : 83 bytes
+    Truncated by capture : no
+  ---------------------------------------------
+
+========== DEBUG ==========
+BPF event->query_type = 1
+parser parse_ok = 1
+parser parsed_len = 51
+parser qdcount = 1
+parser question_count = 1
+parser QTYPE = 1
+parser QCLASS = 1
+parser QNAME = icloud.com
+RAW DNS PAYLOAD:
+0f 25 01 20 00 01 00 00 00 00 00 01 06 69 63 6c 
+6f 75 64 03 63 6f 6d 00 00 01 00 01 00 00 29 04 
+d0 00 00 00 00 00 0c 00 0a 00 08 1c df a2 bf 9e 
+e0 5a 8f 
+===========================
+[RESPONSE] 172.16.14.27:44452 -> 36.50.50.50:53 id=3877 type=A name=icloud.com latency=103.798 ms response_rcode=0(NOERROR) response_answers=1
+
+  ---------------- DNS DETAILS ----------------
+  Header:
+    ID      : 3877
+    Flags   : 0x0120
+    QR      : 0
+    Opcode  : 0
+    AA      : 0
+    TC      : 0
+    RD      : 1
+    RA      : 0
+    AD      : 1
+    CD      : 0
+    RCODE   : 0 (NOERROR)
+
+  Counts:
+    Questions  : 1
+    Answers    : 0
+    Authority  : 0
+    Additional : 1
+
+  Questions:
+    Question 1:
+      Name  : icloud.com
+      Type  : 1 (A)
+      Class : 1 (IN)
+
+  Additional:
+    Additional 1:
+      Name     : .
+      Type     : 41 (OPT)
+      Class    : 1232 (UNKNOWN)
+      TTL      : 0
+      RDLength : 12
+      RDATA    : 000a00081cdfa2bf9ee05a8f
+
+  Parser:
+    Parse OK             : yes
+    Parsed length        : 51 bytes
+    Truncated by capture : no
+  ---------------------------------------------
+
+========== DEBUG ==========
+BPF event->query_type = 1
+parser parse_ok = 1
+parser parsed_len = 49
+parser qdcount = 1
+parser question_count = 1
+parser QTYPE = 1
+parser QCLASS = 1
+parser QNAME = bing.com
+RAW DNS PAYLOAD:
+30 48 01 20 00 01 00 00 00 00 00 01 04 62 69 6e 
+67 03 63 6f 6d 00 00 01 00 01 00 00 29 04 d0 00 
+00 00 00 00 0c 00 0a 00 08 9a 97 68 c7 eb 45 7a 
+e4 
+===========================
+[TIMEOUT] 172.16.14.27:60131 -> 36.50.50.50:53 id=12360 type=A name=bing.com latency=5746.113 ms response_rcode=0(NOERROR) response_answers=0
+
+  ---------------- DNS DETAILS ----------------
+  Header:
+    ID      : 12360
+    Flags   : 0x0120
+    QR      : 0
+    Opcode  : 0
+    AA      : 0
+    TC      : 0
+    RD      : 1
+    RA      : 0
+    AD      : 1
+    CD      : 0
+    RCODE   : 0 (NOERROR)
+
+  Counts:
+    Questions  : 1
+    Answers    : 0
+    Authority  : 0
+    Additional : 1
+
+  Questions:
+    Question 1:
+      Name  : bing.com
+      Type  : 1 (A)
+      Class : 1 (IN)
+
+  Additional:
+    Additional 1:
+      Name     : .
+      Type     : 41 (OPT)
+      Class    : 1232 (UNKNOWN)
+      TTL      : 0
+      RDLength : 12
+      RDATA    : 000a00089a9768c7eb457ae4
+
+  Parser:
+    Parse OK             : yes
+    Parsed length        : 49 bytes
+    Truncated by capture : no
+  ---------------------------------------------
+[XDP] RESPONSE 36.50.50.50:53 -> 172.16.14.27:42064 id=4394 type=A name=ntp.org rcode=0(NOERROR) answers=2 authority=0 additional=1
+
+  ---------------- DNS DETAILS ----------------
+  Header:
+    ID      : 4394
+    Flags   : 0x8180
+    QR      : 1
+    Opcode  : 0
+    AA      : 0
+    TC      : 0
+    RD      : 1
+    RA      : 1
+    AD      : 0
+    CD      : 0
+    RCODE   : 0 (NOERROR)
+
+  Counts:
+    Questions  : 1
+    Answers    : 2
+    Authority  : 0
+    Additional : 1
+
+  Questions:
+    Question 1:
+      Name  : ntp.org
+      Type  : 1 (A)
+      Class : 1 (IN)
+
+  Answers:
+    Answer 1:
+      Name     : ntp.org
+      Type     : 1 (A)
+      Class    : 1 (IN)
+      TTL      : 3600
+      RDLength : 4
+      RDATA    : 209.148.110.246
+    Answer 2:
+      Name     : ntp.org
+      Type     : 1 (A)
+      Class    : 1 (IN)
+      TTL      : 3600
+      RDLength : 4
+      RDATA    : 204.93.207.22
+
+  Additional:
+    Additional 1:
+      Name     : .
+      Type     : 41 (OPT)
+      Class    : 1232 (UNKNOWN)
+      TTL      : 0
+      RDLength : 28
+      RDATA    : 000a001878c0a44a6634d8ad010000006aca6254c86c66626192a25d
+
+  Parser:
+    Parse OK             : yes
+    Parsed length        : 96 bytes
+    Truncated by capture : no
+  ---------------------------------------------
+
+========== DEBUG ==========
+BPF event->query_type = 1
+parser parse_ok = 1
+parser parsed_len = 48
+parser qdcount = 1
+parser question_count = 1
+parser QTYPE = 1
+parser QCLASS = 1
+parser QNAME = ntp.org
+RAW DNS PAYLOAD:
+11 2a 01 20 00 01 00 00 00 00 00 01 03 6e 74 70 
+03 6f 72 67 00 00 01 00 01 00 00 29 04 d0 00 00 
+00 00 00 0c 00 0a 00 08 78 c0 a4 4a 66 34 d8 ad 
+
+===========================
+[RESPONSE] 172.16.14.27:42064 -> 36.50.50.50:53 id=4394 type=A name=ntp.org latency=910.440 ms response_rcode=0(NOERROR) response_answers=2
+
+  ---------------- DNS DETAILS ----------------
+  Header:
+    ID      : 4394
+    Flags   : 0x0120
+    QR      : 0
+    Opcode  : 0
+    AA      : 0
+    TC      : 0
+    RD      : 1
+    RA      : 0
+    AD      : 1
+    CD      : 0
+    RCODE   : 0 (NOERROR)
+
+  Counts:
+    Questions  : 1
+    Answers    : 0
+    Authority  : 0
+    Additional : 1
+
+  Questions:
+    Question 1:
+      Name  : ntp.org
+      Type  : 1 (A)
+      Class : 1 (IN)
+
+  Additional:
+    Additional 1:
+      Name     : .
+      Type     : 41 (OPT)
+      Class    : 1232 (UNKNOWN)
+      TTL      : 0
+      RDLength : 12
+      RDATA    : 000a000878c0a44a6634d8ad
+
+  Parser:
+    Parse OK             : yes
+    Parsed length        : 48 bytes
+    Truncated by capture : no
+  ---------------------------------------------
+[XDP] RESPONSE 36.50.50.50:53 -> 172.16.14.27:39843 id=9909 type=A name=googleusercontent.com rcode=0(NOERROR) answers=1 authority=0 additional=1
+
+  ---------------- DNS DETAILS ----------------
+  Header:
+    ID      : 9909
+    Flags   : 0x8180
+    QR      : 1
+    Opcode  : 0
+    AA      : 0
+    TC      : 0
+    RD      : 1
+    RA      : 1
+    AD      : 0
+    CD      : 0
+    RCODE   : 0 (NOERROR)
+
+  Counts:
+    Questions  : 1
+    Answers    : 1
+    Authority  : 0
+    Additional : 1
+
+  Questions:
+    Question 1:
+      Name  : googleusercontent.com
+      Type  : 1 (A)
+      Class : 1 (IN)
+
+  Answers:
+    Answer 1:
+      Name     : googleusercontent.com
+      Type     : 1 (A)
+      Class    : 1 (IN)
+      TTL      : 300
+      RDLength : 4
+      RDATA    : 192.178.158.132
+
+  Additional:
+    Additional 1:
+      Name     : .
+      Type     : 41 (OPT)
+      Class    : 1232 (UNKNOWN)
+      TTL      : 0
+      RDLength : 28
+      RDATA    : 000a0018735e18590f509452010000006aca6254963e4a43cc052748
+
+  Parser:
+    Parse OK             : yes
+    Parsed length        : 94 bytes
+    Truncated by capture : no
+  ---------------------------------------------
+
+========== DEBUG ==========
+BPF event->query_type = 1
+parser parse_ok = 1
+parser parsed_len = 62
+parser qdcount = 1
+parser question_count = 1
+parser QTYPE = 1
+parser QCLASS = 1
+parser QNAME = googleusercontent.com
+RAW DNS PAYLOAD:
+26 b5 01 20 00 01 00 00 00 00 00 01 11 67 6f 6f 
+67 6c 65 75 73 65 72 63 6f 6e 74 65 6e 74 03 63 
+6f 6d 00 00 01 00 01 00 00 29 04 d0 00 00 00 00 
+00 0c 00 0a 00 08 73 5e 18 59 0f 50 94 52 
+===========================
+[RESPONSE] 172.16.14.27:39843 -> 36.50.50.50:53 id=9909 type=A name=googleusercontent.com latency=112.056 ms response_rcode=0(NOERROR) response_answers=1
+
+  ---------------- DNS DETAILS ----------------
+  Header:
+    ID      : 9909
+    Flags   : 0x0120
+    QR      : 0
+    Opcode  : 0
+    AA      : 0
+    TC      : 0
+    RD      : 1
+    RA      : 0
+    AD      : 1
+    CD      : 0
+    RCODE   : 0 (NOERROR)
+
+  Counts:
+    Questions  : 1
+    Answers    : 0
+    Authority  : 0
+    Additional : 1
+
+  Questions:
+    Question 1:
+      Name  : googleusercontent.com
+      Type  : 1 (A)
+      Class : 1 (IN)
+
+  Additional:
+    Additional 1:
+      Name     : .
+      Type     : 41 (OPT)
+      Class    : 1232 (UNKNOWN)
+      TTL      : 0
+      RDLength : 12
+      RDATA    : 000a0008735e18590f509452
+
+  Parser:
+    Parse OK             : yes
+    Parsed length        : 62 bytes
+    Truncated by capture : no
+  ---------------------------------------------
+[XDP] RESPONSE 36.50.50.50:53 -> 172.16.14.27:50094 id=34952 type=A name=aaplimg.com rcode=0(NOERROR) answers=0 authority=1 additional=1
+
+  ---------------- DNS DETAILS ----------------
+  Header:
+    ID      : 34952
+    Flags   : 0x8180
+    QR      : 1
+    Opcode  : 0
+    AA      : 0
+    TC      : 0
+    RD      : 1
+    RA      : 1
+    AD      : 0
+    CD      : 0
+    RCODE   : 0 (NOERROR)
+
+  Counts:
+    Questions  : 1
+    Answers    : 0
+    Authority  : 1
+    Additional : 1
+
+  Questions:
+    Question 1:
+      Name  : aaplimg.com
+      Type  : 1 (A)
+      Class : 1 (IN)
+
+  Authority:
+    Authority 1:
+      Name     : aaplimg.com
+      Type     : 6 (SOA)
+      Class    : 1 (IN)
+      TTL      : 300
+      RDLength : 63
+      RDATA    : ns-ext-prod.jackfruit.apple.com dnscontact.apple.com 15354 300 300 3628800 300
+
+  Additional:
+    Additional 1:
+      Name     : .
+      Type     : 41 (OPT)
+      Class    : 1232 (UNKNOWN)
+      TTL      : 0
+      RDLength : 28
+      RDATA    : 000a00181d50565824011896010000006aca6254b04feb4d5ea94865
+
+  Parser:
+    Parse OK             : yes
+    Parsed length        : 143 bytes
+    Truncated by capture : no
+  ---------------------------------------------
+
+========== DEBUG ==========
+BPF event->query_type = 1
+parser parse_ok = 1
+parser parsed_len = 52
+parser qdcount = 1
+parser question_count = 1
+parser QTYPE = 1
+parser QCLASS = 1
+parser QNAME = aaplimg.com
+RAW DNS PAYLOAD:
+88 88 01 20 00 01 00 00 00 00 00 01 07 61 61 70 
+6c 69 6d 67 03 63 6f 6d 00 00 01 00 01 00 00 29 
+04 d0 00 00 00 00 00 0c 00 0a 00 08 1d 50 56 58 
+24 01 18 96 
+===========================
+[RESPONSE] 172.16.14.27:50094 -> 36.50.50.50:53 id=34952 type=A name=aaplimg.com latency=111.841 ms response_rcode=0(NOERROR) response_answers=0
+
+  ---------------- DNS DETAILS ----------------
+  Header:
+    ID      : 34952
+    Flags   : 0x0120
+    QR      : 0
+    Opcode  : 0
+    AA      : 0
+    TC      : 0
+    RD      : 1
+    RA      : 0
+    AD      : 1
+    CD      : 0
+    RCODE   : 0 (NOERROR)
+
+  Counts:
+    Questions  : 1
+    Answers    : 0
+    Authority  : 0
+    Additional : 1
+
+  Questions:
+    Question 1:
+      Name  : aaplimg.com
+      Type  : 1 (A)
+      Class : 1 (IN)
+
+  Additional:
+    Additional 1:
+      Name     : .
+      Type     : 41 (OPT)
+      Class    : 1232 (UNKNOWN)
+      TTL      : 0
+      RDLength : 12
+      RDATA    : 000a00081d50565824011896
+
+  Parser:
+    Parse OK             : yes
+    Parsed length        : 52 bytes
+    Truncated by capture : no
+  ---------------------------------------------
+[XDP] RESPONSE 36.50.50.50:53 -> 172.16.14.27:56884 id=8857 type=A name=cloudflare-dns.com rcode=0(NOERROR) answers=2 authority=0 additional=1
+
+  ---------------- DNS DETAILS ----------------
+  Header:
+    ID      : 8857
+    Flags   : 0x81a0
+    QR      : 1
+    Opcode  : 0
+    AA      : 0
+    TC      : 0
+    RD      : 1
+    RA      : 1
+    AD      : 1
+    CD      : 0
+    RCODE   : 0 (NOERROR)
+
+  Counts:
+    Questions  : 1
+    Answers    : 2
+    Authority  : 0
+    Additional : 1
+
+  Questions:
+    Question 1:
+      Name  : cloudflare-dns.com
+      Type  : 1 (A)
+      Class : 1 (IN)
+
+  Answers:
+    Answer 1:
+      Name     : cloudflare-dns.com
+      Type     : 1 (A)
+      Class    : 1 (IN)
+      TTL      : 287
+      RDLength : 4
+      RDATA    : 104.16.248.249
+    Answer 2:
+      Name     : cloudflare-dns.com
+      Type     : 1 (A)
+      Class    : 1 (IN)
+      TTL      : 287
+      RDLength : 4
+      RDATA    : 104.16.249.249
+
+  Additional:
+    Additional 1:
+      Name     : .
+      Type     : 41 (OPT)
+      Class    : 1232 (UNKNOWN)
+      TTL      : 0
+      RDLength : 28
+      RDATA    : 000a0018020540b2f10762eb010000006aca62545fe06ef5de51b191
+
+  Parser:
+    Parse OK             : yes
+    Parsed length        : 107 bytes
+    Truncated by capture : no
+  ---------------------------------------------
+
+========== DEBUG ==========
+BPF event->query_type = 1
+parser parse_ok = 1
+parser parsed_len = 59
+parser qdcount = 1
+parser question_count = 1
+parser QTYPE = 1
+parser QCLASS = 1
+parser QNAME = cloudflare-dns.com
+RAW DNS PAYLOAD:
+22 99 01 20 00 01 00 00 00 00 00 01 0e 63 6c 6f 
+75 64 66 6c 61 72 65 2d 64 6e 73 03 63 6f 6d 00 
+00 01 00 01 00 00 29 04 d0 00 00 00 00 00 0c 00 
+0a 00 08 02 05 40 b2 f1 07 62 eb 
+===========================
+[RESPONSE] 172.16.14.27:56884 -> 36.50.50.50:53 id=8857 type=A name=cloudflare-dns.com latency=45.596 ms response_rcode=0(NOERROR) response_answers=2
+
+  ---------------- DNS DETAILS ----------------
+  Header:
+    ID      : 8857
+    Flags   : 0x0120
+    QR      : 0
+    Opcode  : 0
+    AA      : 0
+    TC      : 0
+    RD      : 1
+    RA      : 0
+    AD      : 1
+    CD      : 0
+    RCODE   : 0 (NOERROR)
+
+  Counts:
+    Questions  : 1
+    Answers    : 0
+    Authority  : 0
+    Additional : 1
+
+  Questions:
+    Question 1:
+      Name  : cloudflare-dns.com
+      Type  : 1 (A)
+      Class : 1 (IN)
+
+  Additional:
+    Additional 1:
+      Name     : .
+      Type     : 41 (OPT)
+      Class    : 1232 (UNKNOWN)
+      TTL      : 0
+      RDLength : 12
+      RDATA    : 000a0008020540b2f10762eb
+
+  Parser:
+    Parse OK             : yes
+    Parsed length        : 59 bytes
+    Truncated by capture : no
+  ---------------------------------------------
+[XDP] RESPONSE 36.50.50.50:53 -> 172.16.14.27:57096 id=53189 type=A name=live.com rcode=0(NOERROR) answers=1 authority=0 additional=1
+
+  ---------------- DNS DETAILS ----------------
+  Header:
+    ID      : 53189
+    Flags   : 0x81a0
+    QR      : 1
+    Opcode  : 0
+    AA      : 0
+    TC      : 0
+    RD      : 1
+    RA      : 1
+    AD      : 1
+    CD      : 0
+    RCODE   : 0 (NOERROR)
+
+  Counts:
+    Questions  : 1
+    Answers    : 1
+    Authority  : 0
+    Additional : 1
+
+  Questions:
+    Question 1:
+      Name  : live.com
+      Type  : 1 (A)
+      Class : 1 (IN)
+
+  Answers:
+    Answer 1:
+      Name     : live.com
+      Type     : 1 (A)
+      Class    : 1 (IN)
+      TTL      : 3494
+      RDLength : 4
+      RDATA    : 204.79.197.212
+
+  Additional:
+    Additional 1:
+      Name     : .
+      Type     : 41 (OPT)
+      Class    : 1232 (UNKNOWN)
+      TTL      : 0
+      RDLength : 28
+      RDATA    : 000a0018f79dcd1cbfa69638010000006aca6254aabc93b248bcfab3
+
+  Parser:
+    Parse OK             : yes
+    Parsed length        : 81 bytes
+    Truncated by capture : no
+  ---------------------------------------------
+
+========== DEBUG ==========
+BPF event->query_type = 1
+parser parse_ok = 1
+parser parsed_len = 49
+parser qdcount = 1
+parser question_count = 1
+parser QTYPE = 1
+parser QCLASS = 1
+parser QNAME = live.com
+RAW DNS PAYLOAD:
+cf c5 01 20 00 01 00 00 00 00 00 01 04 6c 69 76 
+65 03 63 6f 6d 00 00 01 00 01 00 00 29 04 d0 00 
+00 00 00 00 0c 00 0a 00 08 f7 9d cd 1c bf a6 96 
+38 
+===========================
+[RESPONSE] 172.16.14.27:57096 -> 36.50.50.50:53 id=53189 type=A name=live.com latency=50.721 ms response_rcode=0(NOERROR) response_answers=1
+
+  ---------------- DNS DETAILS ----------------
+  Header:
+    ID      : 53189
+    Flags   : 0x0120
+    QR      : 0
+    Opcode  : 0
+    AA      : 0
+    TC      : 0
+    RD      : 1
+    RA      : 0
+    AD      : 1
+    CD      : 0
+    RCODE   : 0 (NOERROR)
+
+  Counts:
+    Questions  : 1
+    Answers    : 0
+    Authority  : 0
+    Additional : 1
+
+  Questions:
+    Question 1:
+      Name  : live.com
+      Type  : 1 (A)
+      Class : 1 (IN)
+
+  Additional:
+    Additional 1:
+      Name     : .
+      Type     : 41 (OPT)
+      Class    : 1232 (UNKNOWN)
+      TTL      : 0
+      RDLength : 12
+      RDATA    : 000a0008f79dcd1cbfa69638
+
+  Parser:
+    Parse OK             : yes
+    Parsed length        : 49 bytes
+    Truncated by capture : no
+  ---------------------------------------------
+[XDP] RESPONSE 36.50.50.50:53 -> 172.16.14.27:46814 id=1021 type=A name=cdninstagram.com rcode=0(NOERROR) answers=0 authority=1 additional=1
+
+  ---------------- DNS DETAILS ----------------
+  Header:
+    ID      : 1021
+    Flags   : 0x8180
+    QR      : 1
+    Opcode  : 0
+    AA      : 0
+    TC      : 0
+    RD      : 1
+    RA      : 1
+    AD      : 0
+    CD      : 0
+    RCODE   : 0 (NOERROR)
+
+  Counts:
+    Questions  : 1
+    Answers    : 0
+    Authority  : 1
+    Additional : 1
+
+  Questions:
+    Question 1:
+      Name  : cdninstagram.com
+      Type  : 1 (A)
+      Class : 1 (IN)
+
+  Authority:
+    Authority 1:
+      Name     : cdninstagram.com
+      Type     : 6 (SOA)
+      Class    : 1 (IN)
+      TTL      : 1800
+      RDLength : 52
+      RDATA    : a.ns.instagram.com dns.facebook.com 4207849484 14400 1800 604800 3600
+
+  Additional:
+    Additional 1:
+      Name     : .
+      Type     : 41 (OPT)
+      Class    : 1232 (UNKNOWN)
+      TTL      : 0
+      RDLength : 28
+      RDATA    : 000a001804ec8eb719ceeae1010000006aca625405e6fe4799d46ab6
+
+  Parser:
+    Parse OK             : yes
+    Parsed length        : 137 bytes
+    Truncated by capture : no
+  ---------------------------------------------
+
+========== DEBUG ==========
+BPF event->query_type = 1
+parser parse_ok = 1
+parser parsed_len = 57
+parser qdcount = 1
+parser question_count = 1
+parser QTYPE = 1
+parser QCLASS = 1
+parser QNAME = cdninstagram.com
+RAW DNS PAYLOAD:
+03 fd 01 20 00 01 00 00 00 00 00 01 0c 63 64 6e 
+69 6e 73 74 61 67 72 61 6d 03 63 6f 6d 00 00 01 
+00 01 00 00 29 04 d0 00 00 00 00 00 0c 00 0a 00 
+08 04 ec 8e b7 19 ce ea e1 
+===========================
+[RESPONSE] 172.16.14.27:46814 -> 36.50.50.50:53 id=1021 type=A name=cdninstagram.com latency=60.812 ms response_rcode=0(NOERROR) response_answers=0
+
+  ---------------- DNS DETAILS ----------------
+  Header:
+    ID      : 1021
+    Flags   : 0x0120
+    QR      : 0
+    Opcode  : 0
+    AA      : 0
+    TC      : 0
+    RD      : 1
+    RA      : 0
+    AD      : 1
+    CD      : 0
+    RCODE   : 0 (NOERROR)
+
+  Counts:
+    Questions  : 1
+    Answers    : 0
+    Authority  : 0
+    Additional : 1
+
+  Questions:
+    Question 1:
+      Name  : cdninstagram.com
+      Type  : 1 (A)
+      Class : 1 (IN)
+
+  Additional:
+    Additional 1:
+      Name     : .
+      Type     : 41 (OPT)
+      Class    : 1232 (UNKNOWN)
+      TTL      : 0
+      RDLength : 12
+      RDATA    : 000a000804ec8eb719ceeae1
+
+  Parser:
+    Parse OK             : yes
+    Parsed length        : 57 bytes
+    Truncated by capture : no
+  ---------------------------------------------
+[XDP] RESPONSE 36.50.50.50:53 -> 172.16.14.27:38592 id=56609 type=A name=akamai.net rcode=0(NOERROR) answers=0 authority=1 additional=1
+
+  ---------------- DNS DETAILS ----------------
+  Header:
+    ID      : 56609
+    Flags   : 0x8180
+    QR      : 1
+    Opcode  : 0
+    AA      : 0
+    TC      : 0
+    RD      : 1
+    RA      : 1
+    AD      : 0
+    CD      : 0
+    RCODE   : 0 (NOERROR)
+
+  Counts:
+    Questions  : 1
+    Answers    : 0
+    Authority  : 1
+    Additional : 1
+
+  Questions:
+    Question 1:
+      Name  : akamai.net
+      Type  : 1 (A)
+      Class : 1 (IN)
+
+  Authority:
+    Authority 1:
+      Name     : akamai.net
+      Type     : 6 (SOA)
+      Class    : 1 (IN)
+      TTL      : 180
+      RDLength : 65
+      RDATA    : internal.akamaitech.net hostmaster.akamai.com 1784307600 90000 90000 90000 180
+
+  Additional:
+    Additional 1:
+      Name     : .
+      Type     : 41 (OPT)
+      Class    : 1232 (UNKNOWN)
+      TTL      : 0
+      RDLength : 28
+      RDATA    : 000a00186ac5bd5f27564d3a010000006aca62547275918b6f58b32e
+
+  Parser:
+    Parse OK             : yes
+    Parsed length        : 144 bytes
+    Truncated by capture : no
+  ---------------------------------------------
+
+========== DEBUG ==========
+BPF event->query_type = 1
+parser parse_ok = 1
+parser parsed_len = 51
+parser qdcount = 1
+parser question_count = 1
+parser QTYPE = 1
+parser QCLASS = 1
+parser QNAME = akamai.net
+RAW DNS PAYLOAD:
+dd 21 01 20 00 01 00 00 00 00 00 01 06 61 6b 61 
+6d 61 69 03 6e 65 74 00 00 01 00 01 00 00 29 04 
+d0 00 00 00 00 00 0c 00 0a 00 08 6a c5 bd 5f 27 
+56 4d 3a 
+===========================
+[RESPONSE] 172.16.14.27:38592 -> 36.50.50.50:53 id=56609 type=A name=akamai.net latency=60.848 ms response_rcode=0(NOERROR) response_answers=0
+
+  ---------------- DNS DETAILS ----------------
+  Header:
+    ID      : 56609
+    Flags   : 0x0120
+    QR      : 0
+    Opcode  : 0
+    AA      : 0
+    TC      : 0
+    RD      : 1
+    RA      : 0
+    AD      : 1
+    CD      : 0
+    RCODE   : 0 (NOERROR)
+
+  Counts:
+    Questions  : 1
+    Answers    : 0
+    Authority  : 0
+    Additional : 1
+
+  Questions:
+    Question 1:
+      Name  : akamai.net
+      Type  : 1 (A)
+      Class : 1 (IN)
+
+  Additional:
+    Additional 1:
+      Name     : .
+      Type     : 41 (OPT)
+      Class    : 1232 (UNKNOWN)
+      TTL      : 0
+      RDLength : 12
+      RDATA    : 000a00086ac5bd5f27564d3a
+
+  Parser:
+    Parse OK             : yes
+    Parsed length        : 51 bytes
+    Truncated by capture : no
+  ---------------------------------------------
+[XDP] RESPONSE 36.50.50.50:53 -> 172.16.14.27:57483 id=44070 type=A name=googlesyndication.com rcode=0(NOERROR) answers=1 authority=0 additional=1
+
+  ---------------- DNS DETAILS ----------------
+  Header:
+    ID      : 44070
+    Flags   : 0x8180
+    QR      : 1
+    Opcode  : 0
+    AA      : 0
+    TC      : 0
+    RD      : 1
+    RA      : 1
+    AD      : 0
+    CD      : 0
+    RCODE   : 0 (NOERROR)
+
+  Counts:
+    Questions  : 1
+    Answers    : 1
+    Authority  : 0
+    Additional : 1
+
+  Questions:
+    Question 1:
+      Name  : googlesyndication.com
+      Type  : 1 (A)
+      Class : 1 (IN)
+
+  Answers:
+    Answer 1:
+      Name     : googlesyndication.com
+      Type     : 1 (A)
+      Class    : 1 (IN)
+      TTL      : 300
+      RDLength : 4
+      RDATA    : 142.250.193.132
+
+  Additional:
+    Additional 1:
+      Name     : .
+      Type     : 41 (OPT)
+      Class    : 1232 (UNKNOWN)
+      TTL      : 0
+      RDLength : 28
+      RDATA    : 000a001890966278050f3442010000006aca62553c0a771935dbfda9
+
+  Parser:
+    Parse OK             : yes
+    Parsed length        : 94 bytes
+    Truncated by capture : no
+  ---------------------------------------------
+
+========== DEBUG ==========
+BPF event->query_type = 1
+parser parse_ok = 1
+parser parsed_len = 62
+parser qdcount = 1
+parser question_count = 1
+parser QTYPE = 1
+parser QCLASS = 1
+parser QNAME = googlesyndication.com
+RAW DNS PAYLOAD:
+ac 26 01 20 00 01 00 00 00 00 00 01 11 67 6f 6f 
+67 6c 65 73 79 6e 64 69 63 61 74 69 6f 6e 03 63 
+6f 6d 00 00 01 00 01 00 00 29 04 d0 00 00 00 00 
+00 0c 00 0a 00 08 90 96 62 78 05 0f 34 42 
+===========================
+[RESPONSE] 172.16.14.27:57483 -> 36.50.50.50:53 id=44070 type=A name=googlesyndication.com latency=102.011 ms response_rcode=0(NOERROR) response_answers=1
+
+  ---------------- DNS DETAILS ----------------
+  Header:
+    ID      : 44070
+    Flags   : 0x0120
+    QR      : 0
+    Opcode  : 0
+    AA      : 0
+    TC      : 0
+    RD      : 1
+    RA      : 0
+    AD      : 1
+    CD      : 0
+    RCODE   : 0 (NOERROR)
+
+  Counts:
+    Questions  : 1
+    Answers    : 0
+    Authority  : 0
+    Additional : 1
+
+  Questions:
+    Question 1:
+      Name  : googlesyndication.com
+      Type  : 1 (A)
+      Class : 1 (IN)
+
+  Additional:
+    Additional 1:
+      Name     : .
+      Type     : 41 (OPT)
+      Class    : 1232 (UNKNOWN)
+      TTL      : 0
+      RDLength : 12
+      RDATA    : 000a000890966278050f3442
+
+  Parser:
+    Parse OK             : yes
+    Parsed length        : 62 bytes
+    Truncated by capture : no
+  ---------------------------------------------
+[XDP] RESPONSE 36.50.50.50:53 -> 172.16.14.27:59583 id=61823 type=A name=tiktokv.com rcode=0(NOERROR) answers=9 authority=0 additional=1
+
+  ---------------- DNS DETAILS ----------------
+  Header:
+    ID      : 61823
+    Flags   : 0x8180
+    QR      : 1
+    Opcode  : 0
+    AA      : 0
+    TC      : 0
+    RD      : 1
+    RA      : 1
+    AD      : 0
+    CD      : 0
+    RCODE   : 0 (NOERROR)
+
+  Counts:
+    Questions  : 1
+    Answers    : 9
+    Authority  : 0
+    Additional : 1
+
+  Questions:
+    Question 1:
+      Name  : tiktokv.com
+      Type  : 1 (A)
+      Class : 1 (IN)
+
+  Answers:
+    Answer 1:
+      Name     : tiktokv.com
+      Type     : 1 (A)
+      Class    : 1 (IN)
+      TTL      : 20
+      RDLength : 4
+      RDATA    : 23.223.245.45
+    Answer 2:
+      Name     : tiktokv.com
+      Type     : 1 (A)
+      Class    : 1 (IN)
+      TTL      : 20
+      RDLength : 4
+      RDATA    : 23.223.245.47
+    Answer 3:
+      Name     : tiktokv.com
+      Type     : 1 (A)
+      Class    : 1 (IN)
+      TTL      : 20
+      RDLength : 4
+      RDATA    : 23.223.245.49
+    Answer 4:
+      Name     : tiktokv.com
+      Type     : 1 (A)
+      Class    : 1 (IN)
+      TTL      : 20
+      RDLength : 4
+      RDATA    : 23.223.245.40
+    Answer 5:
+      Name     : tiktokv.com
+      Type     : 1 (A)
+      Class    : 1 (IN)
+      TTL      : 20
+      RDLength : 4
+      RDATA    : 23.223.245.50
+    Answer 6:
+      Name     : tiktokv.com
+      Type     : 1 (A)
+      Class    : 1 (IN)
+      TTL      : 20
+      RDLength : 4
+      RDATA    : 23.223.245.51
+    Answer 7:
+      Name     : tiktokv.com
+      Type     : 1 (A)
+      Class    : 1 (IN)
+      TTL      : 20
+      RDLength : 4
+      RDATA    : 23.223.245.55
+    Answer 8:
+      Name     : tiktokv.com
+      Type     : 1 (A)
+      Class    : 1 (IN)
+      TTL      : 20
+      RDLength : 4
+      RDATA    : 23.223.245.43
+    Answer 9:
+      Name     : tiktokv.com
+      Type     : 1 (A)
+      Class    : 1 (IN)
+      TTL      : 20
+      RDLength : 4
+      RDATA    : 23.223.245.48
+
+  Additional:
+    Additional 1:
+      Name     : .
+      Type     : 41 (OPT)
+      Class    : 1232 (UNKNOWN)
+      TTL      : 0
+      RDLength : 28
+      RDATA    : 000a00180d28d3e37e3afb25010000006aca6256d6ee52d4859c2c58
+
+  Parser:
+    Parse OK             : yes
+    Parsed length        : 212 bytes
+    Truncated by capture : no
+  ---------------------------------------------
+
+========== DEBUG ==========
+BPF event->query_type = 1
+parser parse_ok = 1
+parser parsed_len = 52
+parser qdcount = 1
+parser question_count = 1
+parser QTYPE = 1
+parser QCLASS = 1
+parser QNAME = tiktokv.com
+RAW DNS PAYLOAD:
+f1 7f 01 20 00 01 00 00 00 00 00 01 07 74 69 6b 
+74 6f 6b 76 03 63 6f 6d 00 00 01 00 01 00 00 29 
+04 d0 00 00 00 00 00 0c 00 0a 00 08 0d 28 d3 e3 
+7e 3a fb 25 
+===========================
+[RESPONSE] 172.16.14.27:59583 -> 36.50.50.50:53 id=61823 type=A name=tiktokv.com latency=1010.471 ms response_rcode=0(NOERROR) response_answers=9
+
+  ---------------- DNS DETAILS ----------------
+  Header:
+    ID      : 61823
+    Flags   : 0x0120
+    QR      : 0
+    Opcode  : 0
+    AA      : 0
+    TC      : 0
+    RD      : 1
+    RA      : 0
+    AD      : 1
+    CD      : 0
+    RCODE   : 0 (NOERROR)
+
+  Counts:
+    Questions  : 1
+    Answers    : 0
+    Authority  : 0
+    Additional : 1
+
+  Questions:
+    Question 1:
+      Name  : tiktokv.com
+      Type  : 1 (A)
+      Class : 1 (IN)
+
+  Additional:
+    Additional 1:
+      Name     : .
+      Type     : 41 (OPT)
+      Class    : 1232 (UNKNOWN)
+      TTL      : 0
+      RDLength : 12
+      RDATA    : 000a00080d28d3e37e3afb25
+
+  Parser:
+    Parse OK             : yes
+    Parsed length        : 52 bytes
+    Truncated by capture : no
+  ---------------------------------------------
+[XDP] RESPONSE 36.50.50.50:53 -> 172.16.14.27:42041 id=45294 type=A name=tiktokcdn.com rcode=0(NOERROR) answers=0 authority=1 additional=1
+
+  ---------------- DNS DETAILS ----------------
+  Header:
+    ID      : 45294
+    Flags   : 0x8180
+    QR      : 1
+    Opcode  : 0
+    AA      : 0
+    TC      : 0
+    RD      : 1
+    RA      : 1
+    AD      : 0
+    CD      : 0
+    RCODE   : 0 (NOERROR)
+
+  Counts:
+    Questions  : 1
+    Answers    : 0
+    Authority  : 1
+    Additional : 1
+
+  Questions:
+    Question 1:
+      Name  : tiktokcdn.com
+      Type  : 1 (A)
+      Class : 1 (IN)
+
+  Authority:
+    Authority 1:
+      Name     : tiktokcdn.com
+      Type     : 6 (SOA)
+      Class    : 1 (IN)
+      TTL      : 1800
+      RDLength : 56
+      RDATA    : a9-66.akam.net hostmaster.akamai.com 1562922900 43200 7200 604800 7200
+
+  Additional:
+    Additional 1:
+      Name     : .
+      Type     : 41 (OPT)
+      Class    : 1232 (UNKNOWN)
+      TTL      : 0
+      RDLength : 28
+      RDATA    : 000a00188f5ff140a9250aaf010000006aca6256c47431a11a761470
+
+  Parser:
+    Parse OK             : yes
+    Parsed length        : 138 bytes
+    Truncated by capture : no
+  ---------------------------------------------
+
+========== DEBUG ==========
+BPF event->query_type = 1
+parser parse_ok = 1
+parser parsed_len = 54
+parser qdcount = 1
+parser question_count = 1
+parser QTYPE = 1
+parser QCLASS = 1
+parser QNAME = tiktokcdn.com
+RAW DNS PAYLOAD:
+b0 ee 01 20 00 01 00 00 00 00 00 01 09 74 69 6b 
+74 6f 6b 63 64 6e 03 63 6f 6d 00 00 01 00 01 00 
+00 29 04 d0 00 00 00 00 00 0c 00 0a 00 08 8f 5f 
+f1 40 a9 25 0a af 
+===========================
+[RESPONSE] 172.16.14.27:42041 -> 36.50.50.50:53 id=45294 type=A name=tiktokcdn.com latency=215.915 ms response_rcode=0(NOERROR) response_answers=0
+
+  ---------------- DNS DETAILS ----------------
+  Header:
+    ID      : 45294
+    Flags   : 0x0120
+    QR      : 0
+    Opcode  : 0
+    AA      : 0
+    TC      : 0
+    RD      : 1
+    RA      : 0
+    AD      : 1
+    CD      : 0
+    RCODE   : 0 (NOERROR)
+
+  Counts:
+    Questions  : 1
+    Answers    : 0
+    Authority  : 0
+    Additional : 1
+
+  Questions:
+    Question 1:
+      Name  : tiktokcdn.com
+      Type  : 1 (A)
+      Class : 1 (IN)
+
+  Additional:
+    Additional 1:
+      Name     : .
+      Type     : 41 (OPT)
+      Class    : 1232 (UNKNOWN)
+      TTL      : 0
+      RDLength : 12
+      RDATA    : 000a00088f5ff140a9250aaf
+
+  Parser:
+    Parse OK             : yes
+    Parsed length        : 54 bytes
+    Truncated by capture : no
+  ---------------------------------------------
+[XDP] RESPONSE 36.50.50.50:53 -> 172.16.14.27:50871 id=38151 type=A name=chatgpt.com rcode=0(NOERROR) answers=2 authority=0 additional=1
+
+  ---------------- DNS DETAILS ----------------
+  Header:
+    ID      : 38151
+    Flags   : 0x8180
+    QR      : 1
+    Opcode  : 0
+    AA      : 0
+    TC      : 0
+    RD      : 1
+    RA      : 1
+    AD      : 0
+    CD      : 0
+    RCODE   : 0 (NOERROR)
+
+  Counts:
+    Questions  : 1
+    Answers    : 2
+    Authority  : 0
+    Additional : 1
+
+  Questions:
+    Question 1:
+      Name  : chatgpt.com
+      Type  : 1 (A)
+      Class : 1 (IN)
+
+  Answers:
+    Answer 1:
+      Name     : chatgpt.com
+      Type     : 1 (A)
+      Class    : 1 (IN)
+      TTL      : 147
+      RDLength : 4
+      RDATA    : 172.64.155.209
+    Answer 2:
+      Name     : chatgpt.com
+      Type     : 1 (A)
+      Class    : 1 (IN)
+      TTL      : 147
+      RDLength : 4
+      RDATA    : 104.18.32.47
+
+  Additional:
+    Additional 1:
+      Name     : .
+      Type     : 41 (OPT)
+      Class    : 1232 (UNKNOWN)
+      TTL      : 0
+      RDLength : 28
+      RDATA    : 000a0018b008d63f708b03f7010000006aca625bc1b416a7d88c98e5
+
+  Parser:
+    Parse OK             : yes
+    Parsed length        : 100 bytes
+    Truncated by capture : no
+  ---------------------------------------------
+
+========== DEBUG ==========
+BPF event->query_type = 1
+parser parse_ok = 1
+parser parsed_len = 52
+parser qdcount = 1
+parser question_count = 1
+parser QTYPE = 1
+parser QCLASS = 1
+parser QNAME = chatgpt.com
+RAW DNS PAYLOAD:
+95 07 01 20 00 01 00 00 00 00 00 01 07 63 68 61 
+74 67 70 74 03 63 6f 6d 00 00 01 00 01 00 00 29 
+04 d0 00 00 00 00 00 0c 00 0a 00 08 b0 08 d6 3f 
+70 8b 03 f7 
+===========================
+[RESPONSE] 172.16.14.27:50871 -> 36.50.50.50:53 id=38151 type=A name=chatgpt.com latency=48.734 ms response_rcode=0(NOERROR) response_answers=2
+
+  ---------------- DNS DETAILS ----------------
+  Header:
+    ID      : 38151
+    Flags   : 0x0120
+    QR      : 0
+    Opcode  : 0
+    AA      : 0
+    TC      : 0
+    RD      : 1
+    RA      : 0
+    AD      : 1
+    CD      : 0
+    RCODE   : 0 (NOERROR)
+
+  Counts:
+    Questions  : 1
+    Answers    : 0
+    Authority  : 0
+    Additional : 1
+
+  Questions:
+    Question 1:
+      Name  : chatgpt.com
+      Type  : 1 (A)
+      Class : 1 (IN)
+
+  Additional:
+    Additional 1:
+      Name     : .
+      Type     : 41 (OPT)
+      Class    : 1232 (UNKNOWN)
+      TTL      : 0
+      RDLength : 12
+      RDATA    : 000a0008b008d63f708b03f7
+
+  Parser:
+    Parse OK             : yes
+    Parsed length        : 52 bytes
+    Truncated by capture : no
+  ---------------------------------------------
+
+========== DEBUG ==========
+BPF event->query_type = 1
+parser parse_ok = 1
+parser parsed_len = 55
+parser qdcount = 1
+parser question_count = 1
+parser QTYPE = 1
+parser QCLASS = 1
+parser QNAME = cloudfront.net
+RAW DNS PAYLOAD:
+b1 01 01 20 00 01 00 00 00 00 00 01 0a 63 6c 6f 
+75 64 66 72 6f 6e 74 03 6e 65 74 00 00 01 00 01 
+00 00 29 04 d0 00 00 00 00 00 0c 00 0a 00 08 f5 
+95 8a b0 78 db 18 64 
+===========================
+[TIMEOUT] 172.16.14.27:54624 -> 36.50.50.50:53 id=45313 type=A name=cloudfront.net latency=5300.948 ms response_rcode=0(NOERROR) response_answers=0
+
+  ---------------- DNS DETAILS ----------------
+  Header:
+    ID      : 45313
+    Flags   : 0x0120
+    QR      : 0
+    Opcode  : 0
+    AA      : 0
+    TC      : 0
+    RD      : 1
+    RA      : 0
+    AD      : 1
+    CD      : 0
+    RCODE   : 0 (NOERROR)
+
+  Counts:
+    Questions  : 1
+    Answers    : 0
+    Authority  : 0
+    Additional : 1
+
+  Questions:
+    Question 1:
+      Name  : cloudfront.net
+      Type  : 1 (A)
+      Class : 1 (IN)
+
+  Additional:
+    Additional 1:
+      Name     : .
+      Type     : 41 (OPT)
+      Class    : 1232 (UNKNOWN)
+      TTL      : 0
+      RDLength : 12
+      RDATA    : 000a0008f5958ab078db1864
+
+  Parser:
+    Parse OK             : yes
+    Parsed length        : 55 bytes
+    Truncated by capture : no
+  ---------------------------------------------
+[XDP] RESPONSE 36.50.50.50:53 -> 172.16.14.27:45302 id=23824 type=A name=ui.com rcode=0(NOERROR) answers=4 authority=0 additional=1
+
+  ---------------- DNS DETAILS ----------------
+  Header:
+    ID      : 23824
+    Flags   : 0x8180
+    QR      : 1
+    Opcode  : 0
+    AA      : 0
+    TC      : 0
+    RD      : 1
+    RA      : 1
+    AD      : 0
+    CD      : 0
+    RCODE   : 0 (NOERROR)
+
+  Counts:
+    Questions  : 1
+    Answers    : 4
+    Authority  : 0
+    Additional : 1
+
+  Questions:
+    Question 1:
+      Name  : ui.com
+      Type  : 1 (A)
+      Class : 1 (IN)
+
+  Answers:
+    Answer 1:
+      Name     : ui.com
+      Type     : 1 (A)
+      Class    : 1 (IN)
+      TTL      : 60
+      RDLength : 4
+      RDATA    : 18.164.144.4
+    Answer 2:
+      Name     : ui.com
+      Type     : 1 (A)
+      Class    : 1 (IN)
+      TTL      : 60
+      RDLength : 4
+      RDATA    : 18.164.144.105
+    Answer 3:
+      Name     : ui.com
+      Type     : 1 (A)
+      Class    : 1 (IN)
+      TTL      : 60
+      RDLength : 4
+      RDATA    : 18.164.144.70
+    Answer 4:
+      Name     : ui.com
+      Type     : 1 (A)
+      Class    : 1 (IN)
+      TTL      : 60
+      RDLength : 4
+      RDATA    : 18.164.144.114
+
+  Additional:
+    Additional 1:
+      Name     : .
+      Type     : 41 (OPT)
+      Class    : 1232 (UNKNOWN)
+      TTL      : 0
+      RDLength : 28
+      RDATA    : 000a0018059dbb2facccc2d8010000006aca625bc984ae19927b1151
+
+  Parser:
+    Parse OK             : yes
+    Parsed length        : 127 bytes
+    Truncated by capture : no
+  ---------------------------------------------
+
+========== DEBUG ==========
+BPF event->query_type = 1
+parser parse_ok = 1
+parser parsed_len = 47
+parser qdcount = 1
+parser question_count = 1
+parser QTYPE = 1
+parser QCLASS = 1
+parser QNAME = ui.com
+RAW DNS PAYLOAD:
+5d 10 01 20 00 01 00 00 00 00 00 01 02 75 69 03 
+63 6f 6d 00 00 01 00 01 00 00 29 04 d0 00 00 00 
+00 00 0c 00 0a 00 08 05 9d bb 2f ac cc c2 d8 
+===========================
+[RESPONSE] 172.16.14.27:45302 -> 36.50.50.50:53 id=23824 type=A name=ui.com latency=194.437 ms response_rcode=0(NOERROR) response_answers=4
+
+  ---------------- DNS DETAILS ----------------
+  Header:
+    ID      : 23824
+    Flags   : 0x0120
+    QR      : 0
+    Opcode  : 0
+    AA      : 0
+    TC      : 0
+    RD      : 1
+    RA      : 0
+    AD      : 1
+    CD      : 0
+    RCODE   : 0 (NOERROR)
+
+  Counts:
+    Questions  : 1
+    Answers    : 0
+    Authority  : 0
+    Additional : 1
+
+  Questions:
+    Question 1:
+      Name  : ui.com
+      Type  : 1 (A)
+      Class : 1 (IN)
+
+  Additional:
+    Additional 1:
+      Name     : .
+      Type     : 41 (OPT)
+      Class    : 1232 (UNKNOWN)
+      TTL      : 0
+      RDLength : 12
+      RDATA    : 000a0008059dbb2facccc2d8
+
+  Parser:
+    Parse OK             : yes
+    Parsed length        : 47 bytes
+    Truncated by capture : no
+  ---------------------------------------------
+[XDP] RESPONSE 36.50.50.50:53 -> 172.16.14.27:35752 id=5520 type=A name=openai.com rcode=0(NOERROR) answers=2 authority=0 additional=1
+
+  ---------------- DNS DETAILS ----------------
+  Header:
+    ID      : 5520
+    Flags   : 0x8180
+    QR      : 1
+    Opcode  : 0
+    AA      : 0
+    TC      : 0
+    RD      : 1
+    RA      : 1
+    AD      : 0
+    CD      : 0
+    RCODE   : 0 (NOERROR)
+
+  Counts:
+    Questions  : 1
+    Answers    : 2
+    Authority  : 0
+    Additional : 1
+
+  Questions:
+    Question 1:
+      Name  : openai.com
+      Type  : 1 (A)
+      Class : 1 (IN)
+
+  Answers:
+    Answer 1:
+      Name     : openai.com
+      Type     : 1 (A)
+      Class    : 1 (IN)
+      TTL      : 60
+      RDLength : 4
+      RDATA    : 172.64.154.211
+    Answer 2:
+      Name     : openai.com
+      Type     : 1 (A)
+      Class    : 1 (IN)
+      TTL      : 60
+      RDLength : 4
+      RDATA    : 104.18.33.45
+
+  Additional:
+    Additional 1:
+      Name     : .
+      Type     : 41 (OPT)
+      Class    : 1232 (UNKNOWN)
+      TTL      : 0
+      RDLength : 28
+      RDATA    : 000a0018e37ea49631f944ad010000006aca625b0e2cefca449adcc2
+
+  Parser:
+    Parse OK             : yes
+    Parsed length        : 99 bytes
+    Truncated by capture : no
+  ---------------------------------------------
+
+========== DEBUG ==========
+BPF event->query_type = 1
+parser parse_ok = 1
+parser parsed_len = 51
+parser qdcount = 1
+parser question_count = 1
+parser QTYPE = 1
+parser QCLASS = 1
+parser QNAME = openai.com
+RAW DNS PAYLOAD:
+15 90 01 20 00 01 00 00 00 00 00 01 06 6f 70 65 
+6e 61 69 03 63 6f 6d 00 00 01 00 01 00 00 29 04 
+d0 00 00 00 00 00 0c 00 0a 00 08 e3 7e a4 96 31 
+f9 44 ad 
+===========================
+[RESPONSE] 172.16.14.27:35752 -> 36.50.50.50:53 id=5520 type=A name=openai.com latency=95.245 ms response_rcode=0(NOERROR) response_answers=2
+
+  ---------------- DNS DETAILS ----------------
+  Header:
+    ID      : 5520
+    Flags   : 0x0120
+    QR      : 0
+    Opcode  : 0
+    AA      : 0
+    TC      : 0
+    RD      : 1
+    RA      : 0
+    AD      : 1
+    CD      : 0
+    RCODE   : 0 (NOERROR)
+
+  Counts:
+    Questions  : 1
+    Answers    : 0
+    Authority  : 0
+    Additional : 1
+
+  Questions:
+    Question 1:
+      Name  : openai.com
+      Type  : 1 (A)
+      Class : 1 (IN)
+
+  Additional:
+    Additional 1:
+      Name     : .
+      Type     : 41 (OPT)
+      Class    : 1232 (UNKNOWN)
+      TTL      : 0
+      RDLength : 12
+      RDATA    : 000a0008e37ea49631f944ad
+
+  Parser:
+    Parse OK             : yes
+    Parsed length        : 51 bytes
+    Truncated by capture : no
+  ---------------------------------------------
+[XDP] RESPONSE 36.50.50.50:53 -> 172.16.14.27:54387 id=17410 type=A name=ytimg.com rcode=0(NOERROR) answers=0 authority=1 additional=1
+
+  ---------------- DNS DETAILS ----------------
+  Header:
+    ID      : 17410
+    Flags   : 0x8180
+    QR      : 1
+    Opcode  : 0
+    AA      : 0
+    TC      : 0
+    RD      : 1
+    RA      : 1
+    AD      : 0
+    CD      : 0
+    RCODE   : 0 (NOERROR)
+
+  Counts:
+    Questions  : 1
+    Answers    : 0
+    Authority  : 1
+    Additional : 1
+
+  Questions:
+    Question 1:
+      Name  : ytimg.com
+      Type  : 1 (A)
+      Class : 1 (IN)
+
+  Authority:
+    Authority 1:
+      Name     : ytimg.com
+      Type     : 6 (SOA)
+      Class    : 1 (IN)
+      TTL      : 60
+      RDLength : 45
+      RDATA    : ns1.google.com dns-admin.google.com 996430997 900 900 1800 60
+
+  Additional:
+    Additional 1:
+      Name     : .
+      Type     : 41 (OPT)
+      Class    : 1232 (UNKNOWN)
+      TTL      : 0
+      RDLength : 28
+      RDATA    : 000a00188f69a7be656f54b0010000006aca625cec50e7aec1d22c01
+
+  Parser:
+    Parse OK             : yes
+    Parsed length        : 123 bytes
+    Truncated by capture : no
+  ---------------------------------------------
+
+========== DEBUG ==========
+BPF event->query_type = 1
+parser parse_ok = 1
+parser parsed_len = 50
+parser qdcount = 1
+parser question_count = 1
+parser QTYPE = 1
+parser QCLASS = 1
+parser QNAME = ytimg.com
+RAW DNS PAYLOAD:
+44 02 01 20 00 01 00 00 00 00 00 01 05 79 74 69 
+6d 67 03 63 6f 6d 00 00 01 00 01 00 00 29 04 d0 
+00 00 00 00 00 0c 00 0a 00 08 8f 69 a7 be 65 6f 
+54 b0 
+===========================
+[RESPONSE] 172.16.14.27:54387 -> 36.50.50.50:53 id=17410 type=A name=ytimg.com latency=106.630 ms response_rcode=0(NOERROR) response_answers=0
+
+  ---------------- DNS DETAILS ----------------
+  Header:
+    ID      : 17410
+    Flags   : 0x0120
+    QR      : 0
+    Opcode  : 0
+    AA      : 0
+    TC      : 0
+    RD      : 1
+    RA      : 0
+    AD      : 1
+    CD      : 0
+    RCODE   : 0 (NOERROR)
+
+  Counts:
+    Questions  : 1
+    Answers    : 0
+    Authority  : 0
+    Additional : 1
+
+  Questions:
+    Question 1:
+      Name  : ytimg.com
+      Type  : 1 (A)
+      Class : 1 (IN)
+
+  Additional:
+    Additional 1:
+      Name     : .
+      Type     : 41 (OPT)
+      Class    : 1232 (UNKNOWN)
+      TTL      : 0
+      RDLength : 12
+      RDATA    : 000a00088f69a7be656f54b0
+
+  Parser:
+    Parse OK             : yes
+    Parsed length        : 50 bytes
+    Truncated by capture : no
+  ---------------------------------------------
+[XDP] RESPONSE 36.50.50.50:53 -> 172.16.14.27:36201 id=46231 type=A name=akamaiedge.net rcode=0(NOERROR) answers=0 authority=1 additional=1
+
+  ---------------- DNS DETAILS ----------------
+  Header:
+    ID      : 46231
+    Flags   : 0x8180
+    QR      : 1
+    Opcode  : 0
+    AA      : 0
+    TC      : 0
+    RD      : 1
+    RA      : 1
+    AD      : 0
+    CD      : 0
+    RCODE   : 0 (NOERROR)
+
+  Counts:
+    Questions  : 1
+    Answers    : 0
+    Authority  : 1
+    Additional : 1
+
+  Questions:
+    Question 1:
+      Name  : akamaiedge.net
+      Type  : 1 (A)
+      Class : 1 (IN)
+
+  Authority:
+    Authority 1:
+      Name     : akamaiedge.net
+      Type     : 6 (SOA)
+      Class    : 1 (IN)
+      TTL      : 111
+      RDLength : 54
+      RDATA    : internal.akamaiedge.net hostmaster.akamai.com 1559044082 90000 90000 90000 180
+
+  Additional:
+    Additional 1:
+      Name     : .
+      Type     : 41 (OPT)
+      Class    : 1232 (UNKNOWN)
+      TTL      : 0
+      RDLength : 28
+      RDATA    : 000a00187c0811272ff26d6e010000006aca625c859f4d95afcdc064
+
+  Parser:
+    Parse OK             : yes
+    Parsed length        : 137 bytes
+    Truncated by capture : no
+  ---------------------------------------------
+
+========== DEBUG ==========
+BPF event->query_type = 1
+parser parse_ok = 1
+parser parsed_len = 55
+parser qdcount = 1
+parser question_count = 1
+parser QTYPE = 1
+parser QCLASS = 1
+parser QNAME = akamaiedge.net
+RAW DNS PAYLOAD:
+b4 97 01 20 00 01 00 00 00 00 00 01 0a 61 6b 61 
+6d 61 69 65 64 67 65 03 6e 65 74 00 00 01 00 01 
+00 00 29 04 d0 00 00 00 00 00 0c 00 0a 00 08 7c 
+08 11 27 2f f2 6d 6e 
+===========================
+[RESPONSE] 172.16.14.27:36201 -> 36.50.50.50:53 id=46231 type=A name=akamaiedge.net latency=45.700 ms response_rcode=0(NOERROR) response_answers=0
+
+  ---------------- DNS DETAILS ----------------
+  Header:
+    ID      : 46231
+    Flags   : 0x0120
+    QR      : 0
+    Opcode  : 0
+    AA      : 0
+    TC      : 0
+    RD      : 1
+    RA      : 0
+    AD      : 1
+    CD      : 0
+    RCODE   : 0 (NOERROR)
+
+  Counts:
+    Questions  : 1
+    Answers    : 0
+    Authority  : 0
+    Additional : 1
+
+  Questions:
+    Question 1:
+      Name  : akamaiedge.net
+      Type  : 1 (A)
+      Class : 1 (IN)
+
+  Additional:
+    Additional 1:
+      Name     : .
+      Type     : 41 (OPT)
+      Class    : 1232 (UNKNOWN)
+      TTL      : 0
+      RDLength : 12
+      RDATA    : 000a00087c0811272ff26d6e
+
+  Parser:
+    Parse OK             : yes
+    Parsed length        : 55 bytes
+    Truncated by capture : no
+  ---------------------------------------------
+[XDP] RESPONSE 36.50.50.50:53 -> 172.16.14.27:33414 id=37625 type=A name=app-analytics-services.com rcode=0(NOERROR) answers=1 authority=0 additional=1
+
+  ---------------- DNS DETAILS ----------------
+  Header:
+    ID      : 37625
+    Flags   : 0x8180
+    QR      : 1
+    Opcode  : 0
+    AA      : 0
+    TC      : 0
+    RD      : 1
+    RA      : 1
+    AD      : 0
+    CD      : 0
+    RCODE   : 0 (NOERROR)
+
+  Counts:
+    Questions  : 1
+    Answers    : 1
+    Authority  : 0
+    Additional : 1
+
+  Questions:
+    Question 1:
+      Name  : app-analytics-services.com
+      Type  : 1 (A)
+      Class : 1 (IN)
+
+  Answers:
+    Answer 1:
+      Name     : app-analytics-services.com
+      Type     : 1 (A)
+      Class    : 1 (IN)
+      TTL      : 78
+      RDLength : 4
+      RDATA    : 142.250.183.238
+
+  Additional:
+    Additional 1:
+      Name     : .
+      Type     : 41 (OPT)
+      Class    : 1232 (UNKNOWN)
+      TTL      : 0
+      RDLength : 28
+      RDATA    : 000a0018ffa889500e14baf7010000006aca625c7b54770375a7322e
+
+  Parser:
+    Parse OK             : yes
+    Parsed length        : 99 bytes
+    Truncated by capture : no
+  ---------------------------------------------
+
+========== DEBUG ==========
+BPF event->query_type = 1
+parser parse_ok = 1
+parser parsed_len = 67
+parser qdcount = 1
+parser question_count = 1
+parser QTYPE = 1
+parser QCLASS = 1
+parser QNAME = app-analytics-services.com
+RAW DNS PAYLOAD:
+92 f9 01 20 00 01 00 00 00 00 00 01 16 61 70 70 
+2d 61 6e 61 6c 79 74 69 63 73 2d 73 65 72 76 69 
+63 65 73 03 63 6f 6d 00 00 01 00 01 00 00 29 04 
+d0 00 00 00 00 00 0c 00 0a 00 08 ff a8 89 50 0e 
+14 ba f7 
+===========================
+[RESPONSE] 172.16.14.27:33414 -> 36.50.50.50:53 id=37625 type=A name=app-analytics-services.com latency=45.633 ms response_rcode=0(NOERROR) response_answers=1
+
+  ---------------- DNS DETAILS ----------------
+  Header:
+    ID      : 37625
+    Flags   : 0x0120
+    QR      : 0
+    Opcode  : 0
+    AA      : 0
+    TC      : 0
+    RD      : 1
+    RA      : 0
+    AD      : 1
+    CD      : 0
+    RCODE   : 0 (NOERROR)
+
+  Counts:
+    Questions  : 1
+    Answers    : 0
+    Authority  : 0
+    Additional : 1
+
+  Questions:
+    Question 1:
+      Name  : app-analytics-services.com
+      Type  : 1 (A)
+      Class : 1 (IN)
+
+  Additional:
+    Additional 1:
+      Name     : .
+      Type     : 41 (OPT)
+      Class    : 1232 (UNKNOWN)
+      TTL      : 0
+      RDLength : 12
+      RDATA    : 000a0008ffa889500e14baf7
+
+  Parser:
+    Parse OK             : yes
+    Parsed length        : 67 bytes
+    Truncated by capture : no
+  ---------------------------------------------
+[XDP] RESPONSE 36.50.50.50:53 -> 172.16.14.27:59219 id=25609 type=A name=roblox.com rcode=0(NOERROR) answers=1 authority=0 additional=1
+
+  ---------------- DNS DETAILS ----------------
+  Header:
+    ID      : 25609
+    Flags   : 0x8180
+    QR      : 1
+    Opcode  : 0
+    AA      : 0
+    TC      : 0
+    RD      : 1
+    RA      : 1
+    AD      : 0
+    CD      : 0
+    RCODE   : 0 (NOERROR)
+
+  Counts:
+    Questions  : 1
+    Answers    : 1
+    Authority  : 0
+    Additional : 1
+
+  Questions:
+    Question 1:
+      Name  : roblox.com
+      Type  : 1 (A)
+      Class : 1 (IN)
+
+  Answers:
+    Answer 1:
+      Name     : roblox.com
+      Type     : 1 (A)
+      Class    : 1 (IN)
+      TTL      : 60
+      RDLength : 4
+      RDATA    : 128.116.54.3
+
+  Additional:
+    Additional 1:
+      Name     : .
+      Type     : 41 (OPT)
+      Class    : 1232 (UNKNOWN)
+      TTL      : 0
+      RDLength : 28
+      RDATA    : 000a0018711e766a5899a54d010000006aca625c64193c85deaf9ec3
+
+  Parser:
+    Parse OK             : yes
+    Parsed length        : 83 bytes
+    Truncated by capture : no
+  ---------------------------------------------
+
+========== DEBUG ==========
+BPF event->query_type = 1
+parser parse_ok = 1
+parser parsed_len = 51
+parser qdcount = 1
+parser question_count = 1
+parser QTYPE = 1
+parser QCLASS = 1
+parser QNAME = roblox.com
+RAW DNS PAYLOAD:
+64 09 01 20 00 01 00 00 00 00 00 01 06 72 6f 62 
+6c 6f 78 03 63 6f 6d 00 00 01 00 01 00 00 29 04 
+d0 00 00 00 00 00 0c 00 0a 00 08 71 1e 76 6a 58 
+99 a5 4d 
+===========================
+[RESPONSE] 172.16.14.27:59219 -> 36.50.50.50:53 id=25609 type=A name=roblox.com latency=93.851 ms response_rcode=0(NOERROR) response_answers=1
+
+  ---------------- DNS DETAILS ----------------
+  Header:
+    ID      : 25609
+    Flags   : 0x0120
+    QR      : 0
+    Opcode  : 0
+    AA      : 0
+    TC      : 0
+    RD      : 1
+    RA      : 0
+    AD      : 1
+    CD      : 0
+    RCODE   : 0 (NOERROR)
+
+  Counts:
+    Questions  : 1
+    Answers    : 0
+    Authority  : 0
+    Additional : 1
+
+  Questions:
+    Question 1:
+      Name  : roblox.com
+      Type  : 1 (A)
+      Class : 1 (IN)
+
+  Additional:
+    Additional 1:
+      Name     : .
+      Type     : 41 (OPT)
+      Class    : 1232 (UNKNOWN)
+      TTL      : 0
+      RDLength : 12
+      RDATA    : 000a0008711e766a5899a54d
+
+  Parser:
+    Parse OK             : yes
+    Parsed length        : 51 bytes
+    Truncated by capture : no
+  ---------------------------------------------
+
+========== DEBUG ==========
+BPF event->query_type = 1
+parser parse_ok = 1
+parser parsed_len = 50
+parser qdcount = 1
+parser question_count = 1
+parser QTYPE = 1
+parser QCLASS = 1
+parser QNAME = yahoo.com
+RAW DNS PAYLOAD:
+38 80 01 20 00 01 00 00 00 00 00 01 05 79 61 68 
+6f 6f 03 63 6f 6d 00 00 01 00 01 00 00 29 04 d0 
+00 00 00 00 00 0c 00 0a 00 08 6b 62 24 ff 06 a6 
+68 85 
+===========================
+[TIMEOUT] 172.16.14.27:49724 -> 36.50.50.50:53 id=14464 type=A name=yahoo.com latency=5367.725 ms response_rcode=0(NOERROR) response_answers=0
+
+  ---------------- DNS DETAILS ----------------
+  Header:
+    ID      : 14464
+    Flags   : 0x0120
+    QR      : 0
+    Opcode  : 0
+    AA      : 0
+    TC      : 0
+    RD      : 1
+    RA      : 0
+    AD      : 1
+    CD      : 0
+    RCODE   : 0 (NOERROR)
+
+  Counts:
+    Questions  : 1
+    Answers    : 0
+    Authority  : 0
+    Additional : 1
+
+  Questions:
+    Question 1:
+      Name  : yahoo.com
+      Type  : 1 (A)
+      Class : 1 (IN)
+
+  Additional:
+    Additional 1:
+      Name     : .
+      Type     : 41 (OPT)
+      Class    : 1232 (UNKNOWN)
+      TTL      : 0
+      RDLength : 12
+      RDATA    : 000a00086b6224ff06a66885
+
+  Parser:
+    Parse OK             : yes
+    Parsed length        : 50 bytes
+    Truncated by capture : no
+  ---------------------------------------------
+[XDP] RESPONSE 36.50.50.50:53 -> 172.16.14.27:33829 id=8700 type=A name=spotify.com rcode=0(NOERROR) answers=1 authority=0 additional=1
+
+  ---------------- DNS DETAILS ----------------
+  Header:
+    ID      : 8700
+    Flags   : 0x8180
+    QR      : 1
+    Opcode  : 0
+    AA      : 0
+    TC      : 0
+    RD      : 1
+    RA      : 1
+    AD      : 0
+    CD      : 0
+    RCODE   : 0 (NOERROR)
+
+  Counts:
+    Questions  : 1
+    Answers    : 1
+    Authority  : 0
+    Additional : 1
+
+  Questions:
+    Question 1:
+      Name  : spotify.com
+      Type  : 1 (A)
+      Class : 1 (IN)
+
+  Answers:
+    Answer 1:
+      Name     : spotify.com
+      Type     : 1 (A)
+      Class    : 1 (IN)
+      TTL      : 300
+      RDLength : 4
+      RDATA    : 35.186.224.24
+
+  Additional:
+    Additional 1:
+      Name     : .
+      Type     : 41 (OPT)
+      Class    : 1232 (UNKNOWN)
+      TTL      : 0
+      RDLength : 28
+      RDATA    : 000a0018c00e614c58e624a3010000006aca626627f730b348e63296
+
+  Parser:
+    Parse OK             : yes
+    Parsed length        : 84 bytes
+    Truncated by capture : no
+  ---------------------------------------------
+
+========== DEBUG ==========
+BPF event->query_type = 1
+parser parse_ok = 1
+parser parsed_len = 52
+parser qdcount = 1
+parser question_count = 1
+parser QTYPE = 1
+parser QCLASS = 1
+parser QNAME = spotify.com
+RAW DNS PAYLOAD:
+21 fc 01 20 00 01 00 00 00 00 00 01 07 73 70 6f 
+74 69 66 79 03 63 6f 6d 00 00 01 00 01 00 00 29 
+04 d0 00 00 00 00 00 0c 00 0a 00 08 c0 0e 61 4c 
+58 e6 24 a3 
+===========================
+[RESPONSE] 172.16.14.27:33829 -> 36.50.50.50:53 id=8700 type=A name=spotify.com latency=116.644 ms response_rcode=0(NOERROR) response_answers=1
+
+  ---------------- DNS DETAILS ----------------
+  Header:
+    ID      : 8700
+    Flags   : 0x0120
+    QR      : 0
+    Opcode  : 0
+    AA      : 0
+    TC      : 0
+    RD      : 1
+    RA      : 0
+    AD      : 1
+    CD      : 0
+    RCODE   : 0 (NOERROR)
+
+  Counts:
+    Questions  : 1
+    Answers    : 0
+    Authority  : 0
+    Additional : 1
+
+  Questions:
+    Question 1:
+      Name  : spotify.com
+      Type  : 1 (A)
+      Class : 1 (IN)
+
+  Additional:
+    Additional 1:
+      Name     : .
+      Type     : 41 (OPT)
+      Class    : 1232 (UNKNOWN)
+      TTL      : 0
+      RDLength : 12
+      RDATA    : 000a0008c00e614c58e624a3
+
+  Parser:
+    Parse OK             : yes
+    Parsed length        : 52 bytes
+    Truncated by capture : no
+  ---------------------------------------------
+[XDP] RESPONSE 36.50.50.50:53 -> 172.16.14.27:41345 id=44178 type=A name=sentry.io rcode=0(NOERROR) answers=2 authority=0 additional=1
+
+  ---------------- DNS DETAILS ----------------
+  Header:
+    ID      : 44178
+    Flags   : 0x8180
+    QR      : 1
+    Opcode  : 0
+    AA      : 0
+    TC      : 0
+    RD      : 1
+    RA      : 1
+    AD      : 0
+    CD      : 0
+    RCODE   : 0 (NOERROR)
+
+  Counts:
+    Questions  : 1
+    Answers    : 2
+    Authority  : 0
+    Additional : 1
+
+  Questions:
+    Question 1:
+      Name  : sentry.io
+      Type  : 1 (A)
+      Class : 1 (IN)
+
+  Answers:
+    Answer 1:
+      Name     : sentry.io
+      Type     : 1 (A)
+      Class    : 1 (IN)
+      TTL      : 2023
+      RDLength : 4
+      RDATA    : 34.111.148.117
+    Answer 2:
+      Name     : sentry.io
+      Type     : 1 (A)
+      Class    : 1 (IN)
+      TTL      : 2023
+      RDLength : 4
+      RDATA    : 34.8.226.60
+
+  Additional:
+    Additional 1:
+      Name     : .
+      Type     : 41 (OPT)
+      Class    : 1232 (UNKNOWN)
+      TTL      : 0
+      RDLength : 28
+      RDATA    : 000a001812eaf5f40a407cee010000006aca626679257841f6ffd75a
+
+  Parser:
+    Parse OK             : yes
+    Parsed length        : 98 bytes
+    Truncated by capture : no
+  ---------------------------------------------
+
+========== DEBUG ==========
+BPF event->query_type = 1
+parser parse_ok = 1
+parser parsed_len = 50
+parser qdcount = 1
+parser question_count = 1
+parser QTYPE = 1
+parser QCLASS = 1
+parser QNAME = sentry.io
+RAW DNS PAYLOAD:
+ac 92 01 20 00 01 00 00 00 00 00 01 06 73 65 6e 
+74 72 79 02 69 6f 00 00 01 00 01 00 00 29 04 d0 
+00 00 00 00 00 0c 00 0a 00 08 12 ea f5 f4 0a 40 
+7c ee 
+===========================
+[RESPONSE] 172.16.14.27:41345 -> 36.50.50.50:53 id=44178 type=A name=sentry.io latency=45.858 ms response_rcode=0(NOERROR) response_answers=2
+
+  ---------------- DNS DETAILS ----------------
+  Header:
+    ID      : 44178
+    Flags   : 0x0120
+    QR      : 0
+    Opcode  : 0
+    AA      : 0
+    TC      : 0
+    RD      : 1
+    RA      : 0
+    AD      : 1
+    CD      : 0
+    RCODE   : 0 (NOERROR)
+
+  Counts:
+    Questions  : 1
+    Answers    : 0
+    Authority  : 0
+    Additional : 1
+
+  Questions:
+    Question 1:
+      Name  : sentry.io
+      Type  : 1 (A)
+      Class : 1 (IN)
+
+  Additional:
+    Additional 1:
+      Name     : .
+      Type     : 41 (OPT)
+      Class    : 1232 (UNKNOWN)
+      TTL      : 0
+      RDLength : 12
+      RDATA    : 000a000812eaf5f40a407cee
+
+  Parser:
+    Parse OK             : yes
+    Parsed length        : 50 bytes
+    Truncated by capture : no
+  ---------------------------------------------
+
+========== DEBUG ==========
+BPF event->query_type = 1
+parser parse_ok = 1
+parser parsed_len = 51
+parser qdcount = 1
+parser question_count = 1
+parser QTYPE = 1
+parser QCLASS = 1
+parser QNAME = fastly.net
+RAW DNS PAYLOAD:
+d5 0b 01 20 00 01 00 00 00 00 00 01 06 66 61 73 
+74 6c 79 03 6e 65 74 00 00 01 00 01 00 00 29 04 
+d0 00 00 00 00 00 0c 00 0a 00 08 da 6b 21 68 f2 
+41 39 4a 
+===========================
+[TIMEOUT] 172.16.14.27:36642 -> 36.50.50.50:53 id=54539 type=A name=fastly.net latency=5360.317 ms response_rcode=0(NOERROR) response_answers=0
+
+  ---------------- DNS DETAILS ----------------
+  Header:
+    ID      : 54539
+    Flags   : 0x0120
+    QR      : 0
+    Opcode  : 0
+    AA      : 0
+    TC      : 0
+    RD      : 1
+    RA      : 0
+    AD      : 1
+    CD      : 0
+    RCODE   : 0 (NOERROR)
+
+  Counts:
+    Questions  : 1
+    Answers    : 0
+    Authority  : 0
+    Additional : 1
+
+  Questions:
+    Question 1:
+      Name  : fastly.net
+      Type  : 1 (A)
+      Class : 1 (IN)
+
+  Additional:
+    Additional 1:
+      Name     : .
+      Type     : 41 (OPT)
+      Class    : 1232 (UNKNOWN)
+      TTL      : 0
+      RDLength : 12
+      RDATA    : 000a0008da6b2168f241394a
+
+  Parser:
+    Parse OK             : yes
+    Parsed length        : 51 bytes
+    Truncated by capture : no
+  ---------------------------------------------
+[XDP] RESPONSE 36.50.50.50:53 -> 172.16.14.27:51218 id=51753 type=A name=baidu.com rcode=0(NOERROR) answers=4 authority=0 additional=1
+
+  ---------------- DNS DETAILS ----------------
+  Header:
+    ID      : 51753
+    Flags   : 0x8180
+    QR      : 1
+    Opcode  : 0
+    AA      : 0
+    TC      : 0
+    RD      : 1
+    RA      : 1
+    AD      : 0
+    CD      : 0
+    RCODE   : 0 (NOERROR)
+
+  Counts:
+    Questions  : 1
+    Answers    : 4
+    Authority  : 0
+    Additional : 1
+
+  Questions:
+    Question 1:
+      Name  : baidu.com
+      Type  : 1 (A)
+      Class : 1 (IN)
+
+  Answers:
+    Answer 1:
+      Name     : baidu.com
+      Type     : 1 (A)
+      Class    : 1 (IN)
+      TTL      : 600
+      RDLength : 4
+      RDATA    : 110.242.74.102
+    Answer 2:
+      Name     : baidu.com
+      Type     : 1 (A)
+      Class    : 1 (IN)
+      TTL      : 600
+      RDLength : 4
+      RDATA    : 124.237.177.164
+    Answer 3:
+      Name     : baidu.com
+      Type     : 1 (A)
+      Class    : 1 (IN)
+      TTL      : 600
+      RDLength : 4
+      RDATA    : 111.63.65.247
+    Answer 4:
+      Name     : baidu.com
+      Type     : 1 (A)
+      Class    : 1 (IN)
+      TTL      : 600
+      RDLength : 4
+      RDATA    : 111.63.65.103
+
+  Additional:
+    Additional 1:
+      Name     : .
+      Type     : 41 (OPT)
+      Class    : 1232 (UNKNOWN)
+      TTL      : 0
+      RDLength : 28
+      RDATA    : 000a0018ecb3effe4c78f02e010000006aca6268a7b6b0bcaf211b3a
+
+  Parser:
+    Parse OK             : yes
+    Parsed length        : 130 bytes
+    Truncated by capture : no
+  ---------------------------------------------
+
+========== DEBUG ==========
+BPF event->query_type = 1
+parser parse_ok = 1
+parser parsed_len = 50
+parser qdcount = 1
+parser question_count = 1
+parser QTYPE = 1
+parser QCLASS = 1
+parser QNAME = baidu.com
+RAW DNS PAYLOAD:
+ca 29 01 20 00 01 00 00 00 00 00 01 05 62 61 69 
+64 75 03 63 6f 6d 00 00 01 00 01 00 00 29 04 d0 
+00 00 00 00 00 0c 00 0a 00 08 ec b3 ef fe 4c 78 
+f0 2e 
+===========================
+[RESPONSE] 172.16.14.27:51218 -> 36.50.50.50:53 id=51753 type=A name=baidu.com latency=1949.013 ms response_rcode=0(NOERROR) response_answers=4
+
+  ---------------- DNS DETAILS ----------------
+  Header:
+    ID      : 51753
+    Flags   : 0x0120
+    QR      : 0
+    Opcode  : 0
+    AA      : 0
+    TC      : 0
+    RD      : 1
+    RA      : 0
+    AD      : 1
+    CD      : 0
+    RCODE   : 0 (NOERROR)
+
+  Counts:
+    Questions  : 1
+    Answers    : 0
+    Authority  : 0
+    Additional : 1
+
+  Questions:
+    Question 1:
+      Name  : baidu.com
+      Type  : 1 (A)
+      Class : 1 (IN)
+
+  Additional:
+    Additional 1:
+      Name     : .
+      Type     : 41 (OPT)
+      Class    : 1232 (UNKNOWN)
+      TTL      : 0
+      RDLength : 12
+      RDATA    : 000a0008ecb3effe4c78f02e
+
+  Parser:
+    Parse OK             : yes
+    Parsed length        : 50 bytes
+    Truncated by capture : no
+  ---------------------------------------------
+
+========== DEBUG ==========
+BPF event->query_type = 1
+parser parse_ok = 1
+parser parsed_len = 49
+parser qdcount = 1
+parser question_count = 1
+parser QTYPE = 1
+parser QCLASS = 1
+parser QNAME = gvt2.com
+RAW DNS PAYLOAD:
+df 84 01 20 00 01 00 00 00 00 00 01 04 67 76 74 
+32 03 63 6f 6d 00 00 01 00 01 00 00 29 04 d0 00 
+00 00 00 00 0c 00 0a 00 08 5b 08 40 92 fb e6 aa 
+36 
+===========================
+[TIMEOUT] 172.16.14.27:42367 -> 36.50.50.50:53 id=57220 type=A name=gvt2.com latency=5174.822 ms response_rcode=0(NOERROR) response_answers=0
+
+  ---------------- DNS DETAILS ----------------
+  Header:
+    ID      : 57220
+    Flags   : 0x0120
+    QR      : 0
+    Opcode  : 0
+    AA      : 0
+    TC      : 0
+    RD      : 1
+    RA      : 0
+    AD      : 1
+    CD      : 0
+    RCODE   : 0 (NOERROR)
+
+  Counts:
+    Questions  : 1
+    Answers    : 0
+    Authority  : 0
+    Additional : 1
+
+  Questions:
+    Question 1:
+      Name  : gvt2.com
+      Type  : 1 (A)
+      Class : 1 (IN)
+
+  Additional:
+    Additional 1:
+      Name     : .
+      Type     : 41 (OPT)
+      Class    : 1232 (UNKNOWN)
+      TTL      : 0
+      RDLength : 12
+      RDATA    : 000a00085b084092fbe6aa36
+
+  Parser:
+    Parse OK             : yes
+    Parsed length        : 49 bytes
+    Truncated by capture : no
+  ---------------------------------------------
+[XDP] RESPONSE 36.50.50.50:53 -> 172.16.14.27:55048 id=58420 type=A name=samsung.com rcode=0(NOERROR) answers=1 authority=0 additional=1
+
+  ---------------- DNS DETAILS ----------------
+  Header:
+    ID      : 58420
+    Flags   : 0x8180
+    QR      : 1
+    Opcode  : 0
+    AA      : 0
+    TC      : 0
+    RD      : 1
+    RA      : 1
+    AD      : 0
+    CD      : 0
+    RCODE   : 0 (NOERROR)
+
+  Counts:
+    Questions  : 1
+    Answers    : 1
+    Authority  : 0
+    Additional : 1
+
+  Questions:
+    Question 1:
+      Name  : samsung.com
+      Type  : 1 (A)
+      Class : 1 (IN)
+
+  Answers:
+    Answer 1:
+      Name     : samsung.com
+      Type     : 1 (A)
+      Class    : 1 (IN)
+      TTL      : 300
+      RDLength : 4
+      RDATA    : 211.45.27.231
+
+  Additional:
+    Additional 1:
+      Name     : .
+      Type     : 41 (OPT)
+      Class    : 1232 (UNKNOWN)
+      TTL      : 0
+      RDLength : 28
+      RDATA    : 000a00188971efdc2f4abfaf010000006aca626e597cdcbc1488155c
+
+  Parser:
+    Parse OK             : yes
+    Parsed length        : 84 bytes
+    Truncated by capture : no
+  ---------------------------------------------
+
+========== DEBUG ==========
+BPF event->query_type = 1
+parser parse_ok = 1
+parser parsed_len = 52
+parser qdcount = 1
+parser question_count = 1
+parser QTYPE = 1
+parser QCLASS = 1
+parser QNAME = samsung.com
+RAW DNS PAYLOAD:
+e4 34 01 20 00 01 00 00 00 00 00 01 07 73 61 6d 
+73 75 6e 67 03 63 6f 6d 00 00 01 00 01 00 00 29 
+04 d0 00 00 00 00 00 0c 00 0a 00 08 89 71 ef dc 
+2f 4a bf af 
+===========================
+[RESPONSE] 172.16.14.27:55048 -> 36.50.50.50:53 id=58420 type=A name=samsung.com latency=994.652 ms response_rcode=0(NOERROR) response_answers=1
+
+  ---------------- DNS DETAILS ----------------
+  Header:
+    ID      : 58420
+    Flags   : 0x0120
+    QR      : 0
+    Opcode  : 0
+    AA      : 0
+    TC      : 0
+    RD      : 1
+    RA      : 0
+    AD      : 1
+    CD      : 0
+    RCODE   : 0 (NOERROR)
+
+  Counts:
+    Questions  : 1
+    Answers    : 0
+    Authority  : 0
+    Additional : 1
+
+  Questions:
+    Question 1:
+      Name  : samsung.com
+      Type  : 1 (A)
+      Class : 1 (IN)
+
+  Additional:
+    Additional 1:
+      Name     : .
+      Type     : 41 (OPT)
+      Class    : 1232 (UNKNOWN)
+      TTL      : 0
+      RDLength : 12
+      RDATA    : 000a00088971efdc2f4abfaf
+
+  Parser:
+    Parse OK             : yes
+    Parsed length        : 52 bytes
+    Truncated by capture : no
+  ---------------------------------------------
+[XDP] RESPONSE 36.50.50.50:53 -> 172.16.14.27:50351 id=14684 type=A name=app-measurement.com rcode=0(NOERROR) answers=6 authority=0 additional=1
+
+  ---------------- DNS DETAILS ----------------
+  Header:
+    ID      : 14684
+    Flags   : 0x8180
+    QR      : 1
+    Opcode  : 0
+    AA      : 0
+    TC      : 0
+    RD      : 1
+    RA      : 1
+    AD      : 0
+    CD      : 0
+    RCODE   : 0 (NOERROR)
+
+  Counts:
+    Questions  : 1
+    Answers    : 6
+    Authority  : 0
+    Additional : 1
+
+  Questions:
+    Question 1:
+      Name  : app-measurement.com
+      Type  : 1 (A)
+      Class : 1 (IN)
+
+  Answers:
+    Answer 1:
+      Name     : app-measurement.com
+      Type     : 1 (A)
+      Class    : 1 (IN)
+      TTL      : 210
+      RDLength : 4
+      RDATA    : 192.178.177.100
+    Answer 2:
+      Name     : app-measurement.com
+      Type     : 1 (A)
+      Class    : 1 (IN)
+      TTL      : 210
+      RDLength : 4
+      RDATA    : 192.178.177.138
+    Answer 3:
+      Name     : app-measurement.com
+      Type     : 1 (A)
+      Class    : 1 (IN)
+      TTL      : 210
+      RDLength : 4
+      RDATA    : 192.178.177.101
+    Answer 4:
+      Name     : app-measurement.com
+      Type     : 1 (A)
+      Class    : 1 (IN)
+      TTL      : 210
+      RDLength : 4
+      RDATA    : 192.178.177.113
+    Answer 5:
+      Name     : app-measurement.com
+      Type     : 1 (A)
+      Class    : 1 (IN)
+      TTL      : 210
+      RDLength : 4
+      RDATA    : 192.178.177.102
+    Answer 6:
+      Name     : app-measurement.com
+      Type     : 1 (A)
+      Class    : 1 (IN)
+      TTL      : 210
+      RDLength : 4
+      RDATA    : 192.178.177.139
+
+  Additional:
+    Additional 1:
+      Name     : .
+      Type     : 41 (OPT)
+      Class    : 1232 (UNKNOWN)
+      TTL      : 0
+      RDLength : 28
+      RDATA    : 000a00186960094adbf788c7010000006aca626e8de20f684af14dbe
+
+  Parser:
+    Parse OK             : yes
+    Parsed length        : 172 bytes
+    Truncated by capture : no
+  ---------------------------------------------
+
+========== DEBUG ==========
+BPF event->query_type = 1
+parser parse_ok = 1
+parser parsed_len = 60
+parser qdcount = 1
+parser question_count = 1
+parser QTYPE = 1
+parser QCLASS = 1
+parser QNAME = app-measurement.com
+RAW DNS PAYLOAD:
+39 5c 01 20 00 01 00 00 00 00 00 01 0f 61 70 70 
+2d 6d 65 61 73 75 72 65 6d 65 6e 74 03 63 6f 6d 
+00 00 01 00 01 00 00 29 04 d0 00 00 00 00 00 0c 
+00 0a 00 08 69 60 09 4a db f7 88 c7 
+===========================
+[RESPONSE] 172.16.14.27:50351 -> 36.50.50.50:53 id=14684 type=A name=app-measurement.com latency=45.218 ms response_rcode=0(NOERROR) response_answers=6
+
+  ---------------- DNS DETAILS ----------------
+  Header:
+    ID      : 14684
+    Flags   : 0x0120
+    QR      : 0
+    Opcode  : 0
+    AA      : 0
+    TC      : 0
+    RD      : 1
+    RA      : 0
+    AD      : 1
+    CD      : 0
+    RCODE   : 0 (NOERROR)
+
+  Counts:
+    Questions  : 1
+    Answers    : 0
+    Authority  : 0
+    Additional : 1
+
+  Questions:
+    Question 1:
+      Name  : app-measurement.com
+      Type  : 1 (A)
+      Class : 1 (IN)
+
+  Additional:
+    Additional 1:
+      Name     : .
+      Type     : 41 (OPT)
+      Class    : 1232 (UNKNOWN)
+      TTL      : 0
+      RDLength : 12
+      RDATA    : 000a00086960094adbf788c7
+
+  Parser:
+    Parse OK             : yes
+    Parsed length        : 60 bytes
+    Truncated by capture : no
+  ---------------------------------------------
+[XDP] RESPONSE 36.50.50.50:53 -> 172.16.14.27:54714 id=22350 type=A name=office.com rcode=0(NOERROR) answers=1 authority=0 additional=1
+
+  ---------------- DNS DETAILS ----------------
+  Header:
+    ID      : 22350
+    Flags   : 0x81a0
+    QR      : 1
+    Opcode  : 0
+    AA      : 0
+    TC      : 0
+    RD      : 1
+    RA      : 1
+    AD      : 1
+    CD      : 0
+    RCODE   : 0 (NOERROR)
+
+  Counts:
+    Questions  : 1
+    Answers    : 1
+    Authority  : 0
+    Additional : 1
+
+  Questions:
+    Question 1:
+      Name  : office.com
+      Type  : 1 (A)
+      Class : 1 (IN)
+
+  Answers:
+    Answer 1:
+      Name     : office.com
+      Type     : 1 (A)
+      Class    : 1 (IN)
+      TTL      : 7
+      RDLength : 4
+      RDATA    : 13.107.6.156
+
+  Additional:
+    Additional 1:
+      Name     : .
+      Type     : 41 (OPT)
+      Class    : 1232 (UNKNOWN)
+      TTL      : 0
+      RDLength : 28
+      RDATA    : 000a0018fa27144ee0f60abc010000006aca626fc2e63e794bdb76c1
+
+  Parser:
+    Parse OK             : yes
+    Parsed length        : 83 bytes
+    Truncated by capture : no
+  ---------------------------------------------
+
+========== DEBUG ==========
+BPF event->query_type = 1
+parser parse_ok = 1
+parser parsed_len = 51
+parser qdcount = 1
+parser question_count = 1
+parser QTYPE = 1
+parser QCLASS = 1
+parser QNAME = office.com
+RAW DNS PAYLOAD:
+57 4e 01 20 00 01 00 00 00 00 00 01 06 6f 66 66 
+69 63 65 03 63 6f 6d 00 00 01 00 01 00 00 29 04 
+d0 00 00 00 00 00 0c 00 0a 00 08 fa 27 14 4e e0 
+f6 0a bc 
+===========================
+[RESPONSE] 172.16.14.27:54714 -> 36.50.50.50:53 id=22350 type=A name=office.com latency=45.365 ms response_rcode=0(NOERROR) response_answers=1
+
+  ---------------- DNS DETAILS ----------------
+  Header:
+    ID      : 22350
+    Flags   : 0x0120
+    QR      : 0
+    Opcode  : 0
+    AA      : 0
+    TC      : 0
+    RD      : 1
+    RA      : 0
+    AD      : 1
+    CD      : 0
+    RCODE   : 0 (NOERROR)
+
+  Counts:
+    Questions  : 1
+    Answers    : 0
+    Authority  : 0
+    Additional : 1
+
+  Questions:
+    Question 1:
+      Name  : office.com
+      Type  : 1 (A)
+      Class : 1 (IN)
+
+  Additional:
+    Additional 1:
+      Name     : .
+      Type     : 41 (OPT)
+      Class    : 1232 (UNKNOWN)
+      TTL      : 0
+      RDLength : 12
+      RDATA    : 000a0008fa27144ee0f60abc
+
+  Parser:
+    Parse OK             : yes
+    Parsed length        : 51 bytes
+    Truncated by capture : no
+  ---------------------------------------------
+[XDP] RESPONSE 36.50.50.50:53 -> 172.16.14.27:56176 id=20470 type=A name=steamserver.net rcode=0(NOERROR) answers=0 authority=1 additional=1
+
+  ---------------- DNS DETAILS ----------------
+  Header:
+    ID      : 20470
+    Flags   : 0x8180
+    QR      : 1
+    Opcode  : 0
+    AA      : 0
+    TC      : 0
+    RD      : 1
+    RA      : 1
+    AD      : 0
+    CD      : 0
+    RCODE   : 0 (NOERROR)
+
+  Counts:
+    Questions  : 1
+    Answers    : 0
+    Authority  : 1
+    Additional : 1
+
+  Questions:
+    Question 1:
+      Name  : steamserver.net
+      Type  : 1 (A)
+      Class : 1 (IN)
+
+  Authority:
+    Authority 1:
+      Name     : steamserver.net
+      Type     : 6 (SOA)
+      Class    : 1 (IN)
+      TTL      : 1800
+      RDLength : 51
+      RDATA    : ns1.valvesoftware.com admin.valvesoftware.com 2025072062 3600 900 2419200 10800
+
+  Additional:
+    Additional 1:
+      Name     : .
+      Type     : 41 (OPT)
+      Class    : 1232 (UNKNOWN)
+      TTL      : 0
+      RDLength : 28
+      RDATA    : 000a00188dbb8859c62696b5010000006aca626fe1e6cb38c1765021
+
+  Parser:
+    Parse OK             : yes
+    Parsed length        : 135 bytes
+    Truncated by capture : no
+  ---------------------------------------------
+
+========== DEBUG ==========
+BPF event->query_type = 1
+parser parse_ok = 1
+parser parsed_len = 56
+parser qdcount = 1
+parser question_count = 1
+parser QTYPE = 1
+parser QCLASS = 1
+parser QNAME = steamserver.net
+RAW DNS PAYLOAD:
+4f f6 01 20 00 01 00 00 00 00 00 01 0b 73 74 65 
+61 6d 73 65 72 76 65 72 03 6e 65 74 00 00 01 00 
+01 00 00 29 04 d0 00 00 00 00 00 0c 00 0a 00 08 
+8d bb 88 59 c6 26 96 b5 
+===========================
+[RESPONSE] 172.16.14.27:56176 -> 36.50.50.50:53 id=20470 type=A name=steamserver.net latency=246.812 ms response_rcode=0(NOERROR) response_answers=0
+
+  ---------------- DNS DETAILS ----------------
+  Header:
+    ID      : 20470
+    Flags   : 0x0120
+    QR      : 0
+    Opcode  : 0
+    AA      : 0
+    TC      : 0
+    RD      : 1
+    RA      : 0
+    AD      : 1
+    CD      : 0
+    RCODE   : 0 (NOERROR)
+
+  Counts:
+    Questions  : 1
+    Answers    : 0
+    Authority  : 0
+    Additional : 1
+
+  Questions:
+    Question 1:
+      Name  : steamserver.net
+      Type  : 1 (A)
+      Class : 1 (IN)
+
+  Additional:
+    Additional 1:
+      Name     : .
+      Type     : 41 (OPT)
+      Class    : 1232 (UNKNOWN)
+      TTL      : 0
+      RDLength : 12
+      RDATA    : 000a00088dbb8859c62696b5
+
+  Parser:
+    Parse OK             : yes
+    Parsed length        : 56 bytes
+    Truncated by capture : no
+  ---------------------------------------------
+
+========== DEBUG ==========
+BPF event->query_type = 1
+parser parse_ok = 1
+parser parsed_len = 48
+parser qdcount = 1
+parser question_count = 1
+parser QTYPE = 1
+parser QCLASS = 1
+parser QNAME = one.one
+RAW DNS PAYLOAD:
+a0 9a 01 20 00 01 00 00 00 00 00 01 03 6f 6e 65 
+03 6f 6e 65 00 00 01 00 01 00 00 29 04 d0 00 00 
+00 00 00 0c 00 0a 00 08 67 0c d7 e8 e8 51 13 36 
+
+===========================
+[TIMEOUT] 172.16.14.27:45491 -> 36.50.50.50:53 id=41114 type=A name=one.one latency=5765.235 ms response_rcode=0(NOERROR) response_answers=0
+
+  ---------------- DNS DETAILS ----------------
+  Header:
+    ID      : 41114
+    Flags   : 0x0120
+    QR      : 0
+    Opcode  : 0
+    AA      : 0
+    TC      : 0
+    RD      : 1
+    RA      : 0
+    AD      : 1
+    CD      : 0
+    RCODE   : 0 (NOERROR)
+
+  Counts:
+    Questions  : 1
+    Answers    : 0
+    Authority  : 0
+    Additional : 1
+
+  Questions:
+    Question 1:
+      Name  : one.one
+      Type  : 1 (A)
+      Class : 1 (IN)
+
+  Additional:
+    Additional 1:
+      Name     : .
+      Type     : 41 (OPT)
+      Class    : 1232 (UNKNOWN)
+      TTL      : 0
+      RDLength : 12
+      RDATA    : 000a0008670cd7e8e8511336
+
+  Parser:
+    Parse OK             : yes
+    Parsed length        : 48 bytes
+    Truncated by capture : no
+  ---------------------------------------------
+[XDP] RESPONSE 36.50.50.50:53 -> 172.16.14.27:38961 id=56768 type=A name=wikipedia.org rcode=0(NOERROR) answers=1 authority=0 additional=1
+
+  ---------------- DNS DETAILS ----------------
+  Header:
+    ID      : 56768
+    Flags   : 0x8180
+    QR      : 1
+    Opcode  : 0
+    AA      : 0
+    TC      : 0
+    RD      : 1
+    RA      : 1
+    AD      : 0
+    CD      : 0
+    RCODE   : 0 (NOERROR)
+
+  Counts:
+    Questions  : 1
+    Answers    : 1
+    Authority  : 0
+    Additional : 1
+
+  Questions:
+    Question 1:
+      Name  : wikipedia.org
+      Type  : 1 (A)
+      Class : 1 (IN)
+
+  Answers:
+    Answer 1:
+      Name     : wikipedia.org
+      Type     : 1 (A)
+      Class    : 1 (IN)
+      TTL      : 115
+      RDLength : 4
+      RDATA    : 103.102.166.224
+
+  Additional:
+    Additional 1:
+      Name     : .
+      Type     : 41 (OPT)
+      Class    : 1232 (UNKNOWN)
+      TTL      : 0
+      RDLength : 28
+      RDATA    : 000a00185f3220ddba7aff66010000006aca627918d18f04f8ff4a18
+
+  Parser:
+    Parse OK             : yes
+    Parsed length        : 86 bytes
+    Truncated by capture : no
+  ---------------------------------------------
+
+========== DEBUG ==========
+BPF event->query_type = 1
+parser parse_ok = 1
+parser parsed_len = 54
+parser qdcount = 1
+parser question_count = 1
+parser QTYPE = 1
+parser QCLASS = 1
+parser QNAME = wikipedia.org
+RAW DNS PAYLOAD:
+dd c0 01 20 00 01 00 00 00 00 00 01 09 77 69 6b 
+69 70 65 64 69 61 03 6f 72 67 00 00 01 00 01 00 
+00 29 04 d0 00 00 00 00 00 0c 00 0a 00 08 5f 32 
+20 dd ba 7a ff 66 
+===========================
+[RESPONSE] 172.16.14.27:38961 -> 36.50.50.50:53 id=56768 type=A name=wikipedia.org latency=45.890 ms response_rcode=0(NOERROR) response_answers=1
+
+  ---------------- DNS DETAILS ----------------
+  Header:
+    ID      : 56768
+    Flags   : 0x0120
+    QR      : 0
+    Opcode  : 0
+    AA      : 0
+    TC      : 0
+    RD      : 1
+    RA      : 0
+    AD      : 1
+    CD      : 0
+    RCODE   : 0 (NOERROR)
+
+  Counts:
+    Questions  : 1
+    Answers    : 0
+    Authority  : 0
+    Additional : 1
+
+  Questions:
+    Question 1:
+      Name  : wikipedia.org
+      Type  : 1 (A)
+      Class : 1 (IN)
+
+  Additional:
+    Additional 1:
+      Name     : .
+      Type     : 41 (OPT)
+      Class    : 1232 (UNKNOWN)
+      TTL      : 0
+      RDLength : 12
+      RDATA    : 000a00085f3220ddba7aff66
+
+  Parser:
+    Parse OK             : yes
+    Parsed length        : 54 bytes
+    Truncated by capture : no
+  ---------------------------------------------
+[XDP] RESPONSE 36.50.50.50:53 -> 172.16.14.27:56080 id=26305 type=A name=dns.google rcode=0(NOERROR) answers=2 authority=0 additional=1
+
+  ---------------- DNS DETAILS ----------------
+  Header:
+    ID      : 26305
+    Flags   : 0x81a0
+    QR      : 1
+    Opcode  : 0
+    AA      : 0
+    TC      : 0
+    RD      : 1
+    RA      : 1
+    AD      : 1
+    CD      : 0
+    RCODE   : 0 (NOERROR)
+
+  Counts:
+    Questions  : 1
+    Answers    : 2
+    Authority  : 0
+    Additional : 1
+
+  Questions:
+    Question 1:
+      Name  : dns.google
+      Type  : 1 (A)
+      Class : 1 (IN)
+
+  Answers:
+    Answer 1:
+      Name     : dns.google
+      Type     : 1 (A)
+      Class    : 1 (IN)
+      TTL      : 876
+      RDLength : 4
+      RDATA    : 8.8.4.4
+    Answer 2:
+      Name     : dns.google
+      Type     : 1 (A)
+      Class    : 1 (IN)
+      TTL      : 876
+      RDLength : 4
+      RDATA    : 8.8.8.8
+
+  Additional:
+    Additional 1:
+      Name     : .
+      Type     : 41 (OPT)
+      Class    : 1232 (UNKNOWN)
+      TTL      : 0
+      RDLength : 28
+      RDATA    : 000a0018d7b275a12da132f1010000006aca6279a58c21a313f27a9a
+
+  Parser:
+    Parse OK             : yes
+    Parsed length        : 99 bytes
+    Truncated by capture : no
+  ---------------------------------------------
+
+========== DEBUG ==========
+BPF event->query_type = 1
+parser parse_ok = 1
+parser parsed_len = 51
+parser qdcount = 1
+parser question_count = 1
+parser QTYPE = 1
+parser QCLASS = 1
+parser QNAME = dns.google
+RAW DNS PAYLOAD:
+66 c1 01 20 00 01 00 00 00 00 00 01 03 64 6e 73 
+06 67 6f 6f 67 6c 65 00 00 01 00 01 00 00 29 04 
+d0 00 00 00 00 00 0c 00 0a 00 08 d7 b2 75 a1 2d 
+a1 32 f1 
+===========================
+[RESPONSE] 172.16.14.27:56080 -> 36.50.50.50:53 id=26305 type=A name=dns.google latency=44.939 ms response_rcode=0(NOERROR) response_answers=2
+
+  ---------------- DNS DETAILS ----------------
+  Header:
+    ID      : 26305
+    Flags   : 0x0120
+    QR      : 0
+    Opcode  : 0
+    AA      : 0
+    TC      : 0
+    RD      : 1
+    RA      : 0
+    AD      : 1
+    CD      : 0
+    RCODE   : 0 (NOERROR)
+
+  Counts:
+    Questions  : 1
+    Answers    : 0
+    Authority  : 0
+    Additional : 1
+
+  Questions:
+    Question 1:
+      Name  : dns.google
+      Type  : 1 (A)
+      Class : 1 (IN)
+
+  Additional:
+    Additional 1:
+      Name     : .
+      Type     : 41 (OPT)
+      Class    : 1232 (UNKNOWN)
+      TTL      : 0
+      RDLength : 12
+      RDATA    : 000a0008d7b275a12da132f1
+
+  Parser:
+    Parse OK             : yes
+    Parsed length        : 51 bytes
+    Truncated by capture : no
+  ---------------------------------------------
+[XDP] RESPONSE 36.50.50.50:53 -> 172.16.14.27:43938 id=21546 type=A name=appsflyersdk.com rcode=0(NOERROR) answers=4 authority=0 additional=1
+
+  ---------------- DNS DETAILS ----------------
+  Header:
+    ID      : 21546
+    Flags   : 0x8180
+    QR      : 1
+    Opcode  : 0
+    AA      : 0
+    TC      : 0
+    RD      : 1
+    RA      : 1
+    AD      : 0
+    CD      : 0
+    RCODE   : 0 (NOERROR)
+
+  Counts:
+    Questions  : 1
+    Answers    : 4
+    Authority  : 0
+    Additional : 1
+
+  Questions:
+    Question 1:
+      Name  : appsflyersdk.com
+      Type  : 1 (A)
+      Class : 1 (IN)
+
+  Answers:
+    Answer 1:
+      Name     : appsflyersdk.com
+      Type     : 1 (A)
+      Class    : 1 (IN)
+      TTL      : 60
+      RDLength : 4
+      RDATA    : 18.155.107.56
+    Answer 2:
+      Name     : appsflyersdk.com
+      Type     : 1 (A)
+      Class    : 1 (IN)
+      TTL      : 60
+      RDLength : 4
+      RDATA    : 18.155.107.12
+    Answer 3:
+      Name     : appsflyersdk.com
+      Type     : 1 (A)
+      Class    : 1 (IN)
+      TTL      : 60
+      RDLength : 4
+      RDATA    : 18.155.107.105
+    Answer 4:
+      Name     : appsflyersdk.com
+      Type     : 1 (A)
+      Class    : 1 (IN)
+      TTL      : 60
+      RDLength : 4
+      RDATA    : 18.155.107.93
+
+  Additional:
+    Additional 1:
+      Name     : .
+      Type     : 41 (OPT)
+      Class    : 1232 (UNKNOWN)
+      TTL      : 0
+      RDLength : 28
+      RDATA    : 000a00182af94562a348d2df010000006aca62795da8890785c67965
+
+  Parser:
+    Parse OK             : yes
+    Parsed length        : 137 bytes
+    Truncated by capture : no
+  ---------------------------------------------
+
+========== DEBUG ==========
+BPF event->query_type = 1
+parser parse_ok = 1
+parser parsed_len = 57
+parser qdcount = 1
+parser question_count = 1
+parser QTYPE = 1
+parser QCLASS = 1
+parser QNAME = appsflyersdk.com
+RAW DNS PAYLOAD:
+54 2a 01 20 00 01 00 00 00 00 00 01 0c 61 70 70 
+73 66 6c 79 65 72 73 64 6b 03 63 6f 6d 00 00 01 
+00 01 00 00 29 04 d0 00 00 00 00 00 0c 00 0a 00 
+08 2a f9 45 62 a3 48 d2 df 
+===========================
+[RESPONSE] 172.16.14.27:43938 -> 36.50.50.50:53 id=21546 type=A name=appsflyersdk.com latency=98.456 ms response_rcode=0(NOERROR) response_answers=4
+
+  ---------------- DNS DETAILS ----------------
+  Header:
+    ID      : 21546
+    Flags   : 0x0120
+    QR      : 0
+    Opcode  : 0
+    AA      : 0
+    TC      : 0
+    RD      : 1
+    RA      : 0
+    AD      : 1
+    CD      : 0
+    RCODE   : 0 (NOERROR)
+
+  Counts:
+    Questions  : 1
+    Answers    : 0
+    Authority  : 0
+    Additional : 1
+
+  Questions:
+    Question 1:
+      Name  : appsflyersdk.com
+      Type  : 1 (A)
+      Class : 1 (IN)
+
+  Additional:
+    Additional 1:
+      Name     : .
+      Type     : 41 (OPT)
+      Class    : 1232 (UNKNOWN)
+      TTL      : 0
+      RDLength : 12
+      RDATA    : 000a00082af94562a348d2df
+
+  Parser:
+    Parse OK             : yes
+    Parsed length        : 57 bytes
+    Truncated by capture : no
+  ---------------------------------------------
+[XDP] RESPONSE 36.50.50.50:53 -> 172.16.14.27:39952 id=18002 type=A name=msftncsi.com rcode=0(NOERROR) answers=0 authority=1 additional=1
+
+  ---------------- DNS DETAILS ----------------
+  Header:
+    ID      : 18002
+    Flags   : 0x8180
+    QR      : 1
+    Opcode  : 0
+    AA      : 0
+    TC      : 0
+    RD      : 1
+    RA      : 1
+    AD      : 0
+    CD      : 0
+    RCODE   : 0 (NOERROR)
+
+  Counts:
+    Questions  : 1
+    Answers    : 0
+    Authority  : 1
+    Additional : 1
+
+  Questions:
+    Question 1:
+      Name  : msftncsi.com
+      Type  : 1 (A)
+      Class : 1 (IN)
+
+  Authority:
+    Authority 1:
+      Name     : msftncsi.com
+      Type     : 6 (SOA)
+      Class    : 1 (IN)
+      TTL      : 17
+      RDLength : 71
+      RDATA    : ns1-34.azure-dns.com azuredns-hostmaster.microsoft.com 1 3600 300 2419200 300
+
+  Additional:
+    Additional 1:
+      Name     : .
+      Type     : 41 (OPT)
+      Class    : 1232 (UNKNOWN)
+      TTL      : 0
+      RDLength : 28
+      RDATA    : 000a00188587829c24c084de010000006aca6279e4aaa3d509bd1fd2
+
+  Parser:
+    Parse OK             : yes
+    Parsed length        : 152 bytes
+    Truncated by capture : no
+  ---------------------------------------------
+
+========== DEBUG ==========
+BPF event->query_type = 1
+parser parse_ok = 1
+parser parsed_len = 53
+parser qdcount = 1
+parser question_count = 1
+parser QTYPE = 1
+parser QCLASS = 1
+parser QNAME = msftncsi.com
+RAW DNS PAYLOAD:
+46 52 01 20 00 01 00 00 00 00 00 01 08 6d 73 66 
+74 6e 63 73 69 03 63 6f 6d 00 00 01 00 01 00 00 
+29 04 d0 00 00 00 00 00 0c 00 0a 00 08 85 87 82 
+9c 24 c0 84 de 
+===========================
+[RESPONSE] 172.16.14.27:39952 -> 36.50.50.50:53 id=18002 type=A name=msftncsi.com latency=45.882 ms response_rcode=0(NOERROR) response_answers=0
+
+  ---------------- DNS DETAILS ----------------
+  Header:
+    ID      : 18002
+    Flags   : 0x0120
+    QR      : 0
+    Opcode  : 0
+    AA      : 0
+    TC      : 0
+    RD      : 1
+    RA      : 0
+    AD      : 1
+    CD      : 0
+    RCODE   : 0 (NOERROR)
+
+  Counts:
+    Questions  : 1
+    Answers    : 0
+    Authority  : 0
+    Additional : 1
+
+  Questions:
+    Question 1:
+      Name  : msftncsi.com
+      Type  : 1 (A)
+      Class : 1 (IN)
+
+  Additional:
+    Additional 1:
+      Name     : .
+      Type     : 41 (OPT)
+      Class    : 1232 (UNKNOWN)
+      TTL      : 0
+      RDLength : 12
+      RDATA    : 000a00088587829c24c084de
+
+  Parser:
+    Parse OK             : yes
+    Parsed length        : 53 bytes
+    Truncated by capture : no
+  ---------------------------------------------
+[XDP] RESPONSE 36.50.50.50:53 -> 172.16.14.27:35945 id=58536 type=A name=google-analytics.com rcode=0(NOERROR) answers=6 authority=0 additional=1
+
+  ---------------- DNS DETAILS ----------------
+  Header:
+    ID      : 58536
+    Flags   : 0x8180
+    QR      : 1
+    Opcode  : 0
+    AA      : 0
+    TC      : 0
+    RD      : 1
+    RA      : 1
+    AD      : 0
+    CD      : 0
+    RCODE   : 0 (NOERROR)
+
+  Counts:
+    Questions  : 1
+    Answers    : 6
+    Authority  : 0
+    Additional : 1
+
+  Questions:
+    Question 1:
+      Name  : google-analytics.com
+      Type  : 1 (A)
+      Class : 1 (IN)
+
+  Answers:
+    Answer 1:
+      Name     : google-analytics.com
+      Type     : 1 (A)
+      Class    : 1 (IN)
+      TTL      : 93
+      RDLength : 4
+      RDATA    : 192.178.158.99
+    Answer 2:
+      Name     : google-analytics.com
+      Type     : 1 (A)
+      Class    : 1 (IN)
+      TTL      : 93
+      RDLength : 4
+      RDATA    : 192.178.158.104
+    Answer 3:
+      Name     : google-analytics.com
+      Type     : 1 (A)
+      Class    : 1 (IN)
+      TTL      : 93
+      RDLength : 4
+      RDATA    : 192.178.158.106
+    Answer 4:
+      Name     : google-analytics.com
+      Type     : 1 (A)
+      Class    : 1 (IN)
+      TTL      : 93
+      RDLength : 4
+      RDATA    : 192.178.158.105
+    Answer 5:
+      Name     : google-analytics.com
+      Type     : 1 (A)
+      Class    : 1 (IN)
+      TTL      : 93
+      RDLength : 4
+      RDATA    : 192.178.158.103
+    Answer 6:
+      Name     : google-analytics.com
+      Type     : 1 (A)
+      Class    : 1 (IN)
+      TTL      : 93
+      RDLength : 4
+      RDATA    : 192.178.158.147
+
+  Additional:
+    Additional 1:
+      Name     : .
+      Type     : 41 (OPT)
+      Class    : 1232 (UNKNOWN)
+      TTL      : 0
+      RDLength : 28
+      RDATA    : 000a0018bd16806d27780da2010000006aca627965dde35e085592bc
+
+  Parser:
+    Parse OK             : yes
+    Parsed length        : 173 bytes
+    Truncated by capture : no
+  ---------------------------------------------
+
+========== DEBUG ==========
+BPF event->query_type = 1
+parser parse_ok = 1
+parser parsed_len = 61
+parser qdcount = 1
+parser question_count = 1
+parser QTYPE = 1
+parser QCLASS = 1
+parser QNAME = google-analytics.com
+RAW DNS PAYLOAD:
+e4 a8 01 20 00 01 00 00 00 00 00 01 10 67 6f 6f 
+67 6c 65 2d 61 6e 61 6c 79 74 69 63 73 03 63 6f 
+6d 00 00 01 00 01 00 00 29 04 d0 00 00 00 00 00 
+0c 00 0a 00 08 bd 16 80 6d 27 78 0d a2 
+===========================
+[RESPONSE] 172.16.14.27:35945 -> 36.50.50.50:53 id=58536 type=A name=google-analytics.com latency=45.202 ms response_rcode=0(NOERROR) response_answers=6
+
+  ---------------- DNS DETAILS ----------------
+  Header:
+    ID      : 58536
+    Flags   : 0x0120
+    QR      : 0
+    Opcode  : 0
+    AA      : 0
+    TC      : 0
+    RD      : 1
+    RA      : 0
+    AD      : 1
+    CD      : 0
+    RCODE   : 0 (NOERROR)
+
+  Counts:
+    Questions  : 1
+    Answers    : 0
+    Authority  : 0
+    Additional : 1
+
+  Questions:
+    Question 1:
+      Name  : google-analytics.com
+      Type  : 1 (A)
+      Class : 1 (IN)
+
+  Additional:
+    Additional 1:
+      Name     : .
+      Type     : 41 (OPT)
+      Class    : 1232 (UNKNOWN)
+      TTL      : 0
+      RDLength : 12
+      RDATA    : 000a0008bd16806d27780da2
+
+  Parser:
+    Parse OK             : yes
+    Parsed length        : 61 bytes
+    Truncated by capture : no
+  ---------------------------------------------
+[XDP] RESPONSE 36.50.50.50:53 -> 172.16.14.27:48614 id=57778 type=A name=applovin.com rcode=0(NOERROR) answers=1 authority=0 additional=1
+
+  ---------------- DNS DETAILS ----------------
+  Header:
+    ID      : 57778
+    Flags   : 0x8180
+    QR      : 1
+    Opcode  : 0
+    AA      : 0
+    TC      : 0
+    RD      : 1
+    RA      : 1
+    AD      : 0
+    CD      : 0
+    RCODE   : 0 (NOERROR)
+
+  Counts:
+    Questions  : 1
+    Answers    : 1
+    Authority  : 0
+    Additional : 1
+
+  Questions:
+    Question 1:
+      Name  : applovin.com
+      Type  : 1 (A)
+      Class : 1 (IN)
+
+  Answers:
+    Answer 1:
+      Name     : applovin.com
+      Type     : 1 (A)
+      Class    : 1 (IN)
+      TTL      : 120
+      RDLength : 4
+      RDATA    : 34.54.99.24
+
+  Additional:
+    Additional 1:
+      Name     : .
+      Type     : 41 (OPT)
+      Class    : 1232 (UNKNOWN)
+      TTL      : 0
+      RDLength : 28
+      RDATA    : 000a0018206abc725ac1a54e010000006aca627a9c6b0cb341a5e9be
+
+  Parser:
+    Parse OK             : yes
+    Parsed length        : 85 bytes
+    Truncated by capture : no
+  ---------------------------------------------
+
+========== DEBUG ==========
+BPF event->query_type = 1
+parser parse_ok = 1
+parser parsed_len = 53
+parser qdcount = 1
+parser question_count = 1
+parser QTYPE = 1
+parser QCLASS = 1
+parser QNAME = applovin.com
+RAW DNS PAYLOAD:
+e1 b2 01 20 00 01 00 00 00 00 00 01 08 61 70 70 
+6c 6f 76 69 6e 03 63 6f 6d 00 00 01 00 01 00 00 
+29 04 d0 00 00 00 00 00 0c 00 0a 00 08 20 6a bc 
+72 5a c1 a5 4e 
+===========================
+[RESPONSE] 172.16.14.27:48614 -> 36.50.50.50:53 id=57778 type=A name=applovin.com latency=106.126 ms response_rcode=0(NOERROR) response_answers=1
+
+  ---------------- DNS DETAILS ----------------
+  Header:
+    ID      : 57778
+    Flags   : 0x0120
+    QR      : 0
+    Opcode  : 0
+    AA      : 0
+    TC      : 0
+    RD      : 1
+    RA      : 0
+    AD      : 1
+    CD      : 0
+    RCODE   : 0 (NOERROR)
+
+  Counts:
+    Questions  : 1
+    Answers    : 0
+    Authority  : 0
+    Additional : 1
+
+  Questions:
+    Question 1:
+      Name  : applovin.com
+      Type  : 1 (A)
+      Class : 1 (IN)
+
+  Additional:
+    Additional 1:
+      Name     : .
+      Type     : 41 (OPT)
+      Class    : 1232 (UNKNOWN)
+      TTL      : 0
+      RDLength : 12
+      RDATA    : 000a0008206abc725ac1a54e
+
+  Parser:
+    Parse OK             : yes
+    Parsed length        : 53 bytes
+    Truncated by capture : no
+  ---------------------------------------------
+
+========== DEBUG ==========
+BPF event->query_type = 1
+parser parse_ok = 1
+parser parsed_len = 49
+parser qdcount = 1
+parser question_count = 1
+parser QTYPE = 1
+parser QCLASS = 1
+parser QNAME = gvt1.com
+RAW DNS PAYLOAD:
+64 72 01 20 00 01 00 00 00 00 00 01 04 67 76 74 
+31 03 63 6f 6d 00 00 01 00 01 00 00 29 04 d0 00 
+00 00 00 00 0c 00 0a 00 08 3e 84 83 f1 89 b2 72 
+2e 
+===========================
+[TIMEOUT] 172.16.14.27:48210 -> 36.50.50.50:53 id=25714 type=A name=gvt1.com latency=5760.447 ms response_rcode=0(NOERROR) response_answers=0
+
+  ---------------- DNS DETAILS ----------------
+  Header:
+    ID      : 25714
+    Flags   : 0x0120
+    QR      : 0
+    Opcode  : 0
+    AA      : 0
+    TC      : 0
+    RD      : 1
+    RA      : 0
+    AD      : 1
+    CD      : 0
+    RCODE   : 0 (NOERROR)
+
+  Counts:
+    Questions  : 1
+    Answers    : 0
+    Authority  : 0
+    Additional : 1
+
+  Questions:
+    Question 1:
+      Name  : gvt1.com
+      Type  : 1 (A)
+      Class : 1 (IN)
+
+  Additional:
+    Additional 1:
+      Name     : .
+      Type     : 41 (OPT)
+      Class    : 1232 (UNKNOWN)
+      TTL      : 0
+      RDLength : 12
+      RDATA    : 000a00083e8483f189b2722e
+
+  Parser:
+    Parse OK             : yes
+    Parsed length        : 49 bytes
+    Truncated by capture : no
+  ---------------------------------------------
+[XDP] RESPONSE 36.50.50.50:53 -> 172.16.14.27:55502 id=39634 type=A name=trafficmanager.net rcode=0(NOERROR) answers=0 authority=1 additional=1
+
+  ---------------- DNS DETAILS ----------------
+  Header:
+    ID      : 39634
+    Flags   : 0x8180
+    QR      : 1
+    Opcode  : 0
+    AA      : 0
+    TC      : 0
+    RD      : 1
+    RA      : 1
+    AD      : 0
+    CD      : 0
+    RCODE   : 0 (NOERROR)
+
+  Counts:
+    Questions  : 1
+    Answers    : 0
+    Authority  : 1
+    Additional : 1
+
+  Questions:
+    Question 1:
+      Name  : trafficmanager.net
+      Type  : 1 (A)
+      Class : 1 (IN)
+
+  Authority:
+    Authority 1:
+      Name     : trafficmanager.net
+      Type     : 6 (SOA)
+      Class    : 1 (IN)
+      TTL      : 30
+      RDLength : 49
+      RDATA    : tm1.dns-tm.com hostmaster.trafficmanager.net 2003080800 900 300 2419200 30
+
+  Additional:
+    Additional 1:
+      Name     : .
+      Type     : 41 (OPT)
+      Class    : 1232 (UNKNOWN)
+      TTL      : 0
+      RDLength : 28
+      RDATA    : 000a0018373112386eff332e010000006aca627a9ec9909d6d2eace7
+
+  Parser:
+    Parse OK             : yes
+    Parsed length        : 136 bytes
+    Truncated by capture : no
+  ---------------------------------------------
+
+========== DEBUG ==========
+BPF event->query_type = 1
+parser parse_ok = 1
+parser parsed_len = 59
+parser qdcount = 1
+parser question_count = 1
+parser QTYPE = 1
+parser QCLASS = 1
+parser QNAME = trafficmanager.net
+RAW DNS PAYLOAD:
+9a d2 01 20 00 01 00 00 00 00 00 01 0e 74 72 61 
+66 66 69 63 6d 61 6e 61 67 65 72 03 6e 65 74 00 
+00 01 00 01 00 00 29 04 d0 00 00 00 00 00 0c 00 
+0a 00 08 37 31 12 38 6e ff 33 2e 
+===========================
+[RESPONSE] 172.16.14.27:55502 -> 36.50.50.50:53 id=39634 type=A name=trafficmanager.net latency=105.119 ms response_rcode=0(NOERROR) response_answers=0
+
+  ---------------- DNS DETAILS ----------------
+  Header:
+    ID      : 39634
+    Flags   : 0x0120
+    QR      : 0
+    Opcode  : 0
+    AA      : 0
+    TC      : 0
+    RD      : 1
+    RA      : 0
+    AD      : 1
+    CD      : 0
+    RCODE   : 0 (NOERROR)
+
+  Counts:
+    Questions  : 1
+    Answers    : 0
+    Authority  : 0
+    Additional : 1
+
+  Questions:
+    Question 1:
+      Name  : trafficmanager.net
+      Type  : 1 (A)
+      Class : 1 (IN)
+
+  Additional:
+    Additional 1:
+      Name     : .
+      Type     : 41 (OPT)
+      Class    : 1232 (UNKNOWN)
+      TTL      : 0
+      RDLength : 12
+      RDATA    : 000a0008373112386eff332e
+
+  Parser:
+    Parse OK             : yes
+    Parsed length        : 59 bytes
+    Truncated by capture : no
+  ---------------------------------------------
+[XDP] RESPONSE 36.50.50.50:53 -> 172.16.14.27:59966 id=15244 type=A name=snapchat.com rcode=0(NOERROR) answers=1 authority=0 additional=1
+
+  ---------------- DNS DETAILS ----------------
+  Header:
+    ID      : 15244
+    Flags   : 0x8180
+    QR      : 1
+    Opcode  : 0
+    AA      : 0
+    TC      : 0
+    RD      : 1
+    RA      : 1
+    AD      : 0
+    CD      : 0
+    RCODE   : 0 (NOERROR)
+
+  Counts:
+    Questions  : 1
+    Answers    : 1
+    Authority  : 0
+    Additional : 1
+
+  Questions:
+    Question 1:
+      Name  : snapchat.com
+      Type  : 1 (A)
+      Class : 1 (IN)
+
+  Answers:
+    Answer 1:
+      Name     : snapchat.com
+      Type     : 1 (A)
+      Class    : 1 (IN)
+      TTL      : 60
+      RDLength : 4
+      RDATA    : 34.149.46.130
+
+  Additional:
+    Additional 1:
+      Name     : .
+      Type     : 41 (OPT)
+      Class    : 1232 (UNKNOWN)
+      TTL      : 0
+      RDLength : 28
+      RDATA    : 000a00180db27e37e295bd36010000006aca627a41e1ef407188f080
+
+  Parser:
+    Parse OK             : yes
+    Parsed length        : 85 bytes
+    Truncated by capture : no
+  ---------------------------------------------
+
+========== DEBUG ==========
+BPF event->query_type = 1
+parser parse_ok = 1
+parser parsed_len = 53
+parser qdcount = 1
+parser question_count = 1
+parser QTYPE = 1
+parser QCLASS = 1
+parser QNAME = snapchat.com
+RAW DNS PAYLOAD:
+3b 8c 01 20 00 01 00 00 00 00 00 01 08 73 6e 61 
+70 63 68 61 74 03 63 6f 6d 00 00 01 00 01 00 00 
+29 04 d0 00 00 00 00 00 0c 00 0a 00 08 0d b2 7e 
+37 e2 95 bd 36 
+===========================
+[RESPONSE] 172.16.14.27:59966 -> 36.50.50.50:53 id=15244 type=A name=snapchat.com latency=102.469 ms response_rcode=0(NOERROR) response_answers=1
+
+  ---------------- DNS DETAILS ----------------
+  Header:
+    ID      : 15244
+    Flags   : 0x0120
+    QR      : 0
+    Opcode  : 0
+    AA      : 0
+    TC      : 0
+    RD      : 1
+    RA      : 0
+    AD      : 1
+    CD      : 0
+    RCODE   : 0 (NOERROR)
+
+  Counts:
+    Questions  : 1
+    Answers    : 0
+    Authority  : 0
+    Additional : 1
+
+  Questions:
+    Question 1:
+      Name  : snapchat.com
+      Type  : 1 (A)
+      Class : 1 (IN)
+
+  Additional:
+    Additional 1:
+      Name     : .
+      Type     : 41 (OPT)
+      Class    : 1232 (UNKNOWN)
+      TTL      : 0
+      RDLength : 12
+      RDATA    : 000a00080db27e37e295bd36
+
+  Parser:
+    Parse OK             : yes
+    Parsed length        : 53 bytes
+    Truncated by capture : no
+  ---------------------------------------------
+[XDP] RESPONSE 36.50.50.50:53 -> 172.16.14.27:56071 id=1356 type=A name=a2z.com rcode=0(NOERROR) answers=0 authority=1 additional=1
+
+  ---------------- DNS DETAILS ----------------
+  Header:
+    ID      : 1356
+    Flags   : 0x8180
+    QR      : 1
+    Opcode  : 0
+    AA      : 0
+    TC      : 0
+    RD      : 1
+    RA      : 1
+    AD      : 0
+    CD      : 0
+    RCODE   : 0 (NOERROR)
+
+  Counts:
+    Questions  : 1
+    Answers    : 0
+    Authority  : 1
+    Additional : 1
+
+  Questions:
+    Question 1:
+      Name  : a2z.com
+      Type  : 1 (A)
+      Class : 1 (IN)
+
+  Authority:
+    Authority 1:
+      Name     : a2z.com
+      Type     : 6 (SOA)
+      Class    : 1 (IN)
+      TTL      : 1800
+      RDLength : 77
+      RDATA    : dns-external-route53.us-east-1.amazonaws.com root.amazon.com 201 3600 900 604800 60
+
+  Additional:
+    Additional 1:
+      Name     : .
+      Type     : 41 (OPT)
+      Class    : 1232 (UNKNOWN)
+      TTL      : 0
+      RDLength : 28
+      RDATA    : 000a0018b1c4d91501af877c010000006aca627a164ca518122028f3
+
+  Parser:
+    Parse OK             : yes
+    Parsed length        : 153 bytes
+    Truncated by capture : no
+  ---------------------------------------------
+
+========== DEBUG ==========
+BPF event->query_type = 1
+parser parse_ok = 1
+parser parsed_len = 48
+parser qdcount = 1
+parser question_count = 1
+parser QTYPE = 1
+parser QCLASS = 1
+parser QNAME = a2z.com
+RAW DNS PAYLOAD:
+05 4c 01 20 00 01 00 00 00 00 00 01 03 61 32 7a 
+03 63 6f 6d 00 00 01 00 01 00 00 29 04 d0 00 00 
+00 00 00 0c 00 0a 00 08 b1 c4 d9 15 01 af 87 7c 
+
+===========================
+[RESPONSE] 172.16.14.27:56071 -> 36.50.50.50:53 id=1356 type=A name=a2z.com latency=91.847 ms response_rcode=0(NOERROR) response_answers=0
+
+  ---------------- DNS DETAILS ----------------
+  Header:
+    ID      : 1356
+    Flags   : 0x0120
+    QR      : 0
+    Opcode  : 0
+    AA      : 0
+    TC      : 0
+    RD      : 1
+    RA      : 0
+    AD      : 1
+    CD      : 0
+    RCODE   : 0 (NOERROR)
+
+  Counts:
+    Questions  : 1
+    Answers    : 0
+    Authority  : 0
+    Additional : 1
+
+  Questions:
+    Question 1:
+      Name  : a2z.com
+      Type  : 1 (A)
+      Class : 1 (IN)
+
+  Additional:
+    Additional 1:
+      Name     : .
+      Type     : 41 (OPT)
+      Class    : 1232 (UNKNOWN)
+      TTL      : 0
+      RDLength : 12
+      RDATA    : 000a0008b1c4d91501af877c
+
+  Parser:
+    Parse OK             : yes
+    Parsed length        : 48 bytes
+    Truncated by capture : no
+  ---------------------------------------------
+[XDP] RESPONSE 36.50.50.50:53 -> 172.16.14.27:35741 id=562 type=A name=azure.com rcode=0(NOERROR) answers=5 authority=0 additional=1
+
+  ---------------- DNS DETAILS ----------------
+  Header:
+    ID      : 562
+    Flags   : 0x8180
+    QR      : 1
+    Opcode  : 0
+    AA      : 0
+    TC      : 0
+    RD      : 1
+    RA      : 1
+    AD      : 0
+    CD      : 0
+    RCODE   : 0 (NOERROR)
+
+  Counts:
+    Questions  : 1
+    Answers    : 5
+    Authority  : 0
+    Additional : 1
+
+  Questions:
+    Question 1:
+      Name  : azure.com
+      Type  : 1 (A)
+      Class : 1 (IN)
+
+  Answers:
+    Answer 1:
+      Name     : azure.com
+      Type     : 1 (A)
+      Class    : 1 (IN)
+      TTL      : 3600
+      RDLength : 4
+      RDATA    : 20.70.246.20
+    Answer 2:
+      Name     : azure.com
+      Type     : 1 (A)
+      Class    : 1 (IN)
+      TTL      : 3600
+      RDLength : 4
+      RDATA    : 20.231.239.246
+    Answer 3:
+      Name     : azure.com
+      Type     : 1 (A)
+      Class    : 1 (IN)
+      TTL      : 3600
+      RDLength : 4
+      RDATA    : 20.76.201.171
+    Answer 4:
+      Name     : azure.com
+      Type     : 1 (A)
+      Class    : 1 (IN)
+      TTL      : 3600
+      RDLength : 4
+      RDATA    : 20.112.250.133
+    Answer 5:
+      Name     : azure.com
+      Type     : 1 (A)
+      Class    : 1 (IN)
+      TTL      : 3600
+      RDLength : 4
+      RDATA    : 20.236.44.162
+
+  Additional:
+    Additional 1:
+      Name     : .
+      Type     : 41 (OPT)
+      Class    : 1232 (UNKNOWN)
+      TTL      : 0
+      RDLength : 28
+      RDATA    : 000a00187f19787df7250d48010000006aca627a555f2d23a6928ce5
+
+  Parser:
+    Parse OK             : yes
+    Parsed length        : 146 bytes
+    Truncated by capture : no
+  ---------------------------------------------
+
+========== DEBUG ==========
+BPF event->query_type = 1
+parser parse_ok = 1
+parser parsed_len = 50
+parser qdcount = 1
+parser question_count = 1
+parser QTYPE = 1
+parser QCLASS = 1
+parser QNAME = azure.com
+RAW DNS PAYLOAD:
+02 32 01 20 00 01 00 00 00 00 00 01 05 61 7a 75 
+72 65 03 63 6f 6d 00 00 01 00 01 00 00 29 04 d0 
+00 00 00 00 00 0c 00 0a 00 08 7f 19 78 7d f7 25 
+0d 48 
+===========================
+[RESPONSE] 172.16.14.27:35741 -> 36.50.50.50:53 id=562 type=A name=azure.com latency=94.332 ms response_rcode=0(NOERROR) response_answers=5
+
+  ---------------- DNS DETAILS ----------------
+  Header:
+    ID      : 562
+    Flags   : 0x0120
+    QR      : 0
+    Opcode  : 0
+    AA      : 0
+    TC      : 0
+    RD      : 1
+    RA      : 0
+    AD      : 1
+    CD      : 0
+    RCODE   : 0 (NOERROR)
+
+  Counts:
+    Questions  : 1
+    Answers    : 0
+    Authority  : 0
+    Additional : 1
+
+  Questions:
+    Question 1:
+      Name  : azure.com
+      Type  : 1 (A)
+      Class : 1 (IN)
+
+  Additional:
+    Additional 1:
+      Name     : .
+      Type     : 41 (OPT)
+      Class    : 1232 (UNKNOWN)
+      TTL      : 0
+      RDLength : 12
+      RDATA    : 000a00087f19787df7250d48
+
+  Parser:
+    Parse OK             : yes
+    Parsed length        : 50 bytes
+    Truncated by capture : no
+  ---------------------------------------------
+[XDP] RESPONSE 36.50.50.50:53 -> 172.16.14.27:55348 id=6616 type=A name=criteo.com rcode=0(NOERROR) answers=1 authority=0 additional=1
+
+  ---------------- DNS DETAILS ----------------
+  Header:
+    ID      : 6616
+    Flags   : 0x8180
+    QR      : 1
+    Opcode  : 0
+    AA      : 0
+    TC      : 0
+    RD      : 1
+    RA      : 1
+    AD      : 0
+    CD      : 0
+    RCODE   : 0 (NOERROR)
+
+  Counts:
+    Questions  : 1
+    Answers    : 1
+    Authority  : 0
+    Additional : 1
+
+  Questions:
+    Question 1:
+      Name  : criteo.com
+      Type  : 1 (A)
+      Class : 1 (IN)
+
+  Answers:
+    Answer 1:
+      Name     : criteo.com
+      Type     : 1 (A)
+      Class    : 1 (IN)
+      TTL      : 60
+      RDLength : 4
+      RDATA    : 23.185.0.4
+
+  Additional:
+    Additional 1:
+      Name     : .
+      Type     : 41 (OPT)
+      Class    : 1232 (UNKNOWN)
+      TTL      : 0
+      RDLength : 28
+      RDATA    : 000a0018c0783c04b0ee27c8010000006aca627b37d31d85283b8e9c
+
+  Parser:
+    Parse OK             : yes
+    Parsed length        : 83 bytes
+    Truncated by capture : no
+  ---------------------------------------------
+
+========== DEBUG ==========
+BPF event->query_type = 1
+parser parse_ok = 1
+parser parsed_len = 51
+parser qdcount = 1
+parser question_count = 1
+parser QTYPE = 1
+parser QCLASS = 1
+parser QNAME = criteo.com
+RAW DNS PAYLOAD:
+19 d8 01 20 00 01 00 00 00 00 00 01 06 63 72 69 
+74 65 6f 03 63 6f 6d 00 00 01 00 01 00 00 29 04 
+d0 00 00 00 00 00 0c 00 0a 00 08 c0 78 3c 04 b0 
+ee 27 c8 
+===========================
+[RESPONSE] 172.16.14.27:55348 -> 36.50.50.50:53 id=6616 type=A name=criteo.com latency=340.204 ms response_rcode=0(NOERROR) response_answers=1
+
+  ---------------- DNS DETAILS ----------------
+  Header:
+    ID      : 6616
+    Flags   : 0x0120
+    QR      : 0
+    Opcode  : 0
+    AA      : 0
+    TC      : 0
+    RD      : 1
+    RA      : 0
+    AD      : 1
+    CD      : 0
+    RCODE   : 0 (NOERROR)
+
+  Counts:
+    Questions  : 1
+    Answers    : 0
+    Authority  : 0
+    Additional : 1
+
+  Questions:
+    Question 1:
+      Name  : criteo.com
+      Type  : 1 (A)
+      Class : 1 (IN)
+
+  Additional:
+    Additional 1:
+      Name     : .
+      Type     : 41 (OPT)
+      Class    : 1232 (UNKNOWN)
+      TTL      : 0
+      RDLength : 12
+      RDATA    : 000a0008c0783c04b0ee27c8
+
+  Parser:
+    Parse OK             : yes
+    Parsed length        : 51 bytes
+    Truncated by capture : no
+  ---------------------------------------------
+[XDP] RESPONSE 36.50.50.50:53 -> 172.16.14.27:52055 id=37899 type=A name=windows.com rcode=0(NOERROR) answers=5 authority=0 additional=1
+
+  ---------------- DNS DETAILS ----------------
+  Header:
+    ID      : 37899
+    Flags   : 0x8180
+    QR      : 1
+    Opcode  : 0
+    AA      : 0
+    TC      : 0
+    RD      : 1
+    RA      : 1
+    AD      : 0
+    CD      : 0
+    RCODE   : 0 (NOERROR)
+
+  Counts:
+    Questions  : 1
+    Answers    : 5
+    Authority  : 0
+    Additional : 1
+
+  Questions:
+    Question 1:
+      Name  : windows.com
+      Type  : 1 (A)
+      Class : 1 (IN)
+
+  Answers:
+    Answer 1:
+      Name     : windows.com
+      Type     : 1 (A)
+      Class    : 1 (IN)
+      TTL      : 2316
+      RDLength : 4
+      RDATA    : 20.70.246.20
+    Answer 2:
+      Name     : windows.com
+      Type     : 1 (A)
+      Class    : 1 (IN)
+      TTL      : 2316
+      RDLength : 4
+      RDATA    : 20.112.250.133
+    Answer 3:
+      Name     : windows.com
+      Type     : 1 (A)
+      Class    : 1 (IN)
+      TTL      : 2316
+      RDLength : 4
+      RDATA    : 20.231.239.246
+    Answer 4:
+      Name     : windows.com
+      Type     : 1 (A)
+      Class    : 1 (IN)
+      TTL      : 2316
+      RDLength : 4
+      RDATA    : 20.236.44.162
+    Answer 5:
+      Name     : windows.com
+      Type     : 1 (A)
+      Class    : 1 (IN)
+      TTL      : 2316
+      RDLength : 4
+      RDATA    : 20.76.201.171
+
+  Additional:
+    Additional 1:
+      Name     : .
+      Type     : 41 (OPT)
+      Class    : 1232 (UNKNOWN)
+      TTL      : 0
+      RDLength : 28
+      RDATA    : 000a0018576121b8634ef767010000006aca62808121971fa7e6eb28
+
+  Parser:
+    Parse OK             : yes
+    Parsed length        : 148 bytes
+    Truncated by capture : no
+  ---------------------------------------------
+
+========== DEBUG ==========
+BPF event->query_type = 1
+parser parse_ok = 1
+parser parsed_len = 52
+parser qdcount = 1
+parser question_count = 1
+parser QTYPE = 1
+parser QCLASS = 1
+parser QNAME = windows.com
+RAW DNS PAYLOAD:
+94 0b 01 20 00 01 00 00 00 00 00 01 07 77 69 6e 
+64 6f 77 73 03 63 6f 6d 00 00 01 00 01 00 00 29 
+04 d0 00 00 00 00 00 0c 00 0a 00 08 57 61 21 b8 
+63 4e f7 67 
+===========================
+[RESPONSE] 172.16.14.27:52055 -> 36.50.50.50:53 id=37899 type=A name=windows.com latency=45.648 ms response_rcode=0(NOERROR) response_answers=5
+
+  ---------------- DNS DETAILS ----------------
+  Header:
+    ID      : 37899
+    Flags   : 0x0120
+    QR      : 0
+    Opcode  : 0
+    AA      : 0
+    TC      : 0
+    RD      : 1
+    RA      : 0
+    AD      : 1
+    CD      : 0
+    RCODE   : 0 (NOERROR)
+
+  Counts:
+    Questions  : 1
+    Answers    : 0
+    Authority  : 0
+    Additional : 1
+
+  Questions:
+    Question 1:
+      Name  : windows.com
+      Type  : 1 (A)
+      Class : 1 (IN)
+
+  Additional:
+    Additional 1:
+      Name     : .
+      Type     : 41 (OPT)
+      Class    : 1232 (UNKNOWN)
+      TTL      : 0
+      RDLength : 12
+      RDATA    : 000a0008576121b8634ef767
+
+  Parser:
+    Parse OK             : yes
+    Parsed length        : 52 bytes
+    Truncated by capture : no
+  ---------------------------------------------
+[XDP] RESPONSE 36.50.50.50:53 -> 172.16.14.27:34104 id=39769 type=A name=whatsapp.com rcode=0(NOERROR) answers=1 authority=0 additional=1
+
+  ---------------- DNS DETAILS ----------------
+  Header:
+    ID      : 39769
+    Flags   : 0x8180
+    QR      : 1
+    Opcode  : 0
+    AA      : 0
+    TC      : 0
+    RD      : 1
+    RA      : 1
+    AD      : 0
+    CD      : 0
+    RCODE   : 0 (NOERROR)
+
+  Counts:
+    Questions  : 1
+    Answers    : 1
+    Authority  : 0
+    Additional : 1
+
+  Questions:
+    Question 1:
+      Name  : whatsapp.com
+      Type  : 1 (A)
+      Class : 1 (IN)
+
+  Answers:
+    Answer 1:
+      Name     : whatsapp.com
+      Type     : 1 (A)
+      Class    : 1 (IN)
+      TTL      : 5
+      RDLength : 4
+      RDATA    : 57.144.141.32
+
+  Additional:
+    Additional 1:
+      Name     : .
+      Type     : 41 (OPT)
+      Class    : 1232 (UNKNOWN)
+      TTL      : 0
+      RDLength : 28
+      RDATA    : 000a00180e9f62f4c71c1483010000006aca6280c9cc9ea08718b599
+
+  Parser:
+    Parse OK             : yes
+    Parsed length        : 85 bytes
+    Truncated by capture : no
+  ---------------------------------------------
+
+========== DEBUG ==========
+BPF event->query_type = 1
+parser parse_ok = 1
+parser parsed_len = 53
+parser qdcount = 1
+parser question_count = 1
+parser QTYPE = 1
+parser QCLASS = 1
+parser QNAME = whatsapp.com
+RAW DNS PAYLOAD:
+9b 59 01 20 00 01 00 00 00 00 00 01 08 77 68 61 
+74 73 61 70 70 03 63 6f 6d 00 00 01 00 01 00 00 
+29 04 d0 00 00 00 00 00 0c 00 0a 00 08 0e 9f 62 
+f4 c7 1c 14 83 
+===========================
+[RESPONSE] 172.16.14.27:34104 -> 36.50.50.50:53 id=39769 type=A name=whatsapp.com latency=45.347 ms response_rcode=0(NOERROR) response_answers=1
+
+  ---------------- DNS DETAILS ----------------
+  Header:
+    ID      : 39769
+    Flags   : 0x0120
+    QR      : 0
+    Opcode  : 0
+    AA      : 0
+    TC      : 0
+    RD      : 1
+    RA      : 0
+    AD      : 1
+    CD      : 0
+    RCODE   : 0 (NOERROR)
+
+  Counts:
+    Questions  : 1
+    Answers    : 0
+    Authority  : 0
+    Additional : 1
+
+  Questions:
+    Question 1:
+      Name  : whatsapp.com
+      Type  : 1 (A)
+      Class : 1 (IN)
+
+  Additional:
+    Additional 1:
+      Name     : .
+      Type     : 41 (OPT)
+      Class    : 1232 (UNKNOWN)
+      TTL      : 0
+      RDLength : 12
+      RDATA    : 000a00080e9f62f4c71c1483
+
+  Parser:
+    Parse OK             : yes
+    Parsed length        : 53 bytes
+    Truncated by capture : no
+  ---------------------------------------------
+
+========== DEBUG ==========
+BPF event->query_type = 1
+parser parse_ok = 1
+parser parsed_len = 56
+parser qdcount = 1
+parser question_count = 1
+parser QTYPE = 1
+parser QCLASS = 1
+parser QNAME = 3gppnetwork.org
+RAW DNS PAYLOAD:
+ae 51 01 20 00 01 00 00 00 00 00 01 0b 33 67 70 
+70 6e 65 74 77 6f 72 6b 03 6f 72 67 00 00 01 00 
+01 00 00 29 04 d0 00 00 00 00 00 0c 00 0a 00 08 
+91 37 63 86 d7 94 13 f8 
+===========================
+[TIMEOUT] 172.16.14.27:47980 -> 36.50.50.50:53 id=44625 type=A name=3gppnetwork.org latency=5187.913 ms response_rcode=0(NOERROR) response_answers=0
+
+  ---------------- DNS DETAILS ----------------
+  Header:
+    ID      : 44625
+    Flags   : 0x0120
+    QR      : 0
+    Opcode  : 0
+    AA      : 0
+    TC      : 0
+    RD      : 1
+    RA      : 0
+    AD      : 1
+    CD      : 0
+    RCODE   : 0 (NOERROR)
+
+  Counts:
+    Questions  : 1
+    Answers    : 0
+    Authority  : 0
+    Additional : 1
+
+  Questions:
+    Question 1:
+      Name  : 3gppnetwork.org
+      Type  : 1 (A)
+      Class : 1 (IN)
+
+  Additional:
+    Additional 1:
+      Name     : .
+      Type     : 41 (OPT)
+      Class    : 1232 (UNKNOWN)
+      TTL      : 0
+      RDLength : 12
+      RDATA    : 000a000891376386d79413f8
+
+  Parser:
+    Parse OK             : yes
+    Parsed length        : 56 bytes
+    Truncated by capture : no
+  ---------------------------------------------
+[XDP] RESPONSE 36.50.50.50:53 -> 172.16.14.27:37542 id=10002 type=A name=amazon-adsystem.com rcode=0(NOERROR) answers=3 authority=0 additional=1
+
+  ---------------- DNS DETAILS ----------------
+  Header:
+    ID      : 10002
+    Flags   : 0x8180
+    QR      : 1
+    Opcode  : 0
+    AA      : 0
+    TC      : 0
+    RD      : 1
+    RA      : 1
+    AD      : 0
+    CD      : 0
+    RCODE   : 0 (NOERROR)
+
+  Counts:
+    Questions  : 1
+    Answers    : 3
+    Authority  : 0
+    Additional : 1
+
+  Questions:
+    Question 1:
+      Name  : amazon-adsystem.com
+      Type  : 1 (A)
+      Class : 1 (IN)
+
+  Answers:
+    Answer 1:
+      Name     : amazon-adsystem.com
+      Type     : 1 (A)
+      Class    : 1 (IN)
+      TTL      : 900
+      RDLength : 4
+      RDATA    : 52.200.46.40
+    Answer 2:
+      Name     : amazon-adsystem.com
+      Type     : 1 (A)
+      Class    : 1 (IN)
+      TTL      : 900
+      RDLength : 4
+      RDATA    : 52.205.243.115
+    Answer 3:
+      Name     : amazon-adsystem.com
+      Type     : 1 (A)
+      Class    : 1 (IN)
+      TTL      : 900
+      RDLength : 4
+      RDATA    : 54.145.59.57
+
+  Additional:
+    Additional 1:
+      Name     : .
+      Type     : 41 (OPT)
+      Class    : 1232 (UNKNOWN)
+      TTL      : 0
+      RDLength : 28
+      RDATA    : 000a001886d66f97fc0f2b68010000006aca6280950e134161a8f828
+
+  Parser:
+    Parse OK             : yes
+    Parsed length        : 124 bytes
+    Truncated by capture : no
+  ---------------------------------------------
+
+========== DEBUG ==========
+BPF event->query_type = 1
+parser parse_ok = 1
+parser parsed_len = 60
+parser qdcount = 1
+parser question_count = 1
+parser QTYPE = 1
+parser QCLASS = 1
+parser QNAME = amazon-adsystem.com
+RAW DNS PAYLOAD:
+27 12 01 20 00 01 00 00 00 00 00 01 0f 61 6d 61 
+7a 6f 6e 2d 61 64 73 79 73 74 65 6d 03 63 6f 6d 
+00 00 01 00 01 00 00 29 04 d0 00 00 00 00 00 0c 
+00 0a 00 08 86 d6 6f 97 fc 0f 2b 68 
+===========================
+[RESPONSE] 172.16.14.27:37542 -> 36.50.50.50:53 id=10002 type=A name=amazon-adsystem.com latency=104.277 ms response_rcode=0(NOERROR) response_answers=3
+
+  ---------------- DNS DETAILS ----------------
+  Header:
+    ID      : 10002
+    Flags   : 0x0120
+    QR      : 0
+    Opcode  : 0
+    AA      : 0
+    TC      : 0
+    RD      : 1
+    RA      : 0
+    AD      : 1
+    CD      : 0
+    RCODE   : 0 (NOERROR)
+
+  Counts:
+    Questions  : 1
+    Answers    : 0
+    Authority  : 0
+    Additional : 1
+
+  Questions:
+    Question 1:
+      Name  : amazon-adsystem.com
+      Type  : 1 (A)
+      Class : 1 (IN)
+
+  Additional:
+    Additional 1:
+      Name     : .
+      Type     : 41 (OPT)
+      Class    : 1232 (UNKNOWN)
+      TTL      : 0
+      RDLength : 12
+      RDATA    : 000a000886d66f97fc0f2b68
+
+  Parser:
+    Parse OK             : yes
+    Parsed length        : 60 bytes
+    Truncated by capture : no
+  ---------------------------------------------
+[XDP] RESPONSE 36.50.50.50:53 -> 172.16.14.27:50540 id=31909 type=A name=amazon.dev rcode=0(NOERROR) answers=0 authority=1 additional=1
+
+  ---------------- DNS DETAILS ----------------
+  Header:
+    ID      : 31909
+    Flags   : 0x8180
+    QR      : 1
+    Opcode  : 0
+    AA      : 0
+    TC      : 0
+    RD      : 1
+    RA      : 1
+    AD      : 0
+    CD      : 0
+    RCODE   : 0 (NOERROR)
+
+  Counts:
+    Questions  : 1
+    Answers    : 0
+    Authority  : 1
+    Additional : 1
+
+  Questions:
+    Question 1:
+      Name  : amazon.dev
+      Type  : 1 (A)
+      Class : 1 (IN)
+
+  Authority:
+    Authority 1:
+      Name     : amazon.dev
+      Type     : 6 (SOA)
+      Class    : 1 (IN)
+      TTL      : 900
+      RDLength : 72
+      RDATA    : ns-729.awsdns-27.net awsdns-hostmaster.amazon.com 1 7200 900 1209600 86400
+
+  Additional:
+    Additional 1:
+      Name     : .
+      Type     : 41 (OPT)
+      Class    : 1232 (UNKNOWN)
+      TTL      : 0
+      RDLength : 28
+      RDATA    : 000a0018c8a806ffcbf4fd5b010000006aca62804db528bf9550d4ae
+
+  Parser:
+    Parse OK             : yes
+    Parsed length        : 151 bytes
+    Truncated by capture : no
+  ---------------------------------------------
+
+========== DEBUG ==========
+BPF event->query_type = 1
+parser parse_ok = 1
+parser parsed_len = 51
+parser qdcount = 1
+parser question_count = 1
+parser QTYPE = 1
+parser QCLASS = 1
+parser QNAME = amazon.dev
+RAW DNS PAYLOAD:
+7c a5 01 20 00 01 00 00 00 00 00 01 06 61 6d 61 
+7a 6f 6e 03 64 65 76 00 00 01 00 01 00 00 29 04 
+d0 00 00 00 00 00 0c 00 0a 00 08 c8 a8 06 ff cb 
+f4 fd 5b 
+===========================
+[RESPONSE] 172.16.14.27:50540 -> 36.50.50.50:53 id=31909 type=A name=amazon.dev latency=98.869 ms response_rcode=0(NOERROR) response_answers=0
+
+  ---------------- DNS DETAILS ----------------
+  Header:
+    ID      : 31909
+    Flags   : 0x0120
+    QR      : 0
+    Opcode  : 0
+    AA      : 0
+    TC      : 0
+    RD      : 1
+    RA      : 0
+    AD      : 1
+    CD      : 0
+    RCODE   : 0 (NOERROR)
+
+  Counts:
+    Questions  : 1
+    Answers    : 0
+    Authority  : 0
+    Additional : 1
+
+  Questions:
+    Question 1:
+      Name  : amazon.dev
+      Type  : 1 (A)
+      Class : 1 (IN)
+
+  Additional:
+    Additional 1:
+      Name     : .
+      Type     : 41 (OPT)
+      Class    : 1232 (UNKNOWN)
+      TTL      : 0
+      RDLength : 12
+      RDATA    : 000a0008c8a806ffcbf4fd5b
+
+  Parser:
+    Parse OK             : yes
+    Parsed length        : 51 bytes
+    Truncated by capture : no
+  ---------------------------------------------
+[XDP] RESPONSE 36.50.50.50:53 -> 172.16.14.27:49506 id=63974 type=A name=ggpht.com rcode=0(NOERROR) answers=0 authority=1 additional=1
+
+  ---------------- DNS DETAILS ----------------
+  Header:
+    ID      : 63974
+    Flags   : 0x8180
+    QR      : 1
+    Opcode  : 0
+    AA      : 0
+    TC      : 0
+    RD      : 1
+    RA      : 1
+    AD      : 0
+    CD      : 0
+    RCODE   : 0 (NOERROR)
+
+  Counts:
+    Questions  : 1
+    Answers    : 0
+    Authority  : 1
+    Additional : 1
+
+  Questions:
+    Question 1:
+      Name  : ggpht.com
+      Type  : 1 (A)
+      Class : 1 (IN)
+
+  Authority:
+    Authority 1:
+      Name     : ggpht.com
+      Type     : 6 (SOA)
+      Class    : 1 (IN)
+      TTL      : 60
+      RDLength : 45
+      RDATA    : ns1.google.com dns-admin.google.com 996430997 900 900 1800 60
+
+  Additional:
+    Additional 1:
+      Name     : .
+      Type     : 41 (OPT)
+      Class    : 1232 (UNKNOWN)
+      TTL      : 0
+      RDLength : 28
+      RDATA    : 000a00184b6fe9b8fb48aac6010000006aca6285573a5ec5a6709e27
+
+  Parser:
+    Parse OK             : yes
+    Parsed length        : 123 bytes
+    Truncated by capture : no
+  ---------------------------------------------
+
+========== DEBUG ==========
+BPF event->query_type = 1
+parser parse_ok = 1
+parser parsed_len = 50
+parser qdcount = 1
+parser question_count = 1
+parser QTYPE = 1
+parser QCLASS = 1
+parser QNAME = ggpht.com
+RAW DNS PAYLOAD:
+f9 e6 01 20 00 01 00 00 00 00 00 01 05 67 67 70 
+68 74 03 63 6f 6d 00 00 01 00 01 00 00 29 04 d0 
+00 00 00 00 00 0c 00 0a 00 08 4b 6f e9 b8 fb 48 
+aa c6 
+===========================
+[RESPONSE] 172.16.14.27:49506 -> 36.50.50.50:53 id=63974 type=A name=ggpht.com latency=107.337 ms response_rcode=0(NOERROR) response_answers=0
+
+  ---------------- DNS DETAILS ----------------
+  Header:
+    ID      : 63974
+    Flags   : 0x0120
+    QR      : 0
+    Opcode  : 0
+    AA      : 0
+    TC      : 0
+    RD      : 1
+    RA      : 0
+    AD      : 1
+    CD      : 0
+    RCODE   : 0 (NOERROR)
+
+  Counts:
+    Questions  : 1
+    Answers    : 0
+    Authority  : 0
+    Additional : 1
+
+  Questions:
+    Question 1:
+      Name  : ggpht.com
+      Type  : 1 (A)
+      Class : 1 (IN)
+
+  Additional:
+    Additional 1:
+      Name     : .
+      Type     : 41 (OPT)
+      Class    : 1232 (UNKNOWN)
+      TTL      : 0
+      RDLength : 12
+      RDATA    : 000a00084b6fe9b8fb48aac6
+
+  Parser:
+    Parse OK             : yes
+    Parsed length        : 50 bytes
+    Truncated by capture : no
+  ---------------------------------------------
+
+---------- BPF stats ----------
+  total_packets  123
+  dns_queries    0
+  dns_responses  56
+  parse_errors   0
+  truncated      0
+  nxdomain       0
+  ringbuf_drops  0
+-------------------------------
+
+Tracer stopped.
